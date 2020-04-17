@@ -73,7 +73,7 @@
             "description": "Extra information for the Bot Framework Designer."
         },
         "expression": {
-            "type": "string",
+            "type": "string"
         },
         "equalsExpression": {
             "type": "string",
