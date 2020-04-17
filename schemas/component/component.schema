@@ -74,11 +74,9 @@
         },
         "expression": {
             "type": "string",
-            "format": "expression"
         },
         "equalsExpression": {
             "type": "string",
-            "format": "expression",
             "pattern": "^=.*"
         },
         "booleanExpression": {
