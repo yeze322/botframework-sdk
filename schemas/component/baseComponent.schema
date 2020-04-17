@@ -34,12 +34,10 @@
             "description": "Extra information for the Bot Framework Designer."
         },
         "expression": {
-            "type": "string",
-            "format": "expression"
+            "type": "string"
         },
         "equalsExpression": {
             "type": "string",
-            "format": "expression",
             "pattern": "^=.*"
         },
         "booleanExpression": {
