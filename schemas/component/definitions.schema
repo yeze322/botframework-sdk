@@ -46,7 +46,8 @@
             "oneOf": [
                 { "$ref": "#/definitions/expression" },
                 { "type": "boolean" }
-            ]
+            ],
+            "default":"true"
         },
         "booleanExpression": {
             "$role": "expression",
