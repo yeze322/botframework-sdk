@@ -34,17 +34,14 @@
             "description": "Extra information for the Bot Framework Designer."
         },
         "expression": {
-            "$id":"#expression",
             "type": "string",
             "pattern": "^(\\S){1}"
         },
         "equalsExpression": {
-            "$id":"#equalsExpression",
             "type": "string",
             "pattern": "^=(\\S){1}"
         },
         "condition": {
-            "$id":"#condition",
             "$role": "expression",
             "oneOf": [
                 { "type": "boolean" },
@@ -52,7 +49,6 @@
             ]
         },
         "booleanExpression": {
-            "$id":"#booleanExpression",
             "$role": "expression",
             "oneOf": [
                 { "type": "boolean" },
@@ -60,7 +56,6 @@
             ]
         },
         "numberExpression": {
-            "$id":"#numberExpression",
             "$role": "expression",
             "oneOf": [
                 { "type": "number" },
@@ -68,7 +63,6 @@
             ]
         },
         "integerExpression": {
-            "$id":"#integerExpression",
             "$role": "expression",
             "oneOf": [
                 { "type": "integer" },
@@ -76,11 +70,9 @@
             ]
         },
         "stringExpression": {
-            "$id":"#stringExpression",
             "$ref": "#/definitions/expression" 
         },
         "arrayExpression": {
-            "$id":"#arrayExpression",
             "$role": "expression",
             "oneOf": [
                 { "type": "array" },
@@ -88,7 +80,6 @@
             ]
         },
         "objectExpression": {
-            "$id":"#objectExpression",
             "$role": "expression",
             "oneOf": [
                 { "type": "object" },
@@ -96,7 +87,6 @@
             ]
         },
         "valueExpression": {
-            "$id":"#valueExpression",
             "$role": "expression",
             "oneOf": [
                 { "type": "object" },
