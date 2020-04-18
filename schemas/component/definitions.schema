@@ -93,8 +93,7 @@
                 { "type": "array" },
                 { "type": "string" },
                 { "type": "boolean" },
-                { "type": "number" },
-                { "type": "integer" }
+                { "type": "number" }
             ]
         }
     }
