@@ -44,8 +44,8 @@
         "condition": {
             "$role": "expression",
             "oneOf": [
-                { "type": "boolean" },
-                { "$ref": "#/definitions/expression" }
+                { "$ref": "#/definitions/expression" },
+                { "type": "boolean" }
             ]
         },
         "booleanExpression": {
@@ -53,24 +53,27 @@
             "oneOf": [
                 { "type": "boolean" },
                 { "$ref": "#/definitions/equalsExpression" }
-            ]
+            ],
+            "default": false
         },
         "numberExpression": {
             "$role": "expression",
             "oneOf": [
                 { "type": "number" },
                 { "$ref": "#/definitions/equalsExpression" }
-            ]
+            ],
+            "default": 0
         },
         "integerExpression": {
             "$role": "expression",
             "oneOf": [
                 { "type": "integer" },
                 { "$ref": "#/definitions/equalsExpression" }
-            ]
+            ],
+            "default": 0
         },
         "stringExpression": {
-            "$ref": "#/definitions/expression" 
+            "$ref": "#/definitions/expression"
         },
         "arrayExpression": {
             "$role": "expression",
