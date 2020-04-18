@@ -107,23 +107,5 @@
                 { "type": "integer" }
             ]
         }
-    },
-    "properties": {
-        "$role": {
-            "oneOf": [
-                {
-                    "$ref": "#/definitions/role"
-                },
-                {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/role"
-                    }
-                }
-            ]
-        },
-        "$kind": {
-            "$ref": "#/definitions/kind"
-        }
     }
 }
