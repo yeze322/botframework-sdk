@@ -35,11 +35,11 @@
         },
         "expression": {
             "type": "string",
-            "pattern": "^(\\S){1}"
+            "pattern": "^.*\\S.*"
         },
         "equalsExpression": {
             "type": "string",
-            "pattern": "^=(\\S){1}"
+            "pattern": "^=.*\\S.*"
         },
         "condition": {
             "$role": "expression",
