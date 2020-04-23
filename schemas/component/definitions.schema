@@ -145,7 +145,8 @@
                 },
                 {
                     "type": "string",
-                    "title": "String"
+                    "title": "String",
+                    "pattern":"^(?!(=)).*"
                 },
                 {
                     "type": "boolean",
