@@ -36,12 +36,18 @@
         "expression": {
             "type": "string",
             "title": "Expression",
-            "pattern": "^.*\\S.*"
+            "pattern": "^.*\\S.*",
+            "examples":[
+                "user.age > 13"
+            ]
         },
         "equalsExpression": {
             "type": "string",
             "title": "Expression",
-            "pattern": "^=.*\\S.*"
+            "pattern": "^=.*\\S.*",
+             "examples":[
+                "=user.name"
+            ]
         },
         "condition": {
             "$role": "expression",
@@ -52,7 +58,10 @@
                 {
                     "type": "boolean",
                     "title": "Boolean",
-                    "default": true
+                    "default": true,
+                    "examples": [
+                        false
+                    ]
                 }
             ]
         },
@@ -62,7 +71,10 @@
                 {
                     "type": "boolean",
                     "title": "Boolean",
-                    "default": false
+                    "default": false,
+                    "examples": [
+                        false
+                    ]
                 },
                 {
                     "$ref": "#/definitions/equalsExpression"
@@ -75,7 +87,10 @@
                 {
                     "type": "number",
                     "title": "Number",
-                    "default": 0
+                    "default": 0,
+                     "examples": [
+                        15.5
+                    ]
                 },
                 {
                     "$ref": "#/definitions/equalsExpression"
@@ -88,7 +103,10 @@
                 {
                     "type": "integer",
                     "title": "Integer",
-                    "default": 0
+                    "default": 0,
+                     "examples": [
+                        15
+                    ]
                 },
                 {
                     "$ref": "#/definitions/equalsExpression"
@@ -101,7 +119,10 @@
                 {
                     "type:": "string",
                     "title": "Text",
-                    "pattern":"^(?!(=)).*"
+                    "pattern":"^(?!(=)).*",
+                     "examples": [
+                        "Hello {user.name}"
+                    ]
                 },
                 {
                     "$ref": "#/definitions/equalsExpression"                    
@@ -146,15 +167,24 @@
                 {
                     "type": "string",
                     "title": "String",
-                    "pattern":"^(?!(=)).*"
+                    "pattern":"^(?!(=)).*",
+                     "examples": [
+                        "Hello {user.name}"
+                    ]
                 },
                 {
                     "type": "boolean",
-                    "title": "Boolean"
+                    "title": "Boolean",
+                     "examples": [
+                        false
+                    ]
                 },
                 {
                     "type": "number",
-                    "title": "Number"
+                    "title": "Number",
+                     "examples": [
+                        15.5
+                    ]
                 },
                 {
                     "$ref": "#/definitions/equalsExpression"
