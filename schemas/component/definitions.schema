@@ -35,70 +35,129 @@
         },
         "expression": {
             "type": "string",
+            "title": "Expression",
             "pattern": "^.*\\S.*"
         },
         "equalsExpression": {
             "type": "string",
+            "title": "Expression",
             "pattern": "^=.*\\S.*"
         },
         "condition": {
             "$role": "expression",
             "oneOf": [
-                { "$ref": "#/definitions/expression" },
-                { "type": "boolean" }
-            ],
-            "default":"true"
+                {
+                    "$ref": "#/definitions/expression"
+                },
+                {
+                    "type": "boolean",
+                    "title": "Boolean",
+                    "default": true
+                }
+            ]
         },
         "booleanExpression": {
             "$role": "expression",
             "oneOf": [
-                { "type": "boolean" },
-                { "$ref": "#/definitions/equalsExpression" }
-            ],
-            "default": false
+                {
+                    "type": "boolean",
+                    "title": "Boolean",
+                    "default": false
+                },
+                {
+                    "$ref": "#/definitions/equalsExpression"
+                }
+            ]
         },
         "numberExpression": {
             "$role": "expression",
             "oneOf": [
-                { "type": "number" },
-                { "$ref": "#/definitions/equalsExpression" }
-            ],
-            "default": 0
+                {
+                    "type": "number",
+                    "title": "Number",
+                    "default": 0
+                },
+                {
+                    "$ref": "#/definitions/equalsExpression"
+                }
+            ]
         },
         "integerExpression": {
             "$role": "expression",
             "oneOf": [
-                { "type": "integer" },
-                { "$ref": "#/definitions/equalsExpression" }
-            ],
-            "default": 0
+                {
+                    "type": "integer",
+                    "title": "Integer",
+                    "default": 0
+                },
+                {
+                    "$ref": "#/definitions/equalsExpression"
+                }
+            ]
         },
         "stringExpression": {
             "$role": "expression",
-            "$ref": "#/definitions/expression"
+            "oneOf": [
+                {
+                    "type:": "string",
+                    "title": "Text",
+                    "pattern":"^(?!(=)).*"
+                },
+                {
+                    "$ref": "#/definitions/equalsExpression"                    
+                }
+            ]
         },
         "arrayExpression": {
             "$role": "expression",
             "oneOf": [
-                { "type": "array" },
-                { "$ref": "#/definitions/equalsExpression" }
+                {
+                    "type": "array",
+                    "title": "Array"
+                },
+                {
+                    "$ref": "#/definitions/equalsExpression"
+                }
             ]
         },
         "objectExpression": {
             "$role": "expression",
             "oneOf": [
-                { "type": "object" },
-                { "$ref": "#/definitions/equalsExpression" }
+                {
+                    "type": "object",
+                    "title": "Object"
+                },
+                {
+                    "$ref": "#/definitions/equalsExpression"
+                }
             ]
         },
         "valueExpression": {
             "$role": "expression",
             "oneOf": [
-                { "type": "object" },
-                { "type": "array" },
-                { "type": "string" },
-                { "type": "boolean" },
-                { "type": "number" }
+                {
+                    "type": "object",
+                    "title": "Object"
+                },
+                {
+                    "type": "array",
+                    "title": "Array"
+                },
+                {
+                    "type": "string",
+                    "title": "String"
+                },
+                {
+                    "type": "boolean",
+                    "title": "Boolean"
+                },
+                {
+                    "type": "number",
+                    "title": "Number"
+                },
+                {
+                    "$ref": "#/definitions/equalsExpression"
+                }
             ]
         }
     }
