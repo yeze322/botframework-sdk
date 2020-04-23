@@ -77,7 +77,10 @@
                     ]
                 },
                 {
-                    "$ref": "#/definitions/equalsExpression"
+                    "$ref": "#/definitions/equalsExpression",
+                    "examples": [
+                        "=user.isVip"
+                    ]
                 }
             ]
         },
@@ -93,7 +96,10 @@
                     ]
                 },
                 {
-                    "$ref": "#/definitions/equalsExpression"
+                    "$ref": "#/definitions/equalsExpression",
+                    "examples": [
+                        "=dialog.quantity"
+                    ]
                 }
             ]
         },
@@ -109,7 +115,10 @@
                     ]
                 },
                 {
-                    "$ref": "#/definitions/equalsExpression"
+                    "$ref": "#/definitions/equalsExpression",
+                    "examples": [
+                        "=user.age"
+                    ]
                 }
             ]
         },
@@ -125,7 +134,10 @@
                     ]
                 },
                 {
-                    "$ref": "#/definitions/equalsExpression"                    
+                    "$ref": "#/definitions/equalsExpression",  
+                    "examples": [
+                        "=concat('x','y','z')"
+                    ]                  
                 }
             ]
         },
@@ -187,7 +199,10 @@
                     ]
                 },
                 {
-                    "$ref": "#/definitions/equalsExpression"
+                    "$ref": "#/definitions/equalsExpression",  
+                    "examples": [
+                        "=..."
+                    ]                  
                 }
             ]
         }
