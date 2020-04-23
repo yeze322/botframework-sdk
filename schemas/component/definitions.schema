@@ -130,7 +130,7 @@
                     "title": "String",
                     "pattern":"^(?!(=)).*",
                      "examples": [
-                        "Hello {user.name}"
+                        "Hello ${user.name}"
                     ]
                 },
                 {
@@ -181,7 +181,7 @@
                     "title": "String",
                     "pattern":"^(?!(=)).*",
                      "examples": [
-                        "Hello {user.name}"
+                        "Hello ${user.name}"
                     ]
                 },
                 {
