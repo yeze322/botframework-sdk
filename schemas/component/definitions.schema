@@ -126,7 +126,7 @@
             "$role": "expression",
             "oneOf": [
                 {
-                    "type:": "string",
+                    "type": "string",
                     "title": "String",
                     "pattern":"^(?!(=)).*",
                      "examples": [
