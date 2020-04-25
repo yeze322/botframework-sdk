@@ -165,18 +165,6 @@
                 }
             ]
         },
-        "resourceExpression": {
-            "$role": "expression",
-            "oneOf": [
-                {
-                    "type": "string",
-                    "title": "Resource Id"
-                },
-                {
-                    "$ref": "#/definitions/equalsExpression"
-                }
-            ]
-        },
         "valueExpression": {
             "$role": "expression",
             "oneOf": [
