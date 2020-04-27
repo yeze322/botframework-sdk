@@ -19,7 +19,7 @@ setup_html
 from helpers import get_msorg_members, last_touched_by_microsoft, filter_azure, \
 filter_bot_service_label, filter_adaptive_label, filter_customer_replied_label, \
 filter_customer_reported_label, filter_stale_customer_issues, add_last_comment, \
-filter_milestone_label
+filter_milestone_label, filter_exempt_from_dri_label
 
 
 HOW_TO_SET_CREDS = """
@@ -125,7 +125,7 @@ def main():
         print_status(f'   Total open issues after {START_DATE} : {len(open_issues)}', 'tab1')
 
         # Filter out adaptive issues
-        open_issues = [issue for issue in open_issues if not filter_adaptive_label(issue)]
+        open_issues = [issue for issue in open_issues if not filter_adaptive_label(issue) and not filter_exempt_from_dri_label(issue)]
         user_filtered = True
         if repo.name in BYPASS_USERFILTER_REPOS:
             user_filtered_issues = [issue for issue in open_issues if not issue.pull_request]
