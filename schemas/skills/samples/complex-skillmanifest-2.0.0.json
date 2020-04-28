@@ -32,7 +32,7 @@
     ],
     "activities": {
         "bookFlight": {
-            "description": "Books a light",
+            "description": "Books a flight",
             "type": "event",
             "name": "BookFlight",
             "value": {
@@ -83,7 +83,7 @@
                     "description": "this is the destination city for the flight"
                 },
                 "date": {
-                    "type": "date",
+                    "type": "string",
                     "description": "The date for the flight in YYYY-MM-DD format"
                 }
             }

@@ -1,8 +1,8 @@
 {
-    "$id": "https://schemas.botframework.com/schemas/skills/skill-manifest-2.1.preview-0.json",
+    "$id": "https://schemas.botframework.com/schemas/skills/skill-manifest-2.1.preview-1.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Skill Manifest Schema (Preview)",
-    "description": "A schema for Bot Framework skill manifests (Preview)",
+    "title": "Skill Manifest Schema (v2.1.preview-1)",
+    "description": "A schema for Bot Framework skill manifests",
     "type": "object",
     "required": [
         "$id",
@@ -58,7 +58,10 @@
         "tags": {
             "type": "array",
             "uniqueItems": true,
-            "description": "An array of strings with tags for the skill"
+            "description": "An array of strings with tags for the skill",
+            "items": {
+                "type": "string"
+            }
         },
         "endpoints": {
             "type": "array",
@@ -71,38 +74,28 @@
         },
         "dispatchModels": {
             "type": "object",
-            "description": "Language models and intents for the skill",
+            "description": "Language models and top level intents for the skill",
             "properties": {
                 "languages": {
                     "type": "object",
                     "description": "List of languages supported by the skill",
                     "minProperties": 1,
                     "additionalProperties": {
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "minItems": 1,
-                                "uniqueItems": true,
-                                "description": "List of language models supported by the skill",
-                                "items": {
-                                    "$ref": "#/definitions/languageModel"
-                                }                               
-                            }
-                        ]
+                        "type": "array",
+                        "minItems": 1,
+                        "uniqueItems": true,
+                        "description": "List of language models supported by the skill",
+                        "items": {
+                            "$ref": "#/definitions/languageModel"
+                        }
                     }
                 },
                 "intents": {
-                    "type": "object",
-                    "description": "A list of intents and a reference to activity that the skill expects for that intent",
-                    "minProperties": 1,
-                    "additionalProperties": {
-                        "oneOf": [
-                            {
-                                "type": "string",
-                                "format": "uri-reference",
-                                "description": "Where does this show up?"
-                            }
-                        ]
+                    "type": "array",
+                    "uniqueItems": true,
+                    "description": "A list of the skill's top level intents that can be used by the consumer to filter out language files.",
+                    "items": {
+                        "type": "string"
                     }
                 }
             },
@@ -110,9 +103,9 @@
         },
         "activities": {
             "type": "object",
-            "description": "Definition for the activities accepted by the skill",
+            "description": "Definition of activities to enable skill host tooling to progmatically interact with the skill.",
             "additionalProperties": {
-                "anyOf": [
+                "oneOf": [
                     {
                         "$ref": "#/definitions/eventActivity"
                     },
@@ -121,23 +114,26 @@
                     },
                     {
                         "$ref": "#/definitions/messageActivity"
+                    },
+                    {
+                        "$ref": "#/definitions/otherActivities"
                     }
                 ]
             }
         },
         "activitiesSent": {
             "type": "object",
-            "description": "Definition for the activities sent proactively by the skill",
+            "description": "Definitions of activities to enable skill host tooling to handle activities which may be sent by the skill.",
             "additionalProperties": {
-                "anyOf": [
+                "oneOf": [
                     {
                         "$ref": "#/definitions/eventActivity"
                     },
                     {
-                        "$ref": "#/definitions/invokeActivity"
+                        "$ref": "#/definitions/messageActivity"
                     },
                     {
-                        "$ref": "#/definitions/messageActivity"
+                        "$ref": "#/definitions/otherActivities"
                     }
                 ]
             }
@@ -199,6 +195,7 @@
         },
         "eventActivity": {
             "type": "object",
+            "title": "Event Activity",
             "description": "An activity with Type=Event where the Name property indicates the task that the skill will execute",
             "required": [
                 "type",
@@ -208,9 +205,7 @@
                 "type": {
                     "type": "string",
                     "description": "The activity type",
-                    "enum": [
-                        "event"
-                    ]
+                    "const": "event"
                 },
                 "name": {
                     "type": "string",
@@ -225,20 +220,21 @@
                     "description": "Description for the activity"
                 },
                 "value": {
+                    "$ref": "http://json-schema.org/draft-07/schema#",
                     "type": "object",
-                    "description": "The JsonSchema definition of the shape of the value property that this event expects",
-                    "$ref": "http://json-schema.org/draft-07/schema#"
+                    "description": "The JsonSchema definition of the shape of the value property that this event expects"
                 },
                 "resultValue": {
+                    "$ref": "http://json-schema.org/draft-07/schema#",
                     "type": "object",
-                    "description": "The JsonSchema definition of the shape of the resultValue that this event may produce",
-                    "$ref": "http://json-schema.org/draft-07/schema#"
+                    "description": "The JsonSchema definition of the shape of the resultValue that this event may produce"
                 }
             },
             "additionalProperties": false
         },
         "invokeActivity": {
             "type": "object",
+            "title": "Invoke Activity",
             "description": "An activity with Type=Invoke where the Name property indicates the task that the skill will execute",
             "required": [
                 "type",
@@ -248,9 +244,7 @@
                 "type": {
                     "type": "string",
                     "description": "The activity type",
-                    "enum": [
-                        "invoke"
-                    ]
+                    "const": "invoke"
                 },
                 "name": {
                     "type": "string",
@@ -279,6 +273,7 @@
         },
         "messageActivity": {
             "type": "object",
+            "title": "Message Activity",
             "description": "An activity with Type=Message where the utterance is passed to the skill in the Text property",
             "required": [
                 "type"
@@ -287,9 +282,7 @@
                 "type": {
                     "type": "string",
                     "description": "The activity type",
-                    "enum": [
-                        "message"
-                    ],
+                    "const": "message",
                     "default": "message"
                 },
                 "description": {
@@ -310,20 +303,48 @@
             },
             "additionalProperties": false
         },
+        "otherActivities": {
+            "type": "object",
+            "title": "Activity",
+            "required": [
+                "type"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "title": "Activity Type",
+                    "description": "Contains the activity type (message, event, invoke, etc.)",
+                    "enum": [
+                        "message",
+                        "event",
+                        "invoke",
+                        "messageReaction",
+                        "endOfConversation",
+                        "handoff",
+                        "typing",
+                        "conversationUpdate",
+                        "trace",
+                        "installationUpdate",
+                        "contactRelationUpdate",
+                        "suggestion",
+                        "deleteUserData",
+                        "messageUpdate",
+                        "messageDelete"
+                    ],
+                    "pattern":"^(?!(message|event|invoke)$)((messageReaction|endOfConversation|handoff|typing|conversationUpdate|trace|installationUpdate|contactRelationUpdate|suggestion|deleteUserData|messageUpdate|messageDelete)$)"
+                }
+            },
+            "additionalProperties": true
+        },
         "languageModel": {
             "type": "object",
             "description": "A language model for a given culture. The name is a combination of an ISO 639 two-letter lowercase culture code associated with a language and an ISO 3166 two-letter uppercase subculture code associated with a country or region",
             "required": [
-                "id",
                 "name",
                 "contentType",
                 "url"
             ],
             "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "Unique identifier for the language model"
-                },
                 "name": {
                     "type": "string",
                     "description": "Name for the language model"
@@ -344,6 +365,6 @@
                 }
             },
             "additionalProperties": false
-        }        
+        }
     }
 }

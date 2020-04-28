@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schemas.botframework.com/schemas/skills/skill-manifest-2.1.preview-0.json",
+    "$schema": "https://schemas.botframework.com/schemas/skills/skill-manifest-2.1.preview-1.json",
     "$id": "SkillBot",
     "name": "Sample skill definition that can handle multiple types of activities",
     "version": "1.0",
@@ -34,44 +34,51 @@
         "languages": {
             "en": [
                 {
-                    "id": "SkillLuModel-en",
                     "name": "SkillBot LU (English)",
                     "contentType": "application/lu",
                     "url": "http://sample.com/SkillBot-en.lu",
                     "description": "English language model for the skill"
                 },
                 {
-                    "id": "SkillQnAModel-en",
                     "name": "SkillBot QnA LU (English)",
-                    "contentType": "application/lu",
-                    "url": "http://sample.com/SkillBot-QnA-en.lu",
-                    "description": "English language model for the skill (QnAMaker"
+                    "contentType": "application/qna",
+                    "url": "http://sample.com/SkillBot-QnA-en.qna",
+                    "description": "English language model for the skill (QnAMaker)"
                 }
             ],
             "es-ES": [
                 {
-                    "id": "SkillLuModel-es-ES",
                     "name": "SkillBot LU (Spanish-Spain)",
                     "contentType": "application/lu",
                     "url": "http://sample.com/SkillBot-es-ES.lu",
                     "description": "Spanish (Spain) language model for the skill"
+                },
+                {
+                    "name": "SkillBot QnA LU (Spanish-Spain)",
+                    "contentType": "application/qna",
+                    "url": "http://sample.com/SkillBot-QnA-es-ES.qna",
+                    "description": "Spanish (Spain) language model for the skill (QnAMaker)"
                 }
             ],
             "es-MX": [
                 {
-                    "id": "SkillLuModel-es-MX",
                     "name": "SkillBot LU (Spanish-Mexico)",
                     "contentType": "application/lu",
                     "url": "http://sample.com/SkillBot-es-MX.lu",
                     "description": "Spanish (Mexico) language model for the skill"
+                },
+                {
+                    "name": "SkillBot QnA LU (Spanish-Mexico)",
+                    "contentType": "application/qna",
+                    "url": "http://sample.com/SkillBot-QnA-es-MX.qna",
+                    "description": "Spanish (Mexico) language model for the skill (QnAMaker)"
                 }
             ]
         },
-        "intents": {
-            "bookFlight": "#/activities/bookFlight",
-            "getWeather": "#/activities/getWeather",
-            "*": "#/activities/message"
-        }
+        "intents": [
+            "bookFlight",
+            "getWeather"
+        ]
     },
     "activities": {
         "bookFlight": {
@@ -126,7 +133,7 @@
                     "description": "this is the destination city for the flight"
                 },
                 "date": {
-                    "type": "date",
+                    "type": "string",
                     "description": "The date for the flight in YYYY-MM-DD format"
                 }
             }
@@ -172,10 +179,12 @@
                         "type": "string"
                     },
                     "departureDate": {
-                        "type": "date"
+                        "type": "string",
+                        "description": "The departure date for the flight in YYYY-MM-DD format"
                     },
                     "departureTime": {
-                        "type": "time"
+                        "type": "string",
+                        "description": "The departure time for the flight in HH-MM format"
                     }
                 }
             }
