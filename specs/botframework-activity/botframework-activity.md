@@ -41,7 +41,7 @@ This document provides meanings for each type of activity, and describes the req
 
 There are three roles of consequence in this specification: clients, which send and receive activities on behalf of users; bots, which send and receive activities and are typically automated; and the channel, which stores and forwards activities between clients and bots.
 
-Although this specification requires activities to be transmitted between roles, the exact nature of that transmission is not described here. This may be found instead in the companion [Bot Framework Protocol](../botframework-protocol/botframework-protocol.md) specification [[1](#References)].
+Although this specification requires activities to be transmitted between roles, the exact nature of that transmission is not described here. This may be found instead in the companion [Bot Framework Protocol](../botframework-protocol/botframework-channel.json) specification [[1](#References)].
 
 For compactness, visual interactive cards are not defined in this specification. Instead, these are defined within the [Bot Framework Cards](botframework-cards.md) [[10](#References)] and [Adaptive Cards](https://adaptivecards.io) [[11](#References)] specifications. These cards, and other undefined card types, may be included as attachments within Bot Framework activities.
 
@@ -1233,7 +1233,7 @@ The `semanticEntityInstance` type references to source information about where t
 
 ## References
 
-1. [Bot Framework Protocol](../botframework-protocol/botframework-protocol.md)
+1. [Bot Framework Protocol](../botframework-protocol/botframework-channel.json)
 2. [RFC 2119](https://tools.ietf.org/html/rfc2119) -- *Key words for use in RFCs to Indicate Requirement Levels*
 3. [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) -- *Date and time format*
 4. [RFC 3987](https://tools.ietf.org/html/rfc3987) -- *Internationalized Resource Identifiers (IRIs)*
