@@ -261,6 +261,8 @@
                     "description": "Ids of the recipients that the actions should be shown to.  These Ids are relative to the\nchannelId and a subset of all recipients of the activity",
                     "type": "array",
                     "items": {
+                        "title": "Id",
+                        "description": "Id of recipient.",
                         "type": "string"
                     },
                     "title": "to"
@@ -295,6 +297,7 @@
                     "title": "contentUrl"
                 },
                 "content": {
+                    "type": "object",
                     "description": "Embedded content",
                     "title": "content"
                 },
@@ -634,7 +637,9 @@
                     "description": "List of phrases and references that speech and language priming systems should listen for",
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "title": "Phrase",
+                        "description": "Phrase to listen for."
                     },
                     "title": "listenFor"
                 },

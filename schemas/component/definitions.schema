@@ -1,37 +1,36 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://raw.githubusercontent.com/microsoft/botframework-sdk/{branch}/schemas/component/component.schema",
+    "$id": "https://raw.githubusercontent.com/microsoft/botframework-sdk/master/schemas/component/definitions.schema",
     "title": "JSON Schema definition for dialog schemas.",
     "description": "In order to create a component for Bot Framework .dialog files you need to create a schema file describing your configuration that meets this definition.  This extends http://json-schema.org/draft-07/schema#.",
     "definitions": {
-        "role": {
-            "title": "$role",
-            "description": "Defines the role played in the dialog schema one of [expression|interface|implements($kind)].",
-            "type": "string",
-            "pattern": "^((expression)|(interface)|(implements\\([a-zA-Z][a-zA-Z0-9.]*\\)))$"
-        },
-        "id": {
-            "title": "$id",
-            "description": "Inline id for reuse of an inline definition",
-            "type": "string",
-            "pattern": "^([a-zA-Z][a-zA-Z0-9.]*)$"
-        },
-        "copy": {
-            "title": "$copy",
-            "description": "Copy the definition by id from a .dialog file.",
-            "type": "string",
-            "pattern": "^(([a-zA-Z][a-zA-Z0-9.]*)?(#[a-zA-Z][a-zA-Z0-9.]*)?)$"
-        },
-        "kind": {
-            "title": "$kind",
-            "description": "Defines the valid properties for the component you are configuring (from a dialog .schema file)",
-            "type": "string",
-            "pattern": "^[a-zA-Z][a-zA-Z0-9.]*$"
-        },
-        "designer": {
-            "title": "$designer",
-            "type": "object",
-            "description": "Extra information for the Bot Framework Designer."
+        "component": {
+            "$comment": "This is the base dialog component definition.",
+            "properties": {
+                "$id": {
+                    "title": "Unique id for inline definition",
+                    "description": "Inline id for reuse of an inline definition",
+                    "type": "string",
+                    "pattern": "^([a-zA-Z][a-zA-Z0-9.]*)$"
+                },
+                "$copy": {
+                    "title": "Component to use for default properties",
+                    "description": "Copy the definition by id from a .dialog file.",
+                    "type": "string",
+                    "pattern": "^(([a-zA-Z][a-zA-Z0-9.]*)?(#[a-zA-Z][a-zA-Z0-9.]*)?)$"
+                },
+                "$kind": {
+                    "title": "Kind of dialog object",
+                    "description": "Defines the valid properties for the component you are configuring (from a dialog .schema file)",
+                    "type": "string",
+                    "pattern": "^[a-zA-Z][a-zA-Z0-9.]*$"
+                },
+                "$designer": {
+                    "title": "Designer information",
+                    "type": "object",
+                    "description": "Extra information for the Bot Framework Composer."
+                }
+            }
         },
         "expression": {
             "type": "string",
