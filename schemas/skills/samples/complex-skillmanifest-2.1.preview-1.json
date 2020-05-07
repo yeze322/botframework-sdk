@@ -106,6 +106,12 @@
         "message": {
             "type": "message",
             "description": "Receives the user's' utterance and attempts to resolve it using the skill's LU models"
+        },
+        "typing": {
+            "type": "typing"
+        },
+        "conversationUpdate": {
+            "type": "conversationUpdate"
         }
     },
     "definitions": {
