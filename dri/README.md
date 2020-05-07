@@ -15,7 +15,7 @@ Currently performs the following (for repos managed by the Bot Framework):
 
 ### Setup
 
-Install dependent package.
+Install dependent package **(note: admin mode may be required.)**
 
 ```bash
 pip install -r requirements.txt
