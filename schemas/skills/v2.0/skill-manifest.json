@@ -1,6 +1,7 @@
 {
-    "$id": "https://schemas.botframework.com/schemas/skills/skill-manifest-2.0.0.json",
+    "$id": "https://schemas.botframework.com/schemas/skills/skill-manifest.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
+    "$version": "2.0.1",
     "title": "Skill Manifest Schema",
     "description": "A schema for Bot Framework skill manifests",
     "type": "object",

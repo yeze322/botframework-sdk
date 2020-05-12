@@ -21,13 +21,6 @@
             "description": "Production endpoint for SkillBot in the Americas",
             "endpointUrl": "http://myskill.contoso.com/api/messages",
             "msAppId": "00000000-0000-0000-0000-000000000000"
-        },
-        {
-            "name": "eu",
-            "protocol": "BotFrameworkV3",
-            "description": "Production endpoint for SkillBot in Europe",
-            "endpointUrl": "http://myskill.contoso.com/api/messages",
-            "msAppId": "11111111-0000-0000-0000-000000000000"
         }
     ],
     "dispatchModels": {
@@ -44,34 +37,6 @@
                     "contentType": "application/qna",
                     "url": "http://sample.com/SkillBot-QnA-en.qna",
                     "description": "English language model for the skill (QnAMaker)"
-                }
-            ],
-            "es-ES": [
-                {
-                    "name": "SkillBot LU (Spanish-Spain)",
-                    "contentType": "application/lu",
-                    "url": "http://sample.com/SkillBot-es-ES.lu",
-                    "description": "Spanish (Spain) language model for the skill"
-                },
-                {
-                    "name": "SkillBot QnA LU (Spanish-Spain)",
-                    "contentType": "application/qna",
-                    "url": "http://sample.com/SkillBot-QnA-es-ES.qna",
-                    "description": "Spanish (Spain) language model for the skill (QnAMaker)"
-                }
-            ],
-            "es-MX": [
-                {
-                    "name": "SkillBot LU (Spanish-Mexico)",
-                    "contentType": "application/lu",
-                    "url": "http://sample.com/SkillBot-es-MX.lu",
-                    "description": "Spanish (Mexico) language model for the skill"
-                },
-                {
-                    "name": "SkillBot QnA LU (Spanish-Mexico)",
-                    "contentType": "application/qna",
-                    "url": "http://sample.com/SkillBot-QnA-es-MX.qna",
-                    "description": "Spanish (Mexico) language model for the skill (QnAMaker)"
                 }
             ]
         },
