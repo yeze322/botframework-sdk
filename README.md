@@ -17,7 +17,7 @@ The Bot Framework SDK v4 is an [open source SDK][1a] that enable developers to m
 
 |   | C#  | JS  | Python |  Java |
 |---|:---:|:---:|:------:|:-----:|
-|Stable Release |[4.8][1] | [4.8][2] | [4.9][3] | [4.6.0 (preview4)][3a]|
+|Stable Release |[4.9][1] | [4.9][2] | [4.9][3] | [4.6.0 (preview4)][3a]|
 |Docs | [docs][5] |[docs][5] |[docs][5]  | |
 |Samples |[.NET Core][6], [WebAPI][10] |[Node.js][7] , [TypeScript][8], [es6][9]  | [Python][111] | |
 
