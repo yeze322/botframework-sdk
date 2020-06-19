@@ -6,7 +6,7 @@ Bot Framework provides the most comprehensive experience for building conversati
 
 With the [Bot Framework SDK](#bot-framework-sdk-v4), developers can build bots that converse free-form or with guided interactions including using simple text or rich cards that contain text, images, and action buttons.  
 
-Developers can model and build sophisticated conversation using their favorite programming languages including C#, JS, and Python or using [Bot Framework Composer](https://aka.ms/bfcomposer), an open-source, visual authoring canvas for developers and multi-disciplinary teams to design and build conversational experiences with Language Understanding, QnA Maker and sophisticated composition of bot replies (Language Generation). 
+Developers can model and build sophisticated conversation using their favorite programming languages including C#, JS, Python and Java or using [Bot Framework Composer](https://aka.ms/bfcomposer), an open-source, visual authoring canvas for developers and multi-disciplinary teams to design and build conversational experiences with Language Understanding, QnA Maker and sophisticated composition of bot replies (Language Generation). 
 
 Checkout the [Bot Framework ecosystem](#bot-framework-ecosystem) section to learn more about other tooling and services related to the Bot Framework SDK. 
 
@@ -168,9 +168,9 @@ Botkit is part of Microsoft Bot Framework and is released under the [MIT Open So
 [106]:https://github.com/howdyai/botkit/tree/master/packages/botbuilder-adapter-twilio-sms#readme
 [107]:https://github.com/howdyai/botkit/tree/master/packages/botbuilder-adapter-web#readme
 
-### Bot Framework Virtual Assistant
+### Bot Framework Virtual Assistant Solution Accelerator
 
-The [Bot Framework Solutions repository](https://github.com/Microsoft/botframework-solutions#readme) is home to the [Virtual Assistant](https://aka.ms/bfvadocs), which provides a set of templates, solution accelerators and skills to help build sophisticated conversational experiences.
+The [Bot Framework Solutions repository](https://github.com/Microsoft/botframework-solutions#readme) is home to the [Virtual Assistant Solution Accelerator](https://aka.ms/bfvadocs), which provides a set of templates, solution accelerators and skills to help build sophisticated conversational experiences.
 
 - [**Virtual Assistant.**](https://aka.ms/bfvadocs) Customers and partners have a significant need to deliver a conversational assistant tailored to their brand, personalized to their users, and made available across a broad range of canvases and devices. <br/><br/>  This brings together all of the supporting components and greatly simplifies the creation of a new bot project including: basic conversational intents, Dispatch integration, QnA Maker, Application Insights and an automated deployment.
 
@@ -208,7 +208,6 @@ The Bot Framework [Web Chat][23] is a highly customizable web-based client chat 
 [24]:https://www.npmjs.com/package/botframework-webchat
 [25]:https://github.com/Microsoft/BotFramework-WebChat/tree/master/doc
 [26]:https://github.com/Microsoft/BotFramework-WebChat/tree/master/samples
-
 
 ### Bot Framework CLI
 The Bot Framework CLI Tools hosts the [open source](https://github.com/microsoft/botframework-cli) cross-platform Bot Framework CLI tool, designed to support building robust end-to-end development workflows. The Bot Framework CLI tool replaced the [legacy standalone tools](https://github.com/Microsoft/BotBuilder-Tools) used to manage bots and related services. BF CLI aggregates the collection of cross-platform tools into one cohesive and consistent interface.
