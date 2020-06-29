@@ -11,6 +11,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ## Terminology
 
 This document will use the following terms as described for the purpose of being succint:
+
 language repo(s)
 > Any (every) of the BF SDK language repositories.
 
