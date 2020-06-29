@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "v3",
-    "title": "Microsoft Bot Connector API - v3.0",
-    "description": "The Bot Connector REST API allows your bot to send and receive messages to channels configured in the\r\n[Bot Framework Developer Portal](https://dev.botframework.com). The Connector service uses industry-standard REST\r\nand JSON over HTTPS.\r\n\r\nClient libraries for this REST API are available. See below for a list.\r\n\r\nMany bots will use both the Bot Connector REST API and the associated [Bot State REST API](/en-us/restapi/state). The\r\nBot State REST API allows a bot to store and retrieve state associated with users and conversations.\r\n\r\nAuthentication for both the Bot Connector and Bot State REST APIs is accomplished with JWT Bearer tokens, and is\r\ndescribed in detail in the [Connector Authentication](/en-us/restapi/authentication) document.\r\n\r\n# Client Libraries for the Bot Connector REST API\r\n\r\n* [Bot Builder for C#](/en-us/csharp/builder/sdkreference/)\r\n* [Bot Builder for Node.js](/en-us/node/builder/overview/)\r\n* Generate your own from the [Connector API Swagger file](https://raw.githubusercontent.com/Microsoft/BotBuilder/master/CSharp/Library/Microsoft.Bot.Connector.Shared/Swagger/ConnectorAPI.json)\r\n\r\n© 2016 Microsoft",
+    "version": "3.1.10",
+    "title": "Microsoft Bot Connector API - v3.1",
+    "description": "The Microsoft Bot Framework Connector APIs allow bots to send and receive\r\nmessages, button clicks, and other programmatic events when connecting with\r\nend users. This API also includes facilities to get conversation metadata\r\nand perform other operations (deletions and content editing). This REST API\r\nmay be used directly over HTTP and Web Socket, but is easiest to use with\r\nthe Bot Framework SDK.\r\n\r\n© 2020 Microsoft",
     "termsOfService": "https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx",
     "contact": {
       "name": "Bot Framework",
@@ -572,6 +572,95 @@
         }
       }
     },
+    "/v3/conversations/{conversationId}/members/{memberId}": {
+      "get": {
+        "tags": [
+          "Conversations"
+        ],
+        "summary": "GetConversationMember",
+        "description": "Get a single member of a conversation.\r\n\r\nThis REST API takes a ConversationId and MemberId and returns a single ChannelAccount object, if that member is found in this conversation.",
+        "operationId": "Conversations_GetConversationMembers",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "description": "Conversation ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "memberId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A ChannelAccount which has \r\n\r\n* id - address on this channel\r\n* name - name of the user/bot on this channel",
+            "schema": {
+              "$ref": "#/definitions/ChannelAccount"
+            }
+          },
+          "default": {
+            "description": "The operation failed and the response is an error object describing the status code and failure.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Conversations"
+        ],
+        "summary": "DeleteConversationMember",
+        "description": "Deletes a member from a conversation. \r\n\r\nThis REST API takes a ConversationId and a memberId (of type string) and removes that member from the conversation. If that member was the last member\r\nof the conversation, the conversation will also be deleted.",
+        "operationId": "Conversations_DeleteConversationMember",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "description": "Conversation ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "ID of the member to delete from this conversation",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation succeeded, there is no response."
+          },
+          "204": {
+            "description": "The operation succeeded but no content was returned."
+          },
+          "default": {
+            "description": "The operation failed and the response is an error object describing the status code and failure.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/v3/conversations/{conversationId}/pagedmembers": {
       "get": {
         "tags": [
@@ -616,53 +705,6 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/PagedMembersResult"
-            }
-          }
-        }
-      }
-    },
-    "/v3/conversations/{conversationId}/members/{memberId}": {
-      "delete": {
-        "tags": [
-          "Conversations"
-        ],
-        "summary": "DeleteConversationMember",
-        "description": "Deletes a member from a conversation. \r\n\r\nThis REST API takes a ConversationId and a memberId (of type string) and removes that member from the conversation. If that member was the last member\r\nof the conversation, the conversation will also be deleted.",
-        "operationId": "Conversations_DeleteConversationMember",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "conversationId",
-            "in": "path",
-            "description": "Conversation ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "memberId",
-            "in": "path",
-            "description": "ID of the member to delete from this conversation",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The operation succeeded, there is no response."
-          },
-          "204": {
-            "description": "The operation succeeded but no content was returned."
-          },
-          "default": {
-            "description": "The operation failed and the response is an error object describing the status code and failure.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
             }
           }
         }
@@ -752,6 +794,107 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/AttachmentData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An object will be returned containing the ID for the resource.",
+            "schema": {
+              "$ref": "#/definitions/ResourceResponse"
+            }
+          },
+          "201": {
+            "description": "A ResourceResponse object will be returned containing the ID for the resource.",
+            "schema": {
+              "$ref": "#/definitions/ResourceResponse"
+            }
+          },
+          "202": {
+            "description": "An object will be returned containing the ID for the resource.",
+            "schema": {
+              "$ref": "#/definitions/ResourceResponse"
+            }
+          },
+          "default": {
+            "description": "The operation failed and the response is an error object describing the status code and failure.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v3/conversations/{conversationId}/handoff": {
+      "get": {
+        "tags": [
+          "Conversations"
+        ],
+        "summary": "GetHandoffStatus - get status of handoff for given conversation",
+        "description": "Query the status of a handoff request\r\n\r\nThis API allows bots to determine if the handoff request that has been initiated is completed",
+        "operationId": "Conversations_GetHandoffStatus",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "description": "Conversation ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "enum": [
+                "Unknown",
+                "Completed"
+              ],
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Conversations"
+        ],
+        "summary": "InitiateHandoff - initiate handoff to agent for given conversation",
+        "description": "Initiate Handoff Request\r\n\r\nSome channels that support handoff to human agents implement this method",
+        "operationId": "Conversations_InitiateHandoff",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "description": "Conversation ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "context",
+            "in": "body",
+            "description": "Handoff context containing activities and channel-specific data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/HandoffParameters"
             }
           }
         ],
@@ -1018,7 +1161,7 @@
           "type": "boolean"
         },
         "locale": {
-          "description": "A locale name for the contents of the text field.\r\nThe locale name is a combination of an ISO 639 two- or three-letter culture code associated with a language\r\nand an ISO 3166 two-letter subculture code associated with a country or region.\r\nThe locale name can also correspond to a valid BCP-47 language tag.",
+          "description": "A BCP-47 locale name for the contents of the text field.",
           "type": "string"
         },
         "text": {
@@ -1121,6 +1264,10 @@
         "semanticAction": {
           "$ref": "#/definitions/SemanticAction",
           "description": "An optional programmatic action accompanying this request"
+        },
+        "transcript": {
+          "$ref": "#/definitions/Transcript",
+          "description": "Transcript of the conversations for Handoff message"
         }
       }
     },
@@ -1251,6 +1398,10 @@
         "serviceUrl": {
           "description": "Service endpoint where operations concerning the referenced conversation may be performed",
           "type": "string"
+        },
+        "locale": {
+          "description": "A BCP-47 locale name for the referenced conversation",
+          "type": "string"
         }
       }
     },
@@ -1290,6 +1441,19 @@
         }
       }
     },
+    "Transcript": {
+      "description": "Transcript",
+      "type": "object",
+      "properties": {
+        "activities": {
+          "description": "A collection of Activities that conforms to the Transcript schema.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Activity"
+          }
+        }
+      }
+    },
     "CardAction": {
       "description": "A clickable action",
       "type": "object",
@@ -1304,6 +1468,10 @@
         },
         "image": {
           "description": "Image URL which will appear on the button, next to text label",
+          "type": "string"
+        },
+        "imageAltText": {
+          "description": "Alternate text to be used for the Image property",
           "type": "string"
         },
         "text": {
@@ -1386,19 +1554,6 @@
         }
       }
     },
-    "Transcript": {
-      "description": "Transcript",
-      "type": "object",
-      "properties": {
-        "activities": {
-          "description": "A collection of Activities that conforms to the Transcript schema.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Activity"
-          }
-        }
-      }
-    },
     "PagedMembersResult": {
       "description": "Page of members.",
       "type": "object",
@@ -1437,6 +1592,20 @@
           "format": "byte",
           "description": "Attachment thumbnail",
           "type": "string"
+        }
+      }
+    },
+    "HandoffParameters": {
+      "description": "HandoffParameters",
+      "type": "object",
+      "properties": {
+        "transcript": {
+          "$ref": "#/definitions/Transcript",
+          "description": "A collection of Activities that occurred before the handoff was initiated"
+        },
+        "handoffContext": {
+          "description": "Contains channel-specific content relevant for handoff",
+          "type": "object"
         }
       }
     },
@@ -1862,12 +2031,34 @@
           "description": "The name of the registered connection",
           "type": "string"
         },
+        "tokenExchangeResource": {
+          "$ref": "#/definitions/TokenExchangeResource",
+          "description": "The resource to try to perform token exchange with"
+        },
         "buttons": {
           "description": "Action to use to perform signin",
           "type": "array",
           "items": {
             "$ref": "#/definitions/CardAction"
           }
+        }
+      }
+    },
+    "TokenExchangeResource": {
+      "description": "Record for a token exchange request that is sent as part of an OAuthCard",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "A unique identifier for this token exchange instance",
+          "type": "string"
+        },
+        "uri": {
+          "description": "The application ID / resource identifier with which to exchange a token on behalf of",
+          "type": "string"
+        },
+        "providerId": {
+          "description": "The identifier of the provider with which to attempt a token exchange\r\nA value of null or empty will default to Azure Active Directory",
+          "type": "string"
         }
       }
     },
@@ -2064,23 +2255,6 @@
         }
       }
     },
-    "TokenRequest": {
-      "description": "A request to receive a user token",
-      "type": "object",
-      "properties": {
-        "provider": {
-          "description": "The provider to request a user token from",
-          "type": "string"
-        },
-        "settings": {
-          "description": "A collection of settings for the specific provider for this request",
-          "type": "object",
-          "additionalProperties": {
-            "type": "object"
-          }
-        }
-      }
-    },
     "TokenResponse": {
       "description": "A response that includes a user token",
       "type": "object",
@@ -2100,6 +2274,47 @@
         "expiration": {
           "description": "Expiration for the token, in ISO 8601 format (e.g. \"2007-04-05T14:30Z\")",
           "type": "string"
+        }
+      }
+    },
+    "TokenExchangeInvokeRequest": {
+      "description": "A request to exchange a token",
+      "type": "object",
+      "properties": {
+        "connectionName": {
+          "description": "The connection name",
+          "type": "string"
+        },
+        "token": {
+          "description": "The user token that can be exchanged",
+          "type": "string"
+        }
+      }
+    },
+    "TokenExchangeInvokeResponse": {
+      "description": "The response object of a token exchange invoke",
+      "type": "object",
+      "properties": {
+        "connectionName": {
+          "description": "The connection name",
+          "type": "string"
+        },
+        "failureDetail": {
+          "description": "The details of why the token exchange failed",
+          "type": "string"
+        }
+      }
+    },
+    "ExpectedReplies": {
+      "description": "Contents of the reply to an operation which returns expected Activity replies",
+      "type": "object",
+      "properties": {
+        "activities": {
+          "description": "A list of Activities included in the response.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Activity"
+          }
         }
       }
     },
@@ -2168,7 +2383,6 @@
         "downloadFile",
         "signin",
         "call",
-        "payment",
         "messageBack"
       ],
       "type": "string",
@@ -2293,390 +2507,15 @@
       "description": "Values for deliveryMode field",
       "enum": [
         "normal",
-        "notification"
+        "notification",
+        "ephemeral",
+        "expectReplies"
       ],
       "type": "string",
       "properties": {},
       "x-ms-enum": {
         "name": "DeliveryModes",
         "modelAsString": true
-      }
-    },
-    "MicrosoftPayMethodData": {
-      "deprecated": true,
-      "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "merchantId": {
-          "description": "Microsoft Pay Merchant ID",
-          "type": "string"
-        },
-        "supportedNetworks": {
-            "deprecated": true,
-            "description": "Deprecated. Bot Framework no longer supports payments.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "supportedTypes": {
-            "deprecated": true,
-            "description": "Deprecated. Bot Framework no longer supports payments.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "PaymentAddress": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "country": {
-          "description": "This is the CLDR (Common Locale Data Repository) region code. For example, US, GB, CN, or JP",
-          "type": "string"
-        },
-        "addressLine": {
-          "description": "This is the most specific part of the address. It can include, for example, a street name, a house number, apartment number, a rural delivery route, descriptive instructions, or a post office box number.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "region": {
-          "description": "This is the top level administrative subdivision of the country. For example, this can be a state, a province, an oblast, or a prefecture.",
-          "type": "string"
-        },
-        "city": {
-          "description": "This is the city/town portion of the address.",
-          "type": "string"
-        },
-        "dependentLocality": {
-          "description": "This is the dependent locality or sublocality within a city. For example, used for neighborhoods, boroughs, districts, or UK dependent localities.",
-          "type": "string"
-        },
-        "postalCode": {
-          "description": "This is the postal code or ZIP code, also known as PIN code in India.",
-          "type": "string"
-        },
-        "sortingCode": {
-          "description": "This is the sorting code as used in, for example, France.",
-          "type": "string"
-        },
-        "languageCode": {
-          "description": "This is the BCP-47 language code for the address. It's used to determine the field separators and the order of fields when formatting the address for display.",
-          "type": "string"
-        },
-        "organization": {
-          "description": "This is the organization, firm, company, or institution at this address.",
-          "type": "string"
-        },
-        "recipient": {
-          "description": "This is the name of the recipient or contact person.",
-          "type": "string"
-        },
-        "phone": {
-          "description": "This is the phone number of the recipient or contact person.",
-          "type": "string"
-        }
-      }
-    },
-    "PaymentCurrencyAmount": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "currency": {
-          "description": "A currency identifier",
-          "type": "string"
-        },
-        "value": {
-          "description": "Decimal monetary value",
-          "type": "string"
-        },
-        "currencySystem": {
-          "description": "Currency system",
-          "type": "string"
-        }
-      }
-    },
-    "PaymentDetails": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "total": {
-          "$ref": "#/definitions/PaymentItem",
-          "description": "Contains the total amount of the payment request"
-        },
-        "displayItems": {
-          "description": "Contains line items for the payment request that the user agent may display",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PaymentItem"
-          }
-        },
-        "shippingOptions": {
-          "description": "A sequence containing the different shipping options for the user to choose from",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PaymentShippingOption"
-          }
-        },
-        "modifiers": {
-          "description": "Contains modifiers for particular payment method identifiers",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PaymentDetailsModifier"
-          }
-        },
-        "error": {
-          "description": "Error description",
-          "type": "string"
-        }
-      }
-    },
-    "PaymentItem": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "label": {
-          "description": "Human-readable description of the item",
-          "type": "string"
-        },
-        "amount": {
-          "$ref": "#/definitions/PaymentCurrencyAmount",
-          "description": "Monetary amount for the item"
-        },
-        "pending": {
-          "description": "When set to true this flag means that the amount field is not final.",
-          "type": "boolean"
-        }
-      }
-    },
-    "PaymentShippingOption": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "id": {
-          "description": "String identifier used to reference this PaymentShippingOption",
-          "type": "string"
-        },
-        "label": {
-          "description": "Human-readable description of the item",
-          "type": "string"
-        },
-        "amount": {
-          "$ref": "#/definitions/PaymentCurrencyAmount",
-          "description": "Contains the monetary amount for the item"
-        },
-        "selected": {
-          "description": "Indicates whether this is the default selected PaymentShippingOption",
-          "type": "boolean"
-        }
-      }
-    },
-    "PaymentDetailsModifier": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "supportedMethods": {
-          "description": "Contains a sequence of payment method identifiers",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "total": {
-          "$ref": "#/definitions/PaymentItem",
-          "description": "This value overrides the total field in the PaymentDetails dictionary for the payment method identifiers in the supportedMethods field"
-        },
-        "additionalDisplayItems": {
-          "description": "Provides additional display items that are appended to the displayItems field in the PaymentDetails dictionary for the payment method identifiers in the supportedMethods field",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PaymentItem"
-          }
-        },
-        "data": {
-          "description": "A JSON-serializable object that provides optional information that might be needed by the supported payment methods",
-          "type": "object"
-        }
-      }
-    },
-    "PaymentMethodData": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "supportedMethods": {
-          "description": "Required sequence of strings containing payment method identifiers for payment methods that the merchant web site accepts",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "data": {
-          "description": "A JSON-serializable object that provides optional information that might be needed by the supported payment methods",
-          "type": "object"
-        }
-      }
-    },
-    "PaymentOptions": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "requestPayerName": {
-          "description": "Indicates whether the user agent should collect and return the payer's name as part of the payment request",
-          "type": "boolean"
-        },
-        "requestPayerEmail": {
-          "description": "Indicates whether the user agent should collect and return the payer's email address as part of the payment request",
-          "type": "boolean"
-        },
-        "requestPayerPhone": {
-          "description": "Indicates whether the user agent should collect and return the payer's phone number as part of the payment request",
-          "type": "boolean"
-        },
-        "requestShipping": {
-          "description": "Indicates whether the user agent should collect and return a shipping address as part of the payment request",
-          "type": "boolean"
-        },
-        "shippingType": {
-          "description": "If requestShipping is set to true, then the shippingType field may be used to influence the way the user agent presents the user interface for gathering the shipping address",
-          "type": "string"
-        }
-      }
-    },
-    "PaymentRequest": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "id": {
-          "description": "ID of this payment request",
-          "type": "string"
-        },
-        "methodData": {
-          "description": "Allowed payment methods for this request",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PaymentMethodData"
-          }
-        },
-        "details": {
-          "$ref": "#/definitions/PaymentDetails",
-          "description": "Details for this request"
-        },
-        "options": {
-          "$ref": "#/definitions/PaymentOptions",
-          "description": "Provides information about the options desired for the payment request"
-        },
-        "expires": {
-          "description": "Expiration for this request, in ISO 8601 duration format (e.g., 'P1D')",
-          "type": "string"
-        }
-      }
-    },
-    "PaymentRequestComplete": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "id": {
-          "description": "Payment request ID",
-          "type": "string"
-        },
-        "paymentRequest": {
-          "$ref": "#/definitions/PaymentRequest",
-          "description": "Initial payment request"
-        },
-        "paymentResponse": {
-          "$ref": "#/definitions/PaymentResponse",
-          "description": "Corresponding payment response"
-        }
-      }
-    },
-    "PaymentResponse": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "methodName": {
-          "description": "The payment method identifier for the payment method that the user selected to fulfil the transaction",
-          "type": "string"
-        },
-        "details": {
-          "description": "A JSON-serializable object that provides a payment method specific message used by the merchant to process the transaction and determine successful fund transfer",
-          "type": "object"
-        },
-        "shippingAddress": {
-          "$ref": "#/definitions/PaymentAddress",
-          "description": "If the requestShipping flag was set to true in the PaymentOptions passed to the PaymentRequest constructor, then shippingAddress will be the full and final shipping address chosen by the user"
-        },
-        "shippingOption": {
-          "description": "If the requestShipping flag was set to true in the PaymentOptions passed to the PaymentRequest constructor, then shippingOption will be the id attribute of the selected shipping option",
-          "type": "string"
-        },
-        "payerEmail": {
-          "description": "If the requestPayerEmail flag was set to true in the PaymentOptions passed to the PaymentRequest constructor, then payerEmail will be the email address chosen by the user",
-          "type": "string"
-        },
-        "payerPhone": {
-          "description": "If the requestPayerPhone flag was set to true in the PaymentOptions passed to the PaymentRequest constructor, then payerPhone will be the phone number chosen by the user",
-          "type": "string"
-        }
-      }
-    },
-    "PaymentRequestCompleteResult": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "result": {
-          "description": "Result of the payment request completion",
-          "type": "string"
-        }
-      }
-    },
-    "PaymentRequestUpdate": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "id": {
-          "description": "ID for the payment request to update",
-          "type": "string"
-        },
-        "details": {
-          "$ref": "#/definitions/PaymentDetails",
-          "description": "Update payment details"
-        },
-        "shippingAddress": {
-          "$ref": "#/definitions/PaymentAddress",
-          "description": "Updated shipping address"
-        },
-        "shippingOption": {
-          "description": "Updated shipping options",
-          "type": "string"
-        }
-      }
-    },
-    "PaymentRequestUpdateResult": {
-    "deprecated": true,
-    "description": "Deprecated. Bot Framework no longer supports payments.",
-      "type": "object",
-      "properties": {
-        "details": {
-          "$ref": "#/definitions/PaymentDetails",
-          "description": "Update payment details"
-        }
       }
     }
   },

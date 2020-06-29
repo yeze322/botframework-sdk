@@ -30,6 +30,7 @@ This schema is used within the Bot Framework protocol and is implemented by Micr
 19. [Appendix II - Non-IRI entity types](#appendix-ii---non-iri-entity-types)
 20. [Appendix III - Protocols using the Invoke activity](#appendix-iii---protocols-using-the-invoke-activity)
 21. [Appendix IV - Priming format](#appendix-iv---priming-format)
+22. [Appendix V - Caller ID values](#appendix-v---caller-id-values)
 
 ## Introduction
 
@@ -41,17 +42,17 @@ This document provides meanings for each type of activity, and describes the req
 
 There are three roles of consequence in this specification: clients, which send and receive activities on behalf of users; bots, which send and receive activities and are typically automated; and the channel, which stores and forwards activities between clients and bots.
 
-Although this specification requires activities to be transmitted between roles, the exact nature of that transmission is not described here. This may be found instead in the companion [Bot Framework Protocol](../botframework-protocol/botframework-channel.json) specification [[1](#References)].
+Although this specification requires activities to be transmitted between roles, the exact nature of that transmission is not described here. This may be found instead in the companion Bot Framework Protocol specification [[1](#references)].
 
-For compactness, visual interactive cards are not defined in this specification. Instead, these are defined within the [Bot Framework Cards](botframework-cards.md) [[10](#References)] and [Adaptive Cards](https://adaptivecards.io) [[11](#References)] specifications. These cards, and other undefined card types, may be included as attachments within Bot Framework activities.
+For compactness, visual interactive cards are not defined in this specification. Instead, these are defined within the [Bot Framework Cards](botframework-cards.md) [[10](#references)] and [Adaptive Cards](https://adaptivecards.io) [[11](#references)] specifications. These cards, and other undefined card types, may be included as attachments within Bot Framework activities.
 
 ### Requirements
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119) [[2](#References)].
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119) [[2](#references)].
 
 An implementation is not compliant if it fails to satisfy one or more of the MUST or REQUIRED level requirements for the protocols it implements. An implementation that satisfies all the MUST or REQUIRED level and all the SHOULD level requirements for its protocols is said to be "unconditionally compliant"; one that satisfies all the MUST level requirements but not all the SHOULD level requirements for its protocols is said to be "conditionally compliant."
 
-Explanatory text describes the intent. Editors are encouraged to omit normative statements from explanatory text. All [numbered requirements](#Numbered-requirements) are normative. All examples are non-normative.
+Explanatory text describes the intent. Editors are encouraged to omit normative statements from explanatory text. All [numbered requirements](#numbered-requirements) are normative. All examples are non-normative.
 
 ### Numbered requirements
 
@@ -112,7 +113,7 @@ This section defines the requirements for the basic structure of the activity ob
 
 Activity objects include a flat list of name/value pairs, called fields. Fields may be primitive types. JSON is used as the common interchange format and although not all activities must be serialized to JSON at all times, they must be serializable to it. This allows implementations to rely on a simple set of conventions for handling known and unknown activity fields.
 
-`A2001`: Activities MUST be serializable to the JSON format defined in [RFC 4627](http://www.ietf.org/rfc/rfc4627.txt) [[15](#References)], including adherence to e.g. field uniqueness constraints.
+`A2001`: Activities MUST be serializable to the JSON format defined in [RFC 4627](http://www.ietf.org/rfc/rfc4627.txt) [[15](#references)], including adherence to e.g. field uniqueness constraints.
 
 `A2002`: Receivers MAY allow improperly-cased field names, although this is not required. Receivers MAY reject activities that do not include fields with the proper casing.
 
@@ -122,7 +123,7 @@ Activity objects include a flat list of name/value pairs, called fields. Fields 
 
 `A2006`: Receivers SHOULD accept events of types they do not understand.
 
-This document defines data types for fields used within the Activity object. These type definitions include a syntactic type (e.g. `string` or `complex type`) and in the case of strings, an optional format (e.g. [ISO 8601 date time format](https://www.iso.org/iso-8601-date-and-time-format.html) [[3](#References)]).
+This document defines data types for fields used within the Activity object. These type definitions include a syntactic type (e.g. `string` or `complex type`) and in the case of strings, an optional format (e.g. [ISO 8601 date time format](https://www.iso.org/iso-8601-date-and-time-format.html) [[3](#references)]).
 
 `A2007`: Senders MUST adhere to data type definitions contained in this document.
 
@@ -154,7 +155,7 @@ The `channelId` field establishes the channel and authoritative store for the ac
 
 ### ID
 
-The `id` field establishes the identity for the activity once it has been recorded in the channel. Activities in-flight that have not yet been recorded do not have identities. Not all activities are assigned identities (for example, a [typing activity](#Typing-activity) may never be assigned an `id`.) The value of the `id` field is of type string.
+The `id` field establishes the identity for the activity once it has been recorded in the channel. Activities in-flight that have not yet been recorded do not have identities. Not all activities are assigned identities (for example, a [typing activity](#typing-activity) may never be assigned an `id`.) The value of the `id` field is of type string.
 
 `A2030`: Channels SHOULD include an `id` field if it is available for that activity.
 
@@ -172,7 +173,7 @@ The `id` field is designed to allow de-duplication, but this is prohibitive in m
 
 ### Timestamp
 
-The `timestamp` field records the exact UTC time when the activity occurred. Due to the distributed nature of computing systems, the important time is when the channel (the authoritative store) records the activity. The time when a client or bot initiated an activity may be transmitted separately in the `localTimestamp` field. The value of the `timestamp` field is an ISO 8601 [[3](#References)] encoded datetime within a string.
+The `timestamp` field records the exact UTC time when the activity occurred. Due to the distributed nature of computing systems, the important time is when the channel (the authoritative store) records the activity. The time when a client or bot initiated an activity may be transmitted separately in the `localTimestamp` field. The value of the `timestamp` field is an ISO 8601 [[3](#references)] encoded datetime within a string.
 
 `A2040`: Channels SHOULD include a `timestamp` field if it is available for that activity.
 
@@ -183,7 +184,7 @@ The `timestamp` field records the exact UTC time when the activity occurred. Due
 `A2043`: Senders SHOULD always use encode the value of `timestamp` fields as UTC, and they SHOULD always include Z as an explicit UTC mark within the value.
 
 ### Local timezone
-The `localTimezone` field expresses the timezone where the activity was generated. The value of the `localTimezone` field is a time zone name (zone entry) per the IANA Time Zone database. [[15](#References)]
+The `localTimezone` field expresses the timezone where the activity was generated. The value of the `localTimezone` field is a time zone name (zone entry) per the IANA Time Zone database. [[15](#references)]
 
 `A2055`: Clients MAY include the `localTimezone` in their activities.
 
@@ -193,7 +194,7 @@ The `localTimezone` field expresses the timezone where the activity was generate
 
 ### Local timestamp
 
-The `localTimestamp` field expresses the datetime and timezone offset where the activity was generated. This may be different from the UTC `timestamp` where the activity was recorded. The value of the `localTimestamp` field is an ISO 8601 [[3](#References)] encoded datetime within a string.
+The `localTimestamp` field expresses the datetime and timezone offset where the activity was generated. This may be different from the UTC `timestamp` where the activity was recorded. The value of the `localTimestamp` field is an ISO 8601 [[3](#references)] encoded datetime within a string.
 
 When both the `localTimezone` and `localTimestamp` fields are included in an activity, the interpretation is to first convert the value of the localTimestamp to UTC and then apply a conversion to the local timezone.
 
@@ -203,7 +204,7 @@ When both the `localTimezone` and `localTimestamp` fields are included in an act
 
 ### From
 
-The `from` field describes which client, bot, or channel generated an activity. The value of the `from` field is a complex object of the [Channel account](#Channel-account) type.
+The `from` field describes which client, bot, or channel generated an activity. The value of the `from` field is a complex object of the [Channel account](#channel-account) type.
 
 The `from.id` field identifies who generated an activity. Most commonly, this is another user or bot within the system. In some cases, the `from` field identifies the channel itself.
 
@@ -219,11 +220,11 @@ The `from.name` field is optional and represents the display name for the accoun
 
 ### Recipient
 
-The `recipient` field describes which client or bot is receiving this activity. This field is only meaningful when an activity is transmitted to exactly one recipient; it is not meaningful when it is broadcast to multiple recipients (as happens when an activity is sent to a channel). The purpose of the field is to allow the recipient to identify themselves. This is helpful when a client or bot has more than one identity within the channel. The value of the `recipient` field is a complex object of the [Channel account](#Channel-account) type.
+The `recipient` field describes which client or bot is receiving this activity. This field is only meaningful when an activity is transmitted to exactly one recipient; it is not meaningful when it is broadcast to multiple recipients (as happens when an activity is sent to a channel). The purpose of the field is to allow the recipient to identify themselves. This is helpful when a client or bot has more than one identity within the channel. The value of the `recipient` field is a complex object of the [Channel account](#channel-account) type.
 
 `A2070`: Channels MUST include the `recipient` and `recipient.id` fields when transmitting an activity to a single recipient.
 
-`A2071`: Bots and clients SHOULD NOT include the `recipient` field when generating an activity. The exception to this is when sending a [Suggestion activity](#Suggestion-activity), in which case the recipient MUST identify the user that should receive the suggestion.
+`A2071`: Bots and clients SHOULD NOT include the `recipient` field when generating an activity. The exception to this is when sending a [Suggestion activity](#suggestion-activity), in which case the recipient MUST identify the user that should receive the suggestion.
 
 The `recipient.name` field is optional and represents the display name for the account within the channel. Channels SHOULD include this value so clients and bots can populate their UIs and backend systems.
 
@@ -231,7 +232,7 @@ The `recipient.name` field is optional and represents the display name for the a
 
 ### Conversation
 
-The `conversation` field describes the conversation in which the activity exists. The value of the `conversation` field is a complex object of the [Conversation account](#Conversation-account) type.
+The `conversation` field describes the conversation in which the activity exists. The value of the `conversation` field is a complex object of the [Conversation account](#conversation-account) type.
 
 `A2080`: Channels, bots, and clients MUST include the `conversation` and `conversation.id` fields when generating an activity.
 
@@ -247,7 +248,7 @@ The `conversation.name` field is optional and represents the display name for th
 
 ### Reply to ID
 
-The `replyToId` field identifies the prior activity to which the current activity is a reply. This field allows threaded conversation and comment nesting to be communicated between participants. `replyToId` is valid only within the current conversation. (See [relatesTo](#Relates-to) for references to other conversations.) The value of the `replyToId` field is a string.
+The `replyToId` field identifies the prior activity to which the current activity is a reply. This field allows threaded conversation and comment nesting to be communicated between participants. `replyToId` is valid only within the current conversation. (See [relatesTo](#relates-to) for references to other conversations.) The value of the `replyToId` field is a string.
 
 `A2090`: Senders SHOULD include `replyToId` on an activity when it is a reply to another activity.
 
@@ -257,7 +258,7 @@ The `replyToId` field identifies the prior activity to which the current activit
 
 ### Entities
 
-The `entities` field contains a flat list of metadata objects pertaining to this activity. Unlike attachments (see the [attachments](#Attachments) field), entities do not necessarily manifest as user-interactable content elements, and are intended to be ignored if not understood. Senders may include entities they think may be useful to a receiver even if they are not certain the receiver can accept them. The value of each `entities` list element is a complex object of the [Entity](#Entity) type.
+The `entities` field contains a flat list of metadata objects pertaining to this activity. Unlike attachments (see the [attachments](#attachments) field), entities do not necessarily manifest as user-interactable content elements, and are intended to be ignored if not understood. Senders may include entities they think may be useful to a receiver even if they are not certain the receiver can accept them. The value of each `entities` list element is a complex object of the [Entity](#entity) type.
 
 `A2100`: Senders SHOULD omit the `entities` field if it contains no elements.
 
@@ -278,6 +279,16 @@ Extensibility data in the activity schema is organized principally within the `c
 `A2200`: Channels SHOULD NOT define `channelData` formats that are JSON primitives (e.g., strings, ints). Instead, they SHOULD define `channelData` as a complex type, or leave it undefined.
 
 `A2201`: If the `channelData` format is undefined for the current channel, receivers SHOULD ignore the contents of `channelData`.
+
+### Caller ID
+
+In some cases, it's important to record where an activity was sent. The `callerId` field is a string containing an [IRI](https://tools.ietf.org/html/rfc3987) [[4](#references)] identifying the caller of a bot, described in more detail in [Appendix V](#appendix-v---caller-id-values). This field is not intended to be transmitted over the wire, but is instead populated by bots and clients based on cryptographically verifiable data that asserts the identity of the callers (e.g. tokens).
+
+`A2250`: Senders SHOULD NOT populate the `callerId` field.
+
+`A2251`: Receivers SHOULD discard any data included in the `callerId` field on the wire.
+
+`A2252`: Bots SHOULD, after receiving an Activity, populate its `callerId` field with an identifier described in [Appendix V](#appendix-v---caller-id-values)
 
 ### Service URL
 
@@ -301,7 +312,7 @@ Message activities are identified by a `type` value of `message`.
 
 ### Text
 
-The `text` field contains text content, either in the Markdown format, XML, or as plain text. The format is controlled by the [`textFormat`](#Text-Format) field as is plain if unspecified or ambiguous. The value of the `text` field is of type string.
+The `text` field contains text content, either in the Markdown format, XML, or as plain text. The format is controlled by the [`textFormat`](#text-Format) field as is plain if unspecified or ambiguous. The value of the `text` field is of type string.
 
 `A3000`: The `text` field MAY contain an empty string to indicate sending text without contents.
 
@@ -309,7 +320,7 @@ The `text` field contains text content, either in the Markdown format, XML, or a
 
 ### Text format
 
-The `textFormat` field denotes whether the [`text`](#Text) field should be interpreted as [Markdown](https://daringfireball.net/projects/markdown/) [[5](#References)], plain text, or XML. The value of the `textFormat` field is of type string, with defined values of `markdown`, `plain`, and `xml`. The default value is `plain`. This field is not designed to be extended with arbitrary values.
+The `textFormat` field denotes whether the [`text`](#text) field should be interpreted as [Markdown](https://daringfireball.net/projects/markdown/) [[5](#references)], plain text, or XML. The value of the `textFormat` field is of type string, with defined values of `markdown`, `plain`, and `xml`. The default value is `plain`. This field is not designed to be extended with arbitrary values.
 
 The `textFormat` field controls additional fields within attachments etc. This relationship is described within those fields, elsewhere in this document.
 
@@ -329,7 +340,7 @@ The `textFormat` field controls additional fields within attachments etc. This r
 
 ### Locale
 
-The `locale` field communicates the language code of the [`text`](#Text) field. The value of the `locale` field is an [ISO 639](https://www.iso.org/iso-639-language-codes.html) [[6](#References)] code within a string.
+The `locale` field communicates the language code of the [`text`](#text) field. The value of the `locale` field is an [IETF BCP-47](https://tools.ietf.org/html/bcp47) [[19](#references)] language tag within a string.
 
 `A3020`: Receivers SHOULD treat missing and unknown values of the `locale` field as unknown.
 
@@ -337,17 +348,17 @@ The `locale` field communicates the language code of the [`text`](#Text) field. 
 
 ### Speak
 
-The `speak` field indicates how the activity should be spoken via a text-to-speech system. The field is only used to customize speech rendering when the default is deemed inadequate. It replaces speech synthesis for any content within the activity, including text, attachments, and summaries. The value of the `speak` field is [SSML](https://www.w3.org/TR/speech-synthesis/) [[7](#References)] encoded within a string. Unwrapped text is allowed and is automatically upgraded to bare SSML.
+The `speak` field indicates how the activity should be spoken via a text-to-speech system. The field is only used to customize speech rendering when the default is deemed inadequate. It replaces speech synthesis for any content within the activity, including text, attachments, and summaries. The value of the `speak` field is either plain text or [SSML](https://www.w3.org/TR/speech-synthesis/) [[7](#references)] encoded within a string.
 
 `A3030`: The `speak` field MAY contain an empty string to indicate no speech should be generated.
 
 `A3031`: Receivers unable to generate speech SHOULD ignore the `speak` field.
 
-`A3032`: If no root SSML element is found, receivers MUST consider the included text to be the inner content of an SSML `<speak>` tag, prefaced with a valid [XML Prolog](https://www.w3.org/TR/xml/#sec-prolog-dtd) [[8](#References)], and otherwise upgraded to be a valid SSML document.
-
 `A3033`: Receivers SHOULD NOT use XML DTD or schema resolution to include remote resources from outside the communicated XML fragment.
 
 `A3034`: Channels SHOULD NOT send the `speak` field to bots.
+
+`A3035`: Receivers generating speech from an Activity with a missing or null `speak` field SHOULD render message contents such as [`text`](#text) and [`summary`](#summary) instead.
 
 ### Input hint
 
@@ -361,7 +372,7 @@ The `inputHint` field indicates whether or not the generator of the activity is 
 
 ### Attachments
 
-The `attachments` field contains a flat list of objects to be displayed as part of this activity. The value of each `attachments` list element is a complex object of the [Attachment](#Attachment) type.
+The `attachments` field contains a flat list of objects to be displayed as part of this activity. The value of each `attachments` list element is a complex object of the [Attachment](#attachment) type.
 
 `A3050`: Senders SHOULD omit the `attachments` field if it contains no elements.
 
@@ -373,7 +384,7 @@ The `attachments` field contains a flat list of objects to be displayed as part 
 
 ### Attachment layout
 
-The `attachmentLayout` field instructs user interface renderers how to present content included in the [`attachments`](#Attachments) field. The value of the `attachmentLayout` field is of type string, with defined values of `list` and `carousel`. The default value is `list`.
+The `attachmentLayout` field instructs user interface renderers how to present content included in the [`attachments`](#attachments) field. The value of the `attachmentLayout` field is of type string, with defined values of `list` and `carousel`. The default value is `list`.
 
 `A3060`: If a sender includes the `attachmentLayout` field, it SHOULD only send defined values.
 
@@ -381,7 +392,7 @@ The `attachmentLayout` field instructs user interface renderers how to present c
 
 ### Summary
 
-The `summary` field contains text used to replace [`attachments`](#Attachments) on channels that do not support them. The value of the `summary` field is of type string.
+The `summary` field contains text used to replace [`attachments`](#attachments) on channels that do not support them. The value of the `summary` field is of type string.
 
 `A3070`: Receivers SHOULD consider the `summary` field to logically follow the `text` field.
 
@@ -391,7 +402,7 @@ The `summary` field contains text used to replace [`attachments`](#Attachments) 
 
 ### Suggested actions
 
-The `suggestedActions` field contains a payload of interactive actions that may be displayed to the user. Support for `suggestedActions` and their manifestation depends heavily on the channel. The value of the `suggestedActions` field is a complex object of the [Suggested actions](#Suggested-actions-2) type.
+The `suggestedActions` field contains a payload of interactive actions that may be displayed to the user. Support for `suggestedActions` and their manifestation depends heavily on the channel. The value of the `suggestedActions` field is a complex object of the [Suggested actions](#suggested-actions-2) type.
 
 ### Value
 
@@ -401,7 +412,7 @@ The `value` field contains a programmatic payload specific to the activity being
 
 ### Expiration
 
-The `expiration` field contains a time at which the activity should be considered to be "expired" and should not be presented to the recipient. The value of the `expiration` field is an ISO 8601 [[3](#References)] encoded datetime within a string.
+The `expiration` field contains a time at which the activity should be considered to be "expired" and should not be presented to the recipient. The value of the `expiration` field is an ISO 8601 [[3](#references)] encoded datetime within a string.
 
 `A3090`: Senders SHOULD always use encode the value of `expiration` fields as UTC, and they SHOULD always include Z as an explicit UTC mark within the value.
 
@@ -415,15 +426,27 @@ The `importance` field contains an enumerated set of values to signal to the rec
 
 ### Delivery mode
 
-The `deliveryMode` field contains an one of an enumerated set of values to signal to the recipient alternate delivery paths for the activity. The value of the `DeliveryMode` field is of type string, with defined values of `normal`, and `notification`. The default value is `normal`.
+The `deliveryMode` field contains any one of an enumerated set of values to signal to the recipient alternate delivery paths for the activity or response. The value of the `deliveryMode` field is of type string, with defined values of `normal`, `notification` and `expectReplies`. The default value is `normal`.
 
+Activities with a `deliveryMode` of `expectReplies` differ only in their requirement to return a response payload back to the caller synchronously, as a direct response to the initial request.
+ 
 `A3110`: If a sender includes the `deliveryMode` field, it SHOULD only send defined values.
 
 `A3111`: Receivers SHOULD interpret undefined values as `normal`.
 
+`A3112`: Receivers SHOULD reject activities with `deliveryMode` of `expectReplies` if they do not support synchronous responses.
+
+`A3113`: Receivers SHOULD NOT reply with asynchronous responses to activities with `deliveryMode` of `expectReplies`.
+
+`A3114`: Senders MUST NOT include `deliveryMode` of `expectReplies` on Invoke activities unless the Invoke profile explicitly allows and describes its behavior.
+
+`A3115`: Senders MUST establish whether a receiver understands `deliveryMode` of `expectReplies` prior to sending activities with that value.
+
+`A3116`: Bots SHOULD NOT send activities with `deliveryMode` of `expectReplies` to channels.  
+
 ### Listen for
 
-The `listenFor` field contains a list of terms or references to term sources that speech and language processing systems can listen for. The value of the `listenFor` field is an array of strings whose format is defined in [Appendix IV](#Appendix-IV---Priming-format).
+The `listenFor` field contains a list of terms or references to term sources that speech and language processing systems can listen for. The value of the `listenFor` field is an array of strings whose format is defined in [Appendix IV](#appendix-iv---priming-format).
 
 A missing `listenFor` field indicates default priming behavior should be used. The default is defined by the channel and may depend on variables such as the identity of the user and the bot.
 
@@ -433,11 +456,11 @@ A missing `listenFor` field indicates default priming behavior should be used. T
 
 ### Semantic action
 
-The `semanticAction` field contains an optional programmatic action accompanying the user request. The semantic action field is populated by the channel based on some understanding of what the user is trying to accomplish; this understanding may be achieved with natural language processing, additional user interface elements tied specifically to these actions, or contextually via other means. The meaning and structure of the semantic action is agreed ahead of time between the channel and the bot.
+The `semanticAction` field contains an optional programmatic action accompanying the user request. The semantic action field is populated by the channel and bot based on some understanding of what the user is trying to accomplish; this understanding may be achieved with natural language processing, additional user interface elements tied specifically to these actions, through a process of conversational refinement, or contextually via other means. The meaning and structure of the semantic action is agreed ahead of time between the channel and the bot.
 
 The value of the `semanticAction` field is a complex object of the [semantic action](#semantic-action-type) type.
 
-`A3130`: Channels MAY populate the `semanticAction` field. Other senders SHOULD NOT populate this field.
+`A3130`: Channels and bots MAY populate the `semanticAction` field. Other senders SHOULD NOT populate the `semanticAction` field.
 
 Information within the semantic action field is meant to augment, not replace, existing content within the activity. A well-formed semantic action has a defined name, corresponding well-formed entities, and matches the user's intent in generating the activity.
 
@@ -447,11 +470,7 @@ Information within the semantic action field is meant to augment, not replace, e
 
 `A3133`: Receivers MUST ignore `semanticAction` fields they cannot parse or do not understand.
 
-Semantic actions are populated only on the first message activity representing the user input that triggered the action. Subsequent semantic actions indicate the user initiated a distinct action.
-
-`A3134`: Senders MUST NOT populate the `semanticAction` beyond the first message activity if those activities do not indicate the user triggered the corresponding semantic action again.
-
-Semantic actions are sometimes used to indicate a change in which participant controls the conversation. For example, a channel may use an action at the beginning of an exchange with a skill. When so defined, skills can relinquish control through the [handoff activity](#handoff-activity).
+Semantic actions are sometimes used to indicate a change in which participant controls the conversation. For example, a channel may use actions during an exchange with a skill. When so defined, skills can relinquish control through the [handoff activity](#handoff-activity) after the final `semanticAction` `state` is `done`.
 
 `A3135`: Channels MAY define the use of [handoff activity](#handoff-activity) in conjunction with semantic actions.
 
@@ -483,11 +502,11 @@ Conversation update activities are identified by a `type` value of `conversation
 
 ### Members added
 
-The `membersAdded` field contains a list of channel participants (bots or users) added to the conversation. The value of the `membersAdded` field is an array of type [`channelAccount`](#Channel-account).
+The `membersAdded` field contains a list of channel participants (bots or users) added to the conversation. The value of the `membersAdded` field is an array of type [`channelAccount`](#channel-account).
 
 ### Members removed
 
-The `membersRemoved` field contains a list of channel participants (bots or users) removed from the conversation. The value of the `membersRemoved` field is an array of type [`channelAccount`](#Channel-account).
+The `membersRemoved` field contains a list of channel participants (bots or users) removed from the conversation. The value of the `membersRemoved` field is an array of type [`channelAccount`](#channel-account).
 
 ### Topic name
 
@@ -519,7 +538,7 @@ The `text` field contains optional text content to be communicated to a user. Th
 
 Event activities communicate programmatic information from a client or channel to a bot. The meaning of an event activity is defined by the `name` field, which is meaningful within the scope of a channel. Event activities are designed to carry both interactive information (such as button clicks) and non-interactive information (such as a notification of a client automatically updating an embedded speech model).
 
-Event activities are the asynchronous counterpart to [invoke activities](#Invoke-activity). Unlike invoke, event is designed to be extended by client application extensions.
+Event activities are the asynchronous counterpart to [invoke activities](#invoke-activity). Unlike invoke, event is designed to be extended by client application extensions.
 
 Event activities are identified by a `type` value of `event` and specific values of the `name` field.
 
@@ -543,7 +562,7 @@ The `value` field contains parameters specific to this event, as defined by the 
 
 ### Relates to
 
-The `relatesTo` field references another conversation, and optionally a specific activity within that conversation. The value of the `relatesTo` field is a complex object of the [Conversation reference](#Conversation-reference) type.
+The `relatesTo` field references another conversation, and optionally a specific activity within that conversation. The value of the `relatesTo` field is a complex object of the [Conversation reference](#conversation-reference) type.
 
 `A5200`: `relatesTo` SHOULD NOT reference an activity within the conversation identified by the `conversation` field.
 
@@ -551,11 +570,11 @@ The `relatesTo` field references another conversation, and optionally a specific
 
 Invoke activities communicate programmatic information from a client or channel to a bot, and have a corresponding return payload for use within the channel. The meaning of an invoke activity is defined by the `name` field, which is meaningful within the scope of a channel.
 
-Invoke activities are the synchronous counterpart to [event activities](#Event-activity). Event activities are designed to be extensible. Invoke activities differ only in their ability to return response payloads back to the channel; because the channel must decide where and how to process these response payloads, Invoke is useful only in cases where explicit support for each invoke name has been added to the channel. Thus, Invoke is not designed to be a generic application extensibility mechanism.
+Invoke activities are the synchronous counterpart to [event activities](#event-activity). Event activities are designed to be extensible. Invoke activities differ only in their ability to return response payloads back to the channel; because the channel must decide where and how to process these response payloads, Invoke is useful only in cases where explicit support for each invoke name has been added to the channel. Thus, Invoke is not designed to be a generic application extensibility mechanism.
 
 Invoke activities are identified by a `type` value of `invoke` and specific values of the `name` field.
 
-The list of defined Invoke activities is included in [Appendix III](#Appendix-III---Protocols-using-the-Invoke-activity).
+The list of defined Invoke activities is included in [Appendix III](#appendix-iii---protocols-using-the-invoke-activity).
 
 `A5301`: Channels SHOULD NOT allow application-defined invoke messages between clients and bots.
 
@@ -577,7 +596,7 @@ The `value` field contains parameters specific to this event, as defined by the 
 
 ### Relates to
 
-The `relatesTo` field references another conversation, and optionally a specific activity within that conversation. The value of the `relatesTo` field is a complex object of the [Conversation reference](#Conversation-reference) type.
+The `relatesTo` field references another conversation, and optionally a specific activity within that conversation. The value of the `relatesTo` field is a complex object of the [Conversation reference](#conversation-reference) type.
 
 `A5600`: `relatesTo` SHOULD NOT reference an activity within the conversation identified by the `conversation` field.
 
@@ -629,23 +648,23 @@ Message reaction activities are identified by a `type` value of `messageReaction
 
 ### Reactions added
 
-The `reactionsAdded` field contains a list of reactions added to this activity. The value of the `reactionsAdded` field is an array of type [`messageReaction`](#Message-reaction).
+The `reactionsAdded` field contains a list of reactions added to this activity. The value of the `reactionsAdded` field is an array of type [`messageReaction`](#message-reaction).
 
 ### Reactions removed
 
-The `reactionsRemoved` field contains a list of reactions removed from this activity. The value of the `reactionsRemoved` field is an array of type [`messageReaction`](#Message-reaction).
+The `reactionsRemoved` field contains a list of reactions removed from this activity. The value of the `reactionsRemoved` field is an array of type [`messageReaction`](#message-reaction).
 
 ## Suggestion activity
 
-Suggestion activities allow a bot to send content targeting a single user in the conversation which refers to a previous activity and suggests content that augments it. The suggested content is a superset of the [message activity](#Message-activity), and fields present on the message activity are schematically valid on the suggestion activity. The channel in which the suggestion activity is sent defines limitations on text or attachment content, and these limitations may differ from the channel's limitations on message activities. The suggestion activity includes the `textHighlights` property so that the suggestions can be surfaced as annotations to the original content in the source activity.
+Suggestion activities allow a bot to send content targeting a single user in the conversation which refers to a previous activity and suggests content that augments it. The suggested content is a superset of the [message activity](#message-activity), and fields present on the message activity are schematically valid on the suggestion activity. The channel in which the suggestion activity is sent defines limitations on text or attachment content, and these limitations may differ from the channel's limitations on message activities. The suggestion activity includes the `textHighlights` property so that the suggestions can be surfaced as annotations to the original content in the source activity.
 
 For example: an message activity with the text "...we should meet on Monday to review this plan..." could cause a bot to send a suggestion activity which refers to that section of text and offers the user an affordance to create a meeting on their calendar. Some channels use this information to highlight and turn into a hot link the snippet of text to show the suggestion in context.
 
-Suggestion activities are identified by a `type` value of `suggestion`. Suggestion activities refer to another activity by using the [`replyToId`](#Reply-to-ID) property.
+Suggestion activities are identified by a `type` value of `suggestion`. Suggestion activities refer to another activity by using the [`replyToId`](#reply-to-ID) property.
 
 `A6100`: If there is no `replyToId` then the suggested content should be shown to the recipient as a normal message activity.
 
-Suggestion activity uses the [`recipient`](#Recipient) field to signal which user the suggestion is for.
+Suggestion activity uses the [`recipient`](#recipient) field to signal which user the suggestion is for.
 
 All `textHighlight` objects are relative to the activity specified by the `replyToId` property.  There can be multiple `textHighlight` provided, allowing a client the option to turn different sections of the text into links which would show the suggestion content.
 
@@ -659,51 +678,51 @@ All `textHighlight` objects are relative to the activity specified by the `reply
 
 ### Suggestion activity text highlights
 
-The `textHighlights` field contains a list of text to highlight in the `text` field of the activity referred to by `replyToId`. The value of the `textHighlights` field is an array of type [`textHighlight`](#Text-highlight).
+The `textHighlights` field contains a list of text to highlight in the `text` field of the activity referred to by `replyToId`. The value of the `textHighlights` field is an array of type [`textHighlight`](#text-highlight).
 
 ## Trace activity
 
-The Trace activity is an activity which the developer inserts in to the stream of activities to represent a point in the developers bot logic. The trace activity typically is logged by transcript history components to become part of a transcript  history.  In remote debugging scenarios the Trace activity can be sent to the client so that the activity can be inspected as part of the debug flow.
+The Trace activity is an activity which the developer inserts in to the stream of activities to represent a point in the developers bot logic. The trace activity typically is logged by transcript history components to become part of a [Transcript-format](../../fileformats/transcript/transcript.md) history file.  In remote debugging scenarios the Trace activity can be sent to the client so that the activity can be inspected as part of the debug flow.
 
 Trace activities are normally not shown to the user, and are internal to transcript logging and developer debugging.
 
 Trace  activities are identified by a `type` value of `trace`.
 
-`A6100`: channels SHOULD NOT display trace activities to the user, unless the user has identified itself as the developer in a secure manner.
+`A6150`: channels SHOULD NOT display trace activities to the user, unless the user has identified itself as the developer in a secure manner.
 
 ### Name
 
 The `name` field controls the name of the trace operation. The value of the `name` field is of type string.
 
-`A6101`: Trace activities MAY contain a `name` field.
+`A6151`: Trace activities MAY contain a `name` field.
 
-`A6102`: Receivers MUST ignore event activities with `name` fields they do not understand.
+`A6152`: Receivers MUST ignore event activities with `name` fields they do not understand.
 
 ### Label
 
 The `label` field contains optional a label which can provide contextual information about the trace. The value of the `label` field is of type string.
 
-`A6103`: Trace activities MAY contain a `label` field.
+`A6153`: Trace activities MAY contain a `label` field.
 
 ### ValueType
 
 The `valueType` field is a string type which contains a unique value which identifies the shape of the `value` object for this trace.
 
-`6104`: The `valueType` field MAY be missing or empty, if the `name` property is sufficient to understand the shape of the `value` property.
+`A6154`: The `valueType` field MAY be missing or empty, if the `name` property is sufficient to understand the shape of the `value` property.
 
 ### Value
 
 The `value` field contains an object for this trace, as defined by the `valueType` or `name` property if there is no `valueType`. The value of the `value` field is a complex type.
 
-`A6105`: The `value` field MAY be missing or empty.
+`A6155`: The `value` field MAY be missing or empty.
 
-`A6106`: Extensions to the trace activity SHOULD NOT require receivers to use any information other than the activity `type` and `name` or `valueType` field to understand the schema of the `value` field.
+`A6156`: Extensions to the trace activity SHOULD NOT require receivers to use any information other than the activity `type` and `name` or `valueType` field to understand the schema of the `value` field.
 
 ### Relates to
 
-The `relatesTo` field references another conversation, and optionally a specific activity within that conversation. The value of the `relatesTo` field is a complex object of the [Conversation reference](#Conversation-reference) type.
+The `relatesTo` field references another conversation, and optionally a specific activity within that conversation. The value of the `relatesTo` field is a complex object of the [Conversation reference](#conversation-reference) type.
 
-`A6107`: `relatesTo` MAY reference an activity within the conversation identified by the `conversation` field.
+`A6157`: `relatesTo` MAY reference an activity within the conversation identified by the `conversation` field.
 
 ## Typing activity
 
@@ -717,7 +736,7 @@ Typing activities are identified by a `type` value of `typing`.
 
 `A6001`: Unless otherwise known for the channel, senders SHOULD NOT send typing activities more frequently than one every three seconds. (Senders MAY send typing activities every two seconds to prevent gaps from appearing.)
 
-`A6002`: If a channel assigns an [`id`](#Id) to a typing activity, it MAY allow bots and clients to delete the typing activity before its expiration.
+`A6002`: If a channel assigns an [`id`](#id) to a typing activity, it MAY allow bots and clients to delete the typing activity before its expiration.
 
 `A6003`: If able, channels SHOULD send typing activities to bots.
 
@@ -735,13 +754,13 @@ This section defines complex types used within the activity schema, described ab
 
 ### Attachment
 
-Attachments are content included within a [message activity](#Message-activity): cards, binary documents, and other interactive content. They're intended to be displayed in conjunction with text content. Content may be sent via URL data URI within the `contentUrl` field, or inline in the `content` field.
+Attachments are content included within a [message activity](#message-activity): cards, binary documents, and other interactive content. They're intended to be displayed in conjunction with text content. Content may be sent via URL data URI within the `contentUrl` field, or inline in the `content` field.
 
 `A7100`: Senders SHOULD NOT include both `content` and `contentUrl` fields in a single attachment.
 
 #### Content type
 
-The `contentType` field describes the [MIME media type](https://www.iana.org/assignments/media-types/media-types.xhtml) [[9](#References)] of the content of the attachment. The value of the `contentType` field is of type string.
+The `contentType` field describes the [MIME media type](https://www.iana.org/assignments/media-types/media-types.xhtml) [[9](#references)] of the content of the attachment. The value of the `contentType` field is of type string.
 
 #### Content
 
@@ -751,7 +770,7 @@ When present, the `content` field contains a structured JSON object attachment. 
 
 #### Content URL
 
-When present, the `contentUrl` field contains a URL to the content in the attachment. Data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#References)] are typically supported by channels. The value of the `contentUrl` field is of type string.
+When present, the `contentUrl` field contains a URL to the content in the attachment. Data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#references)] are typically supported by channels. The value of the `contentUrl` field is of type string.
 
 `A7120`: Receivers SHOULD accept HTTPS URLs.
 
@@ -767,7 +786,7 @@ The `name` field contains an optional name or filename for the attachment. The v
 
 #### Thumbnail URL
 
-Some clients have the ability to display custom thumbnails for non-interactive attachments or as placeholders for interactive attachments. The `thumbnailUrl` field identifies the source for this thumbnail. Data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#References)] are typically also allowed.
+Some clients have the ability to display custom thumbnails for non-interactive attachments or as placeholders for interactive attachments. The `thumbnailUrl` field identifies the source for this thumbnail. Data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#references)] are typically also allowed.
 
 `A7140`: Receivers SHOULD accept HTTPS URLs.
 
@@ -779,11 +798,11 @@ Some clients have the ability to display custom thumbnails for non-interactive a
 
 ### Card action
 
-A card action represents a clickable or interactive button for use within cards or as [suggested actions](#Suggested-actions). They are used to solicit input from users. Despite their name, card actions are not limited to use solely on cards.
+A card action represents a clickable or interactive button for use within cards or as [suggested actions](#suggested-actions). They are used to solicit input from users. Despite their name, card actions are not limited to use solely on cards.
 
 Card actions are meaningful only when sent to channels.
 
-Channels decide how each action manifests in their user experience. In most cases, the cards are clickable. In others, they may be selected by speech input. In cases where the channel does not offer an interactive activation experience (e.g., when interacting over SMS), the channel may not support activation whatsoever. The decision about how to render actions is controlled by normative requirements elsewhere in this document (e.g. within the card format, or within the [suggested actions](#Suggested-actions) definition).
+Channels decide how each action manifests in their user experience. In most cases, the cards are clickable. In others, they may be selected by speech input. In cases where the channel does not offer an interactive activation experience (e.g., when interacting over SMS), the channel may not support activation whatsoever. The decision about how to render actions is controlled by normative requirements elsewhere in this document (e.g. within the card format, or within the [suggested actions](#suggested-actions) definition).
 
 #### Type
 
@@ -799,7 +818,6 @@ The `type` field describes the meaning of the button and behavior when the butto
 * An action of type `playAudio` represents audio media that may be played.
 * An action of type `playVideo` represents video media that may be played.
 * An action of type `call` represents a telephone number that may be called.
-* An action of type `payment` represents a request to provide payment.
 
 #### Title
 
@@ -811,7 +829,7 @@ This field applies to actions of all types.
 
 #### Image
 
-The `image` field contains a URL referencing an image to be displayed on the button's face. Data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#References)] are typically supported by channels. The value of the `image` field is of type string.
+The `image` field contains a URL referencing an image to be displayed on the button's face. Data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#references)] are typically supported by channels. The value of the `image` field is of type string.
 
 This field applies to actions of all types.
 
@@ -821,25 +839,33 @@ This field applies to actions of all types.
 
 `A7222`: Channels SHOULD accept data URIs.
 
+#### Image alt text
+
+The `imageAltText` field contains alternate image text to be used in place of the `image` field. This field should only be used when the `text` field is inadequate as alt text. The value of the `imageAltText` field is of type string.
+
+`A7225`: Senders SHOULD NOT populate the `imageAltText` field if its value is identical to the `text` field.
+
+`A7226`: Receivers SHOULD use the value of the `imageAltText` field if it is present in the enclosing [card action](#card-action). If the `imageAltText` field is missing, receivers SHOULD use the `text` field as the alt text.
+
 #### Text
 
-The `text` field contains text content to be sent to a bot and included in the chat feed when the button is clicked. The contents of the `text` field may or may not be displayed, depending on the button type. The `text` field may contain markup, controlled by the [`textFormat`](#Text-format) field in the activity root. The value of the `text` field is of type string.
+The `text` field contains text content to be sent to a bot and included in the chat feed when the button is clicked. The contents of the `text` field may or may not be displayed, depending on the button type. The `text` field may contain markup, controlled by the [`textFormat`](#text-format) field in the activity root. The value of the `text` field is of type string.
 
 This field is only used on actions of select types. Details on each type of action are included later in this document.
 
 `A7230`: The `text` field MAY contain an empty string to indicate sending text without contents.
 
-`A7231`: Channels SHOULD process the contents of the `text` field in accordance with the [`textFormat`](#Text-format) field in the activity root.
+`A7231`: Channels SHOULD process the contents of the `text` field in accordance with the [`textFormat`](#text-format) field in the activity root.
 
 #### Display text
 
-The `displayText` field contains text content to be included in the chat feed when the button is clicked. The contents of the `displayText` field SHOULD always be displayed, when technically possible within the channel. The `displayText` field may contain markup, controlled by the [`textFormat`](#Text-format) field in the activity root. The value of the `displayText` field is of type string.
+The `displayText` field contains text content to be included in the chat feed when the button is clicked. The contents of the `displayText` field SHOULD always be displayed, when technically possible within the channel. The `displayText` field may contain markup, controlled by the [`textFormat`](#text-format) field in the activity root. The value of the `displayText` field is of type string.
 
 This field is only used on actions of select types. Details on each type of action are included later in this document.
 
 `A7240`: The `displayText` field MAY contain an empty string to indicate sending text without contents.
 
-`A7241`: Channels SHOULD process the contents of the `displayText` field in accordance with the [`textFormat`](#Text-format) field in the activity root.
+`A7241`: Channels SHOULD process the contents of the `displayText` field in accordance with the [`textFormat`](#text-format) field in the activity root.
 
 #### Value
 
@@ -865,15 +891,17 @@ A `messageBack` action represents a text response to be sent via the chat system
 
 `A7353`: If the channel supports storing and transmitting text, the contents of the `text` field of the action MUST be preserved and transmitted in the `text` field of the generated message activity.
 
-`A7354`: If the channel supports storing and transmitting additional programmatic values, the contents of the `value` field MUST be preserved and transmitted in the `value` field of the generated message activity.
+`A7355`: If the channel supports storing and transmitting additional programmatic values, the contents of the `value` field MUST be preserved and transmitted in the `value` field of the generated message activity.
 
-`A7355`: If the channel supports preserving a different value in the chat feed than is sent to bots, it MUST include the `displayText` field in the chat history.
+`A7356`: If the channel supports preserving a different value in the chat feed than is sent to bots, it MUST include the `displayText` field in the chat history.
 
-`A7356`: If the channel does not support `A7355` but does support recording text within the chat feed, it MUST include the `text` field in the chat history.
+`A7354`: If the channel does not support `A7353` but does support recording text within the chat feed, it MUST include the `text` field in the chat history.
 
-`A7357`: The UI control is displayed with `title` and/or `image`. While both of them are optional, at least one of them MUST be specified.
+`A7357`: If the channel supports presenting an image on the action, the contents of the `image` field of the action MUST be shown on or in connection with the action.
 
-`A7358`: If `text` and `value` are both unspecified, the message SHOULD be sent without content.
+`A7358`: The contents of the `title` field of the action MUST be shown on or in connection with the action.
+
+`A7359`: Senders SHOULD include an `image` field, a `title` field, or both. Channels MAY reject or drop `messageBack` actions which have neither an `image` field nor a `title` field.
 
 #### IM Back
 
@@ -921,7 +949,7 @@ An `openUrl` action represents a hyperlink to be handled by the client. Open URL
 
 `A7381`: Receivers MAY reject `openUrl` action whose `value` field is missing or not a string.
 
-`A7382`: Receivers SHOULD reject or drop `openUrl` actions whose `value` field contains a data URI, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#References)].
+`A7382`: Receivers SHOULD reject or drop `openUrl` actions whose `value` field contains a data URI, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#references)].
 
 `A7383`: Receivers SHOULD NOT reject `openUrl` actions whose `value` URI is of an otherwise unexpected URI scheme or value.
 
@@ -941,7 +969,7 @@ An `downloadFile` action represents a hyperlink to be downloaded. Download File 
 
 `A7391`: Receivers MAY reject `downloadFile` action whose `value` field is missing or not a string.
 
-`A7392`: Receivers SHOULD reject or drop `downloadFile` actions whose `value` field contains a data URI, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#References)].
+`A7392`: Receivers SHOULD reject or drop `downloadFile` actions whose `value` field contains a data URI, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#references)].
 
 #### Show Image File actions
 
@@ -955,7 +983,7 @@ An `showImage` action represents an image that may be displayed. Show Image uses
 
 `A7401`: Receivers MAY reject `showImage` action whose `value` field is missing or not a string.
 
-`A7402`: Receivers MAY reject `showImage` actions whole `value` field is a Data URI, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#References)].
+`A7402`: Receivers MAY reject `showImage` actions whole `value` field is a Data URI, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#references)].
 
 #### Signin
 
@@ -969,7 +997,7 @@ A `signin` action represents a hyperlink to be handled by the client's signin sy
 
 `A7411`: Receivers MAY reject `signin` action whose `value` field is missing or not a string.
 
-`A7412`: Receivers MUST reject or drop `signin` actions whose `value` field contains a data URI, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#References)].
+`A7412`: Receivers MUST reject or drop `signin` actions whose `value` field contains a data URI, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#references)].
 
 #### Play Audio
 
@@ -979,25 +1007,25 @@ A `playAudio` action represents audio media that may be played. Play Audio uses 
 * `image`
 * `value` (of type string)
 
-`A7420`: When activated, channels MAY send media events in accordance with ###NEED REFERENCE###
+`A7420`: When activated, channels MAY play the audio referenced by URI in the `value` field.
 
 `A7421`: Channels MUST reject or drop `value` fields not of string type.
 
-`A7422`: Senders SHOULD NOT send data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#References)], without prior knowledge that the channel supports them.
+`A7422`: Senders SHOULD NOT send data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#references)], without prior knowledge that the channel supports them.
 
 #### Play video
 
-A `playAudio` action represents video media that may be played. Play Video uses the following fields:
+A `playVideo` action represents video media that may be played. Play Video uses the following fields:
 * `type` ("`playVideo`")
 * `title`
 * `image`
 * `value` (of type string)
 
-`A7430`: When activated, channels MAY send media events in accordance with ###NEED REFERENCE###
+`A7430`: When activated, channels MAY play the video referenced by URI in the `value` field.
 
 `A7431`: Channels MUST reject or drop `value` fields not of string type.
 
-`A7432`: Senders SHOULD NOT send data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#References)], without prior knowledge that the channel supports them.
+`A7432`: Senders SHOULD NOT send data URIs, as defined in [RFC 2397](https://tools.ietf.org/html/rfc2397) [[10](#references)], without prior knowledge that the channel supports them.
 
 #### Call
 
@@ -1010,18 +1038,6 @@ A `call` action represents a telephone number that may be called. Call uses the 
 `A7440`: Senders MUST include a URL of scheme `tel` in the `value` field of an `signin` action.
 
 `A7441`: Receivers MUST reject `signin` action whose `value` field is missing or not a string URI of the `tel` scheme.
-
-#### Payment
-
-A `payment` action represents a request to provide payment. Payment uses the following fields:
-* `type` ("`payment`")
-* `title`
-* `image`
-* `value` (of complex type [Payment Request](#Payment-Request))
-
-`A7450`: Senders MUST include a complex object of type [Payment Request](#Payment-Request) in the `value` field of a `payment` action.
-
-`A7451`: Channels MUST reject `payment` action whose `value` field is missing or not a complex object of type [Payment Request](#Payment-Request).
 
 ### Channel account
 
@@ -1043,7 +1059,7 @@ The `aadObjectId` field is an optional ID corresponding to the account's object 
 
 #### Channel account role
 
-The `role` field indicates whether entity behind the account is a user or bot. This field is intended for use in the [Transcript format](../transcript/transcript.md) [[16](#References)] to distinguish between activities sent by users and activities sent by bots. The value of the `role` field is a string.
+The `role` field indicates whether entity behind the account is a user or bot. This field is intended for use in the [Transcript format](../../fileformats/transcript/transcript.md) [[16](#references)] to distinguish between activities sent by users and activities sent by bots. The value of the `role` field is a string.
 
 `A7511`: Senders SHOULD NOT include this field. Receivers SHOULD ignore this field.
 
@@ -1071,15 +1087,55 @@ The `isGroup` field indicates whether the conversation contains more than two pa
 
 #### Conversation account Conversation Type
 
-If the channel distinguishes between types of conversations (e.g. group vs. personal), the `conversationType` field indicates the type of the conversation. This field augments the lower-fidelity [`isGroup`](#Conversation-account-is-group) field. The value of the `conversationType` field is a string and its meaning is defined by the channel in which the type occurs.
+If the channel distinguishes between types of conversations (e.g. group vs. personal), the `conversationType` field indicates the type of the conversation. This field augments the lower-fidelity [`isGroup`](#conversation-account-is-group) field. The value of the `conversationType` field is a string and its meaning is defined by the channel in which the type occurs.
 
 #### Conversation account role
 
-The `role` field indicates whether entity behind the account is a user or bot. This field is intended for use in the [Transcript format](../transcript/transcript.md) [[16](#References)] to distinguish between activities sent by users and activities sent by bots. The value of the `role` field is a string.
+The `role` field indicates whether entity behind the account is a user or bot. This field is intended for use in the [Transcript format](../../fileformats/transcript/transcript.md) [[16](#references)] to distinguish between activities sent by users and activities sent by bots. The value of the `role` field is a string.
 
 `A7512`:Senders SHOULD NOT include this field. Receivers SHOULD ignore this field.
 
-###
+#### Conversation account tenant ID
+
+The `tenantId` field is an optional ID corresponding to the conversation's tenant ID within the channel. The value of the `tenantId` field is a string.
+
+### Conversation reference
+
+The `conversationReference` type contains a reference into another conversation. In its most minimal form, this reference may only contain the IDs of the target conversation. Implementers may wish to carry additional information in the `conversationReference`, such as the identity and roles of participants, and the ID of a specific [`activity`](#activity) within the conversation. Consumers of the `conversationReference` type are not provided any de facto guarantees about the validity or consistency of the IDs within the object; this is instead conferred by the sender who created the object.
+
+The `conversationReference` type is frequently used to store a reference to a conversation so it can be later retrieved and used to continue a conversation.
+
+`A7550`: Senders MUST include the `channelId` and the `conversation.id` properties within a conversation reference, even if they contain the same values as the parent Activity.
+
+#### Conversation reference channel ID
+
+The `channelId` field contains the [channel ID](#channel-id) of the conversation referenced by the conversationReference object. The value of the `channelId` field is of type string.
+
+#### Conversation reference activity ID
+
+The `activityId` field contains an optional [ID](#id) of an activity to refer to within the conversation. The value of the `activityId` field is of type string.
+
+#### Conversation reference conversation
+
+The `conversation` field contains the [Conversation account](#conversation-account) representing the conversation's identity. The value of the `conversation` field is a complex object of type [Conversation account](#conversation-account).
+
+#### Conversation reference user
+
+The `user` field contains an optional reference to the user's identity within the conversation. The value of the `user` field is of type [Channel account](#channel-account).
+
+#### Conversation reference bot
+
+The `bot` field contains an optional reference to the bot's identity within the conversation. The value of the `bot` field is of type [Channel account](#channel-account).
+
+#### Conversation reference serviceUrl
+
+The `serviceUrl` field contains an optional copy of the [`serviceUrl`](#service-url) that applies to the referenced conversation. The value of the `serviceUrl` field is of type string.
+
+`A7560`: Receivers SHOULD ensure the `serviceUrl` property in conversation references is accompanied by either a corresponding security endorsement (in the case of transmitted Conversation references), or a flag indicating the `serviceUrl` and its security endorsement was verified before storage (in the case of a stored Conversation reference).
+
+#### Conversation reference locale
+
+The `locale` field contains an optional copy of the [`locale`](#locale) that applies to the referenced conversation. The value of the `locale` field is an [IETF BCP-47](https://tools.ietf.org/html/bcp47) [[19](#references)] language tag within a string.
 
 ### Entity
 
@@ -1087,21 +1143,21 @@ Entities carry metadata about an activity or conversation. Each entity's meaning
 
 Some non-Bot-Framework entities may have a preexisting field called `type`. Parties integrating these entities into the activity entity format are advised to define field-level mapping to resolve conflicts with the `type` field name and other incompatibilities with serialization requirement `A2001` as part of the IRI defining the entity type.
 
-Frequently, entities used within Bot Framework are also expressed elsewhere using [JSON-LD](https://www.w3.org/TR/json-ld/) [[18](#References)]. The entity format is designed to be compatible with JSON-LD contexts, but does not require senders or receivers to implement JSON-LD to successfully process an entity.
+Frequently, entities used within Bot Framework are also expressed elsewhere using [JSON-LD](https://www.w3.org/TR/json-ld/) [[18](#references)]. The entity format is designed to be compatible with JSON-LD contexts, but does not require senders or receivers to implement JSON-LD to successfully process an entity.
 
-`A7603`: Senders MAY include [JSON-LD](https://www.w3.org/TR/json-ld/) [[18](#References)] fields within entities.
+`A7603`: Senders MAY include [JSON-LD](https://www.w3.org/TR/json-ld/) [[18](#references)] fields within entities.
 
-`A7604`: Senders MUST NOT expect or require [JSON-LD](https://www.w3.org/TR/json-ld/) [[18](#References)] processing to parse an entity.
+`A7604`: Senders MUST NOT expect or require [JSON-LD](https://www.w3.org/TR/json-ld/) [[18](#references)] processing to parse an entity.
 
 #### Entity type
 
-The `type` field is required, and defines the meaning and shape of the entity. `type` is intended to contain [IRIs](https://tools.ietf.org/html/rfc3987) [[4](#References)] although there are a small number on non-IRI entity types defined in [Appendix I](#Appendix-II---Non-IRI-entity-types). The value of the `type` field is a string.
+The `type` field is required, and defines the meaning and shape of the entity. `type` is intended to contain [IRIs](https://tools.ietf.org/html/rfc3987) [[4](#references)] although there are a small number on non-IRI entity types defined in [Appendix II](#appendix-ii---non-iri-entity-types). The value of the `type` field is a string.
 
-`A7610`: Senders SHOULD use non-IRI types names only for types described in [Appendix II](#Appendix-II---Non-IRI-entity-types).
+`A7610`: Senders SHOULD use non-IRI types names only for types described in [Appendix II](#appendix-ii---non-iri-entity-types).
 
-`A7611`: Senders MAY send IRI types for types described in [Appendix II](#Appendix-II---Non-IRI-entity-types) if they have knowledge that the receiver understands them.
+`A7611`: Senders MAY send IRI types for types described in [Appendix II](#appendix-ii---non-iri-entity-types) if they have knowledge that the receiver understands them.
 
-`A7612`: Senders SHOULD use or establish IRIs for entity types not defined in [Appendix II](#Appendix-II---Non-IRI-entity-types).
+`A7612`: Senders SHOULD use or establish IRIs for entity types not defined in [Appendix II](#appendix-ii---non-iri-entity-types).
 
 `A7613`: Senders MUST NOT use relative IRIs within the `type` field, nor require JSON-LD IRI resolution to understand a type identifier.
 
@@ -1135,7 +1191,7 @@ The `type` field describes the type of social interaction. The value of the `typ
 
 ### Text highlight
 
-A text highlight refers to a substring of content within another field. This type is used within [suggestion activities](#Suggestion-activity) to annotate text within another activity.
+A text highlight refers to a substring of content within another field. This type is used within [suggestion activities](#suggestion-activity) to annotate text within another activity.
 
 `A7720`: Receivers MUST ignore a text highlight if the `text` field is missing or empty, if it contains with a `occurrence` value less than 0, or if the `occurrence` field greater than the number of occurrences of the `text` field within the referenced text.
 
@@ -1153,7 +1209,68 @@ The `occurrence` field is optional. It gives the sender the ability to specify w
 
 ### Semantic action type
 
-The semantic action type represents a programmatic reference. It is used within the [`semanticAction`](#Semantic-action) field in [message activities](#Message-activity). Actions are defined and registered externally to this protocol, typically as part of the [Bot Framework Manifest](botframework-manifest.md) [[14](#References)]. The action definition declares the ID for the action and associates it with named entities, each of which has a corresponding type. Senders are receivers of actions use these names and types to create and parse actions that conform to the action definition.
+The semantic action type represents a programmatic reference. It is used within the [`semanticAction`](#semantic-action) field in [message activities](#message-activity). Actions are defined and registered externally to this protocol, typically as part of the [Bot Framework Manifest](../../fileformats/manifest/botframework-manifest.md) [[14](#references)]. The action definition declares the ID for the action and associates it with named entities, each of which has a corresponding type. Senders are receivers of actions use these names and types to create and parse actions that conform to the action definition.
+
+Actions proceed through a lifecycle, described by the [`state`](#semantic-action-state) and [`id`](#semantic-action-id) fields.
+
+At the beginning of the lifecycle, the channel indicates the `id` of the action it wishes to invoke, and sends a `state` of `start`.
+
+The bot then sends and receives subsequent activities. During this time, both the bot and the channel may send additional metadata in the form of actions with `state` of `continue`. If the bot detects the user changing topic, it reflects this in a revised value of `id`.
+
+When complete, the bot may send `state` of `done`. Just like earlier steps, the bot can update the `id` field to reflect what was actually in the conversation.
+
+Example data flow for `semanticAction`. (Note that [entities](#semantic-action-entities) are abbreviated).
+```
+User: Book a flight from SeaTac to NYC
+    Semantic action: state="start", id="bookFlight", entities="SeaTac", "NYC"
+
+Bot: Would you like to arrive at LaGuardia Airport or JFK International Airport?
+    Semantic action: state="continue", id="bookFlight", entities="KLGA", "KJFK"
+
+User: Hold on a second
+    Semantic action empty
+
+Bot: No problem, please reply when you'd like to continue.
+    Semantic action empty
+
+User: LaGuardia
+    Semantic action: state="continue", id="bookFlight", entities="KLGA"
+
+Bot: OK, would you like to book your flight?
+    Semantic action: state="continue", id="bookFlight"
+
+User: Yes
+    Semantic action empty
+
+Bot: OK, your flight has been booked for November 10 at 8:05am.
+    Semantic action: state="done", id="flightBooked", entities="Flight 81, KSEA to KLGA"
+```
+
+#### Semantic action state
+
+The `state` field describes whether the action is beginning, continuing, or ending. The value of the `state` field is of type string with defined values of `start`, `continue`, and `done`. This field is not extensible.
+
+**Note: the `state` field is not a mechanism to control a bot's state machine. Instead, it may be used to *request* that an action be started, or it may be used by bots to *inform* that the current action has changed or completed.**
+
+Because `semanticAction` is optional and the topic of a conversation may drift over time, receivers are cautioned to be flexible in accepting `semanticAction` contents, especially with states of `continue` and `done`. Specifically, channels and bots are cautioned not to create a state machine requiring specific values of `semanticAction` fields `state` and `id`. Instead, treat `semanticAction` as additional metadata that can be used to optionally enrich data sharing between actors. Receivers may always discard unexpected `semanticAction` values in accordance with `A3133`.
+
+The `start` state indicates an action is being started. Subsequent `start` actions indicate the sender wishes to start this action or another action (depending on the value of the `id` field).
+
+`A7760`: Channels MUST only send `state` of `start` on the first message of an exchange invoking an action. Others senders MUST NOT send `state` of `start`.
+
+The `continue` state indicates processing of an action is ongoing, and this activity contains new information within the `semanticAction` field.
+
+`A7761`: Channels and bots MAY send `state` of `continue` when they populate the `semanticAction` field. Other senders MUST NOT send `state` of `continue`.
+
+The `done` state indicates an action was successfully completed.
+
+`A7762`: Bots SHOULD send `state` of `done` when an action has been completed, even if `semanticAction` contains no entities. Other senders MUST NOT send `state` of `done`.
+
+Channels are expected to provide continuity when issuing actions to bots, but should expect changes in the `state` or `id` values received from bots.
+
+`A7763`: Channels SHOULD NOT send `state` of `continue` without a preceding `state` of `start`.
+
+`A7764`: Receivers MUST NOT require senders to include `semanticAction` fields with `state` of `continue` or `done`, nor a specific `id` value during a conversation.
 
 #### Semantic action ID
 
@@ -1163,9 +1280,13 @@ The `id` field establishes the identity for the action, and is associated with a
 
 `A7731`: Two `id` values are equivalent only if they are ordinally identical.
 
+`A7732`: Channels SHOULD only change the value of the `id` field within a conversation when a new action with `state` of `start` is sent, or when the bot sends a `state` of `continue` with a new `id` value.
+
+`A7733`: Bots SHOULD make best-effort attempts to update the `id` field to reflect the topic of the conversation. Channels SHOULD make best-effort attempts to honor the bot's stated `id` values.
+
 #### Semantic action entities
 
-The `entities` field contains entities associated with this action. The value of the `entities` field is a complex object; the keys of this object are entity names and the values of each key is the corresponding entity values of type [entity](#Entity). The meaning of each entity is defined by the enclosing action and the entity name. An additional field named `$instance` occurs after the named entities. The value of the `$instance` field is of type [`entityInstance`](#Entity-instance).
+The `entities` field contains entities associated with this action. The value of the `entities` field is a complex object; the keys of this object are entity names and the values of each key is the corresponding entity values of type [entity](#entity). The meaning of each entity is defined by the enclosing action and the entity name. An additional field named `$instance` occurs after the named entities. The value of the `$instance` field is of type [`entityInstance`](#entity-instance).
 
 `A7740`: Unless otherwise specified, senders MAY omit some or all entities associated with an action definition.
 
@@ -1175,11 +1296,11 @@ Actions support dynamic typing. An implementer of an action expresses a list of 
 
 `A7744`: Senders MAY send downgraded entities in accordance with the rules outlined in the action definition.
 
-Entities sent within the semantic action have a specific meaning, defined by their name. For example, an action may be named `findRoute` with entities named `source` and `destination`. Sometimes, additional entities are available that do not fit a specific meaning within the action. The root [`entities`](#Entities) array is a suitable location to transmit these entities.
+Entities sent within the semantic action have a specific meaning, defined by their name. For example, an action may be named `findRoute` with entities named `source` and `destination`. Sometimes, additional entities are available that do not fit a specific meaning within the action. The root [`entities`](#entities) array is a suitable location to transmit these entities.
 
-`A7745`: Senders MAY send entities not listed in the action definition in the [`entities`](#Entities) array in the activity root. Senders SHOULD NOT send these entities in the semantic action.
+`A7745`: Senders MAY send entities not listed in the action definition in the [`entities`](#entities) array in the activity root. Senders SHOULD NOT send these entities in the semantic action.
 
-The `$instance` field carries metadata about the source of each entity. The keys of this object are identical to the entity names as peers. The values of each key is the corresponding instance metadata of type [`semanticEntityInstance`](#Semantic-entity-instance).
+The `$instance` field carries metadata about the source of each entity. The keys of this object are identical to the entity names as peers. The values of each key is the corresponding instance metadata of type [`semanticEntityInstance`](#semantic-entity-instance).
 
 `A7746`: Senders SHOULD include properties within `$instance` for any entities bearing instance metadata.
 
@@ -1221,7 +1342,7 @@ Example of semantic action entities
 
 ### Semantic entity instance
 
-The `semanticEntityInstance` type references to source information about where the entity was mentioned. This specification includes source data to refer to the `text` field although others may be added in the future. The value of the `$instance` field is a complex object with fields `text`, `startIndex`, and `endIndex`. The `text` field is a string containing a copy of the text within the [`text`](#Text) field in the activity root; `startIndex` is a number containing the index of the first character where `text` is found (inclusive); `endIndex` is a number containing the index after the last character where `text` is found (exclusive).
+The `semanticEntityInstance` type references to source information about where the entity was mentioned. This specification includes source data to refer to the `text` field although others may be added in the future. The value of the `$instance` field is a complex object with fields `text`, `startIndex`, and `endIndex`. The `text` field is a string containing a copy of the text within the [`text`](#text) field in the activity root; `startIndex` is a number containing the index of the first character where `text` is found (inclusive); `endIndex` is a number containing the index after the last character where `text` is found (exclusive).
 
 `A7750`: Senders MUST NOT include the `$instance` field if its `text` field is empty or null or the contents of its `text` field cannot be found within the `text` field in the activity root.
 
@@ -1233,7 +1354,7 @@ The `semanticEntityInstance` type references to source information about where t
 
 ## References
 
-1. [Bot Framework Protocol](../botframework-protocol/botframework-channel.json)
+1. [Bot Framework Protocol](../botframework-protocol/botframework-channel.json) -- *Bot Framework Protocol swagger definition*
 2. [RFC 2119](https://tools.ietf.org/html/rfc2119) -- *Key words for use in RFCs to Indicate Requirement Levels*
 3. [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) -- *Date and time format*
 4. [RFC 3987](https://tools.ietf.org/html/rfc3987) -- *Internationalized Resource Identifiers (IRIs)*
@@ -1246,16 +1367,58 @@ The `semanticEntityInstance` type references to source information about where t
 11. [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) -- *Country codes*
 12. [Bot Framework Cards](botframework-cards.md)
 13. [Adaptive Cards](https://adaptivecards.io)
-14. [Bot Framework Manifest](../manifest/botframework-manifest.md)
+14. [Bot Framework Manifest](../fileformats/manifest/botframework-manifest.md)
 15. [RFC 4627](http://www.ietf.org/rfc/rfc4627.txt) -- *The application/json Media Type for JavaScript Object Notation (JSON)*
-16. [Transcript](../transcript/transcript.md)
+16. [Transcript](../../fileformats/transcript/transcript.md)
 17. [RFC 6557](https://tools.ietf.org/html/rfc6557)
 18. [JSON-LD](https://www.w3.org/TR/json-ld/) -- *A JSON-based serialization for Linked Data*
+19. [IETF BCP-47](https://tools.ietf.org/html/bcp47) -- *Language tag*
 
 # Appendix I - Changes
 
-## 2018-09-27 - dandris@microsoft.com
+## 2020-06-19 - dandris@microsoft.com
+* Fix `A7420` and `A7430` text to reflect original intent of `playAudio` and `playVideo` actions
+* Add [conversation reference](#conversation-reference) type definition
 
+## 2020-06-16 - dandris@microsoft.com
+* Integrate typo and casing fixes
+* Fix internal anchor links and relative file links
+
+## 2020-03-02 - dandris@microsoft.com
+* Added [`imageAltText`](#image-alt-text)
+
+## 2019-07-15 - dandris@microsoft.com
+* Added `A3035` to clarify behavior in the absence of a `speak` field.
+
+## 2019-05-09 - toddne@microsoft.com
+* Removed A3032.  Speak takes either plain text or valid SSML
+
+## 2019-01-31 - toddne@microsoft.com
+* Revised specification of [locale] to reference BCP-47.
+
+## 2019-05-02 - dandris@microsoft.com
+* Added [`callerId`](#caller-Id) and [Appendix V](#appendix-v---caller-id-values)
+
+## 2019-01-31 - toddne@microsoft.com
+* Revised specification of [locale] to reference BCP-47.
+
+## 2019-01-31 - dandris@microsoft.com
+* Add `tenantId` to [conversation account](#conversation-account) type
+
+## 2019-01-11 - dandris@microsoft.com
+* Add `A7357`, `A7358`, and `A7359` to profile `image` and `title` fields of the `messageBack` action
+
+## 2019-01-04 - dandris@microsoft.com
+* Resolved collision in [Trace activity](#trace-activity) numbering: `A610x` -> `A615x`
+
+## 2018-12-06 - dandris@microsoft.com
+* Resolved restriction number collision by renaming duplicate `A7352` and `A7353` to `A7355` and `A7356`, respectively
+* Fixed broken links
+
+## 2018-10-23 - dandris@microsoft.com
+* Added action [`state`](#semantic-action-state)
+
+## 2018-09-27 - dandris@microsoft.com
 * Revised reference descriptions and links
 * Clarified syntactic rules, revised `A2003`, added `A2007`
 * Removed `A7743` as redundant
@@ -1265,43 +1428,35 @@ The `semanticEntityInstance` type references to source information about where t
 * Move `A7600` and `A7601` and re-introduce as `A2104` and `A2105`
 
 ## 2018-09-18 - toddne@microsoft.com
-
 * Added localTimezone property
 
 ## 2018-08-27 - daveta@microsoft.com
-
-* Added [Channel account role](#Channel-account-role) property
-* Added [Conversation account role](#Conversation-account-role) property
+* Added [Channel account role](#channel-account-role) property
+* Added [Conversation account role](#conversation-account-role) property
 
 ## 2018-07-17 - dandris@microsoft.com
-
 * Added [`semanticAction`](#semantic-action)
 * Added [handoff activity](#handoff-activity)
 
 ## 2018-07-05 - dandris@microsoft.com
-
 * Changed `RXXXX` (*R*equiment) to `AXXXX` (*A*ctivity) to match other Bot Framework specifications.
 
 ## 2018-04-11 - dandris@microsoft.com
-
-* Added [Listen for](#Listen-for) field and [Appendix IV](#Appendix-IV---Priming-format)
+* Added [Listen for](#listen-for) field and [Appendix IV](#appendix-iv---priming-format)
 
 ## 2018-04-08 - tomlm@microsoft.com
-
-* Added [Suggestion activity](#Suggestion-activity) and [`textHighlight`](#Text-highlight) complex type.
+* Added [Suggestion activity](#suggestion-activity) and [`textHighlight`](#text-highlight) complex type.
 * Amended `A2071` to allow suggestion activities to specify receipients
 
 ## 2018-03-07 - dandris@microsoft.com
-
-* Added [`conversationAccount.conversationType`](#Conversation-account-conversation-type) and `A2084`.
+* Added [`conversationAccount.conversationType`](#conversation-account-conversation-type) and `A2084`.
 
 ## 2018-02-07 - dandris@microsoft.com
-
 * Initial draft
 
 # Appendix II - Non-IRI entity types
 
-Activity [entities](#Entity) communicate extra metadata about the activity, such as a user's location or the version of the messaging app they're using. Activity types are intended to be IRIs, but a small list of non-IRI names are in common use. This appendix is an exhaustive list of the supported non-IRI entity types.
+Activity [entities](#entity) communicate extra metadata about the activity, such as a user's location or the version of the messaging app they're using. Activity types are intended to be IRIs, but a small list of non-IRI names are in common use. This appendix is an exhaustive list of the supported non-IRI entity types.
 
 | Type           | IRI equivalent                          | Description               |
 | -------------- | --------------------------------------- | ------------------------- |
@@ -1335,7 +1490,7 @@ The `clientInfo` entity type contains extended information about the client soft
 
 #### Locale (Deprecated)
 
-The `locale` field contains the user's locale. This field duplicates the [`locale`](#Locale) field in the Activity root. The value of the `locale` field is an [ISO 639](https://www.iso.org/iso-639-language-codes.html) [[6](#References)] code within a string.
+The `locale` field contains the user's locale. This field duplicates the [`locale`](#locale) field in the Activity root. The value of the `locale` field is an [ISO 639](https://www.iso.org/iso-639-language-codes.html) [[6](#references)] code within a string.
 
 The `locale` field within `clientInfo` is deprecated.
 
@@ -1345,7 +1500,7 @@ The `locale` field within `clientInfo` is deprecated.
 
 #### Country
 
-The `country` field contains the user's detected location. This value may differ from any [`locale`](#Locale) data as the `country` is detected whereas `locale` is typically a user or application setting. The value of the `country` field is an [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) [[11](#References)] 2- or 3-letter country code.
+The `country` field contains the user's detected location. This value may differ from any [`locale`](#locale) data as the `country` is detected whereas `locale` is typically a user or application setting. The value of the `country` field is an [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) [[11](#references)] 2- or 3-letter country code.
 
 `A9220`: Channels SHOULD NOT allow clients to specify arbitrary values for the `country` field. Channels SHOULD use a mechanism like GPS, location API, or IP address detection to establish the country generating a request.
 
@@ -1359,18 +1514,7 @@ Note that on channels with a persistent chat feed, `platform` is typically usefu
 
 # Appendix III - Protocols using the Invoke activity
 
-The [invoke activity](#Invoke-activity) is designed for use only within protocols supported by Bot Framework channels (i.e., it is not a generic extensibility mechanism). This appendix contains a list of all Bot Framework protocols using this activity.
-
-## Payments
-
-The Bot Framework payments protocol uses Invoke to calculate shipping and tax rates, and to communicate strong confirmation of completed payments.
-
-The payments protocol defines three operations (defined in the `name` field of an invoke activity):
-* `payment/shippingAddressChange`
-* `payment/shppingOptionsChange`
-* `payment/paymentResponse`
-
-More detail can be found on the [Request payment](https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-request-payment) page.
+The [invoke activity](#invoke-activity) is designed for use only within protocols supported by Bot Framework channels (i.e., it is not a generic extensibility mechanism). This appendix contains a list of all Bot Framework protocols using this activity.
 
 ## Teams compose extension
 
@@ -1378,7 +1522,7 @@ The Microsoft Teams channel uses Invoke for [compose extensions](https://docs.mi
 
 # Appendix IV - Priming format
 
-The [`listenFor`](#Listen-for) field within the Bot Framework activity schema contains a list of terms and references to hint to a speech or language processor which terms to prefer when processing input. This format is referred to within this appendix as the priming format.
+The [`listenFor`](#listen-for) field within the Bot Framework activity schema contains a list of terms and references to hint to a speech or language processor which terms to prefer when processing input. This format is referred to within this appendix as the priming format.
 
 The format allows:
 1. Phrases, including single-term phrases (e.g. "house", "open the doors")
@@ -1419,3 +1563,29 @@ LUIS.ai models can be referenced with the following format:
 
 The short form for these IDs is:
     `luis:<appId>[#intentId]`
+
+# Appendix V - Caller ID Values
+
+The Activity schema includes a ['callerId'](#caller-Id) field that identifies the caller sending an activity. The field is not populated on the wire but is used for internal routing within a bot, and for tracking this data when an Activity is committed to storage (in e.g. the [Transcript](../../fileformats/transcript/transcript.md) [[#16](#references)] format).
+
+This specification defines three IRI schemes for caller IDs.
+
+It is important that implementers follow the verification rules in this appendix to ensure a caller ID is set only when the caller is successfully authenticated.
+
+## Bot Framework
+
+Bot Framework services call registered bots to transmit messages sent over Bot Framework channels. The caller ID for any Bot Framework channel service is `urn:botframework:azure`.
+
+The authenticity of a call from Bot Framework can be established by inspecting its JSON Web Token and ensuring it is both correctly formed and is signed with a key listed in the Bot Framework Open ID Metadata Document.
+
+## Bot Framework (US Government Cloud)
+
+Bot Framework services running in the US Government Cloud are in a distinct security domain from traditional Bot Framework serivces. The caller ID for any Bot Framework channel service is `urn:botframework:azureusgov`.
+
+The authenticity of a call from Bot Framework US Government Cloud can be established by inspecting its JSON Web Token and ensuring it is both correctly formed and is signed with a key listed in the Bot Framework US Government Cloud Open ID Metadata Document.
+
+## Bot calling skill
+
+The Activity schema can be used when a bot initiates a request to another bot acting as a skill. The caller ID for these calls is the prefix `urn:botframework:aadappid:` followed by the Azure Active Directory App ID used by the bot initiating the call.
+
+The authenticity of a call from a bot can be established by inspecting its JSON Web Token and ensuring it is both correctly formed and is signed with a key listed in the Azure Active Directory Open ID Metadata Document.
