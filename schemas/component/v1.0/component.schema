@@ -66,6 +66,7 @@
             }
         },
         "expression": {
+            "$role": "expression",
             "type": "string",
             "title": "Expression",
             "description": "Expression to evaluate.",
@@ -75,6 +76,7 @@
             ]
         },
         "equalsExpression": {
+            "$role": "expression",
             "type": "string",
             "title": "Expression",
             "description": "Expression starting with =.",

@@ -33,6 +33,7 @@
             }
         },
         "expression": {
+            "$role": "expression",
             "type": "string",
             "title": "Expression",
             "pattern": "^.*\\S.*",
@@ -41,6 +42,7 @@
             ]
         },
         "equalsExpression": {
+            "$role": "expression",
             "type": "string",
             "title": "Expression",
             "pattern": "^=.*\\S.*",
