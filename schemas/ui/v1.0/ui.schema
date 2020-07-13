@@ -1,0 +1,149 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://schemas.botframework.com/schemas/ui/v1.0/ui.schema",
+    "title": "UI Schema",
+    "description": "Visual customization options for BotFramework SDK components.",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+        "form": {
+            "title": "Form UI Options",
+            "description": "UI Options object describing form UI customizations for this $kind.",
+            "$ref": "#/definitions/FormUIOptions"
+        },
+        "menu": {
+            "title": "Menu Options",
+            "description": "Configure how this component appears in the menu.",
+            "$ref": "#/definitions/MenuOptions"
+        }
+    },
+    "definitions": {
+        "FormUIOptions": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "title": "Description",
+                    "description": "Description override. Used in tooltips.",
+                    "type": "string"
+                },
+                "helpLink": {
+                    "title": "Help Link",
+                    "description": "URI to component or property documentation. Used in tooltips.",
+                    "type": "string",
+                    "format": "uri"
+                },
+                "hidden": {
+                    "title": "Hidden Properties",
+                    "description": "An array of property names to hide in the UI.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "label": {
+                    "title": "Label",
+                    "description": "Label override. Can either be a string or false to hide the label.",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "const": false
+                        }
+                    ]
+                },
+                "order": {
+                    "title": "Property Order",
+                    "description": "Set the order of fields. Use \"*\" for all other fields. ex. [\"foo\", \"*\", \"bar\"]",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "examples": [
+                        [
+                            "*"
+                        ]
+                    ]
+                },
+                "placeholder": {
+                    "title": "Placeholder",
+                    "description": "Placeholder override. Default is `examples` property in the schema.",
+                    "type": "string"
+                },
+                "properties": {
+                    "title": "Properties",
+                    "description": "A map of component property names to UI options with customizations for each property.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "title": "Property Name",
+                        "description": "UI Options object describing UI customizations for this property.",
+                        "$ref": "#/definitions/FormUIOptions"
+                    }
+                },
+                "subtitle": {
+                    "title": "Subtitle",
+                    "description": "Subtitle rendered in form title, defaults to schema.$kind",
+                    "type": "string"
+                },
+                "widget": {
+                    "title": "Field Widget",
+                    "description": "Override default field widget.",
+                    "type": "string",
+                    "enum": [
+                        "checkbox",
+                        "date",
+                        "datetime",
+                        "input",
+                        "number",
+                        "radio",
+                        "select",
+                        "textarea"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "MenuOptions": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "title": "Menu Item Label",
+                    "description": "Text that appears as the menu item. Defaults to $kind.",
+                    "type": "string"
+                },
+                "submenu": {
+                    "title": "Submenu",
+                    "description": "An array of menu item labels which get mapped to a menu hierarchy. Set to false to leave the component un-grouped. To have a component appear in multiple submenus, provide multiple arrays.",
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/SubmenuOptions"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SubmenuOptions"
+                            }
+                        },
+                        {
+                            "const": false
+                        }
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "SubmenuOptions": {
+            "type": "array",
+            "items": {
+                "title": "Group Name",
+                "type": "string"
+            },
+            "examples": [
+                [
+                    "Top Level Menu",
+                    "Secondary Menu"
+                ]
+            ]
+        }
+    }
+}
