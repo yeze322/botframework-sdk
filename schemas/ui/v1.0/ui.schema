@@ -1,23 +1,30 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "https://schemas.botframework.com/schemas/ui/v1.0/ui.schema",
-    "title": "UI Schema",
-    "description": "Visual customization options for BotFramework SDK components.",
-    "type": "object",
-    "additionalProperties": true,
-    "properties": {
-        "form": {
-            "title": "Form UI Options",
-            "description": "UI Options object describing form UI customizations for this $kind.",
-            "$ref": "#/definitions/FormUIOptions"
-        },
-        "menu": {
-            "title": "Menu Options",
-            "description": "Configure how this component appears in the menu.",
-            "$ref": "#/definitions/MenuOptions"
-        }
+    "$ref": "#/definitions/UISchema",
+    "additionalProperties": {
+        "title": "Component $kind",
+        "description": "UI Schema for this component.",
+        "$ref": "#/definitions/UISchema"
     },
     "definitions": {
+        "UISchema": {
+            "title": "UI Schema",
+            "description": "Visual customization options for BotFramework SDK components.",
+            "type": "object",
+            "properties": {
+                "form": {
+                    "title": "Form UI Options",
+                    "description": "UI Options object describing form UI customizations for this $kind.",
+                    "$ref": "#/definitions/FormUIOptions"
+                },
+                "menu": {
+                    "title": "Menu Options",
+                    "description": "Configure how this component appears in the menu. Can be a menu option object or an array of menu option objects.",
+                    "$ref": "#/definitions/MenuOptions"
+                }
+            }
+        },
         "FormUIOptions": {
             "type": "object",
             "properties": {
@@ -59,11 +66,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "examples": [
-                        [
-                            "*"
-                        ]
-                    ]
+                    "examples": [["*"]]
                 },
                 "placeholder": {
                     "title": "Placeholder",
@@ -104,46 +107,52 @@
             "additionalProperties": false
         },
         "MenuOptions": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/SubmenuGroup"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SubmenuGroup"
+                    }
+                }
+            ]
+        },
+        "SubmenuGroup": {
             "type": "object",
             "properties": {
                 "label": {
-                    "title": "Menu Item Label",
+                    "title": "Menu Item Label (Optional) ",
                     "description": "Text that appears as the menu item. Defaults to $kind.",
                     "type": "string"
                 },
+                "group": {
+                    "title": "Menu Group (Optional) ",
+                    "description": "Menu group that this component belongs to. Leave blank to be ungrouped.",
+                    "type": "string",
+                    "examples": ["Dialog actions", "Dev tools"]
+                },
                 "submenu": {
-                    "title": "Submenu",
-                    "description": "An array of menu item labels which get mapped to a menu hierarchy. Set to false to leave the component un-grouped. To have a component appear in multiple submenus, provide multiple arrays.",
+                    "title": "Submenu (Optional)",
+                    "description": "An array of submenu labels to configure how this component is nested in the menu. Set to false to show this component as a top-level menu item.",
                     "oneOf": [
-                        {
-                            "$ref": "#/definitions/SubmenuOptions"
-                        },
                         {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/SubmenuOptions"
-                            }
+                                "title": "Submenu label",
+                                "type": "string"
+                            },
+                            "examples": [["Top Level Menu", "Secondary Menu"]]
                         },
                         {
-                            "const": false
+                            "const": false,
+                            "description": "Do not put menu item in a submenu."
                         }
                     ]
                 }
             },
             "additionalProperties": false
-        },
-        "SubmenuOptions": {
-            "type": "array",
-            "items": {
-                "title": "Group Name",
-                "type": "string"
-            },
-            "examples": [
-                [
-                    "Top Level Menu",
-                    "Secondary Menu"
-                ]
-            ]
         }
     }
 }
