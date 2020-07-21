@@ -2,11 +2,6 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "https://schemas.botframework.com/schemas/ui/v1.0/ui.schema",
     "$ref": "#/definitions/UISchema",
-    "additionalProperties": {
-        "title": "Component $kind",
-        "description": "UI Schema for this component.",
-        "$ref": "#/definitions/UISchema"
-    },
     "definitions": {
         "UISchema": {
             "title": "UI Schema",
@@ -23,6 +18,14 @@
                     "description": "Configure how this component appears in the menu. Can be a menu option object or an array of menu option objects.",
                     "$ref": "#/definitions/MenuOptions"
                 }
+            },
+            "additionalProperties": {
+                "title": "Component $kind",
+                "description": "UI Schema for this component.",
+                "$ref": "#/definitions/UISchema"
+            },
+            "patternProperties": {
+                "^\\$.*$": {}
             }
         },
         "FormUIOptions": {
