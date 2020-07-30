@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "3.1.10",
+    "version": "3.1.12",
     "title": "Microsoft Bot Connector API - v3.1",
     "description": "The Microsoft Bot Framework Connector APIs allow bots to send and receive\r\nmessages, button clicks, and other programmatic events when connecting with\r\nend users. This API also includes facilities to get conversation metadata\r\nand perform other operations (deletions and content editing). This REST API\r\nmay be used directly over HTTP and Web Socket, but is easiest to use with\r\nthe Bot Framework SDK.\r\n\r\n© 2020 Microsoft",
     "termsOfService": "https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx",
@@ -824,107 +824,6 @@
           }
         }
       }
-    },
-    "/v3/conversations/{conversationId}/handoff": {
-      "get": {
-        "tags": [
-          "Conversations"
-        ],
-        "summary": "GetHandoffStatus - get status of handoff for given conversation",
-        "description": "Query the status of a handoff request\r\n\r\nThis API allows bots to determine if the handoff request that has been initiated is completed",
-        "operationId": "Conversations_GetHandoffStatus",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "conversationId",
-            "in": "path",
-            "description": "Conversation ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "enum": [
-                "Unknown",
-                "Completed"
-              ],
-              "type": "string"
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Conversations"
-        ],
-        "summary": "InitiateHandoff - initiate handoff to agent for given conversation",
-        "description": "Initiate Handoff Request\r\n\r\nSome channels that support handoff to human agents implement this method",
-        "operationId": "Conversations_InitiateHandoff",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json"
-        ],
-        "parameters": [
-          {
-            "name": "conversationId",
-            "in": "path",
-            "description": "Conversation ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "context",
-            "in": "body",
-            "description": "Handoff context containing activities and channel-specific data",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/HandoffParameters"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An object will be returned containing the ID for the resource.",
-            "schema": {
-              "$ref": "#/definitions/ResourceResponse"
-            }
-          },
-          "201": {
-            "description": "A ResourceResponse object will be returned containing the ID for the resource.",
-            "schema": {
-              "$ref": "#/definitions/ResourceResponse"
-            }
-          },
-          "202": {
-            "description": "An object will be returned containing the ID for the resource.",
-            "schema": {
-              "$ref": "#/definitions/ResourceResponse"
-            }
-          },
-          "default": {
-            "description": "The operation failed and the response is an error object describing the status code and failure.",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -1264,10 +1163,6 @@
         "semanticAction": {
           "$ref": "#/definitions/SemanticAction",
           "description": "An optional programmatic action accompanying this request"
-        },
-        "transcript": {
-          "$ref": "#/definitions/Transcript",
-          "description": "Transcript of the conversations for Handoff message"
         }
       }
     },
@@ -1385,22 +1280,22 @@
         },
         "bot": {
           "$ref": "#/definitions/ChannelAccount",
-          "description": "Bot participating in this conversation"
+          "description": "(Optional) Bot participating in this conversation"
         },
         "conversation": {
           "$ref": "#/definitions/ConversationAccount",
-          "description": "Conversation reference"
+          "description": "Reference to the conversation"
         },
         "channelId": {
-          "description": "Channel ID",
+          "description": "ID of the channel in which the referenced conversation exists",
           "type": "string"
         },
         "serviceUrl": {
-          "description": "Service endpoint where operations concerning the referenced conversation may be performed",
+          "description": "(Optional) Service endpoint where operations concerning the referenced conversation may be performed",
           "type": "string"
         },
         "locale": {
-          "description": "A BCP-47 locale name for the referenced conversation",
+          "description": "(Optional) A BCP-47 locale name for the referenced conversation",
           "type": "string"
         }
       }
@@ -1437,19 +1332,6 @@
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/Entity"
-          }
-        }
-      }
-    },
-    "Transcript": {
-      "description": "Transcript",
-      "type": "object",
-      "properties": {
-        "activities": {
-          "description": "A collection of Activities that conforms to the Transcript schema.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Activity"
           }
         }
       }
@@ -1554,6 +1436,19 @@
         }
       }
     },
+    "Transcript": {
+      "description": "Transcript",
+      "type": "object",
+      "properties": {
+        "activities": {
+          "description": "A collection of Activities that conforms to the Transcript schema.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Activity"
+          }
+        }
+      }
+    },
     "PagedMembersResult": {
       "description": "Page of members.",
       "type": "object",
@@ -1592,20 +1487,6 @@
           "format": "byte",
           "description": "Attachment thumbnail",
           "type": "string"
-        }
-      }
-    },
-    "HandoffParameters": {
-      "description": "HandoffParameters",
-      "type": "object",
-      "properties": {
-        "transcript": {
-          "$ref": "#/definitions/Transcript",
-          "description": "A collection of Activities that occurred before the handoff was initiated"
-        },
-        "handoffContext": {
-          "description": "Contains channel-specific content relevant for handoff",
-          "type": "object"
         }
       }
     },
