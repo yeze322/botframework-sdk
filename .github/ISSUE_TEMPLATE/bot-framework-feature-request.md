@@ -1,8 +1,9 @@
 ---
-name: Create new Bot Builder DCR
-about: Create a new Bot Builder design change request to track changes to the Bot
-  Builder architecture.
-
+name: Feature Request
+about: Create a new Bot Framework feature request.
+title: ""
+labels: "needs-triage, feature-request"
+assignees: ""
 ---
 
 ## This is not for asking questions or filing bugs
@@ -20,50 +21,47 @@ To file an issue against a component please go to the components repo
 * [Create Bot Builder SDK V4 Python issue](https://github.com/Microsoft/botbuilder-python/issues/new/choose)
 
 ## Issue
+
 *Describe the issue you are addressing*
 
 ## Proposed change
+
 *Describe the proposed solution*
 
 ## Component Impact 
+
 *Describe which components need to be updated*
 
 ## Customer Impact 
+
 *Describe the impact on customers*
 
 ## Tracking Status
-**Dotnet SDK**
+
+**Dotnet SDK** [TODO]()
 - [ ] PR
 - [ ] Merged
 
-**Javascript SDK**
+**Javascript SDK** [TODO]()
 - [ ] PR
 - [ ] Merged
 
-**Java SDK**
+**Python SDK** [TODO]()
 - [ ] PR
 - [ ] Merged
 
-**Python SDK**
+**Java SDK** [TODO]()
 - [ ] PR
 - [ ] Merged
 
-**Emulator**
+**Samples** [TODO]()
 - [ ] PR
 - [ ] Merged
 
-**Samples**
+**Docs** [TODO]()
 - [ ] PR
 - [ ] Merged
 
-
-**Docs**
+**Tools** [TODO]()
 - [ ] PR
 - [ ] Merged
-
-
-**Tools**
-- [ ] PR
-- [ ] Merged
-
-[dcr]
