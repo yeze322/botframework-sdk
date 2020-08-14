@@ -111,14 +111,17 @@ Color: All the labels in this category should use ![#1d76db](https://via.placeho
 |Adaptive| The issue is related to Adaptive dialogs | `Area: Adaptive` |
 |Adaptive Expressions| The issue is related to Adaptive expressions | `Area: Adaptive expressions` |
 |AI-LUIS| The issue is related to LUIS | `Area: AI-LUIS` |
+|AI-Orchestrator| The issue is related to Orchestrator | `Area: AI-Orchestrator` |
 |AI-QnAMaker| THe issue is related to QnA Maker | `Area: AI-QnAMaker` |
 |Authentication| The issue is related to authenticating users (SSO, OAuth, etc.) | `Area: Authentication` |
+|Engineering| Used to categorize internal issues that are related to improving code quality, refactorings, code cleanup, etc. Normally this issues will be also tagged as `technical-debt` or `team-agility` | `Area: Engineering` |
 |Custom Adapters| The issue is related to custom adapters (Twilio, Facebook, etc.) | `Area: Custom adapters` |
 |Docs| Documentation issue (missing needs updates, etc.) | `Area: Docs` |
 |Functional Tests| The issue is related to end to end tests | `Area: Functional tests` |
 |LG| Language generation issues | `Area: LG` |
 |Samples| The issue is related to the product samples | `Area: Samples` |
 |Schema| The issue is related to schemas (bot schemas, skill manifest, etc.) | `Area: Schema` |
+|SDK| General SDK issues that don't clearly map to other areas (e.g.: waterfall dialogs, prompts, middleware, and helper methods).<br/> In general, we use this label when we don't have a clear match to other area.| `Area: SDK` |
 |Skills| The issue is related to skills | `Area: Skills` |
 |Streaming| Issues related to streaming support | `Area: Streaming` |
 |Teams| The issue is related to Teams support | `Area: Teams` |
@@ -140,10 +143,10 @@ Color: This subcategory uses different colors for each label.
 | Name | Description | Color | Example |
 |---|---|:-:|:--|
 |Bug| Indicates an unexpected problem or an unintended behavior.| ![#d73a4a](https://via.placeholder.com/15/d73a4a/000000?text=+) `#d73a4a` | `bug` |
-|Feature request|  A request for new functionality or an enhancement to an existing one.| ![#8f31ed](https://via.placeholder.com/15/8f31ed/000000?text=+) `#8f31ed` | `feature request` |
+|Feature request|  A request for new functionality or an enhancement to an existing one.| ![#8f31ed](https://via.placeholder.com/15/8f31ed/000000?text=+) `#8f31ed` | `feature-request` |
 |Parity| The issue describes a gap in parity between two or more platforms.| ![#fbca04](https://via.placeholder.com/15/fbca04/000000?text=+) `#fbca04` | `parity` |
-|Technical debt| The issue involves refactoring existing code to make it easier to maintain, follow best practices, improve test coverage, etc.| ![#fbca04](https://via.placeholder.com/15/fbca04/000000?text=+) `#fbca04` | `technical debt` |
-|Team agility| An issue targeted to reduce friction to the SDK's development process.| ![#fbca04](https://via.placeholder.com/15/fbca04/000000?text=+) `#fbca04` | `team agility` |
+|Technical debt| The issue involves refactoring existing code to make it easier to maintain, follow best practices, improve test coverage, etc.| ![#fbca04](https://via.placeholder.com/15/fbca04/000000?text=+) `#fbca04` | `technical-debt` |
+|Team agility| An issue targeted to reduce friction to the SDK's development process.| ![#fbca04](https://via.placeholder.com/15/fbca04/000000?text=+) `#fbca04` | `team-agility` |
 
 ### Repo specific labels for type <!-- omit in toc -->
 
