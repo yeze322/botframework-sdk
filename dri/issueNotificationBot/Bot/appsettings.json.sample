@@ -1,0 +1,13 @@
+{
+  "MicrosoftAppId": "",
+  "MicrosoftAppPassword": "",
+  "ConnectionName": "",
+  "CosmosDbEndpoint": "",
+  "CosmosDbAuthKey": "",
+  "CosmosDbDatabaseId": "",
+  "CosmosDbContainerId": "",
+  "ApplicationInsights": {
+    "InstrumentationKey": ""
+  },
+  "EnableTestMode": "false"
+}
