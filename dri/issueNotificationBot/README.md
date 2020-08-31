@@ -9,14 +9,18 @@ This bot tracks GitHub issues in the Bot Framework repos and sends notifications
 
 *Note: These are based on SLA timelines*
 
+It also notifies users daily of stale PRs.
+
 It is broken up into two main folders:
 
 1. AzureFunction - This lives in an Azure Function and queries GitHub every half hour
-2. Bot - This is the bot. It received data from the Azure Function on `/api/data` and sends notifications via Teams
+2. Bot - This is the bot. It received data from the Azure Function and sends notifications via Teams
 
 ## Azure Function
 
-Every half hour, the Azure Function queries GitHub for all issues within the Bot Framework. It categorizes them based on tags and whether or not they've been replied to, then sends them to the bot at the `/api/data` endpoint.
+Every half hour, the Azure Function queries GitHub for all issues within the Bot Framework. It categorizes them based on tags and whether or not they've been replied to, then sends them to the bot at the `/api/issues` endpoint.
+
+At 8am every morning, the Azure Function queries GitHub for all open PRs. It categorizes them by assignees and sends them to be processed by the bot on `/api/prs`.
 
 ### Setup
 
@@ -40,9 +44,11 @@ Run locally via `npm run start:local`
 
 This is easiest to deploy by using the [Azure Functions VS Code Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
 
+Be sure to set the `WEBSITE_TIME_ZONE` to the appropriate time zone (Pacific Standard Time), as the PR notification trigger is based on UTC, otherwise.
+
 ## Bot
 
-This is a pretty simple, primarily-notifications bot. It listens for the data sent from the Azure Function on `/api/data`, authenticates the request, processes the data, then sends out notifications to the appropriate users based on issue expiration.
+This is a pretty simple, primarily-notifications bot. It listens for the data sent from the Azure Function on `/api/issues` and `/api/prs`, authenticates the request, processes the data, then sends out notifications to the appropriate users based on issue or PR expiration.
 
 Once installed to a Teams Team/Channel, it queries all members on the Team. For any team members who have not provided their GitHub info to the bot, it sends them a notification message, requesting they log in so that we can notify them.
 
