@@ -1,0 +1,16 @@
+# General
+.vs/
+.vscode/
+
+#Secrets
+.env
+appsettings.json
+
+# Azure Function
+node_modules
+package-lock.json
+
+# Bot
+bin/
+obj/
+Properties/

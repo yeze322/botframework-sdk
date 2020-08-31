@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IssueNotificationBot", "IssueNotificationBot.csproj", "{A9A5A9F0-6F7E-48BB-8984-5F656BD290F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9A5A9F0-6F7E-48BB-8984-5F656BD290F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A5A9F0-6F7E-48BB-8984-5F656BD290F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A5A9F0-6F7E-48BB-8984-5F656BD290F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A5A9F0-6F7E-48BB-8984-5F656BD290F2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {853CC59A-5AC4-4980-A6AF-C5C269FD8595}
+	EndGlobalSection
+EndGlobal
