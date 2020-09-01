@@ -76,7 +76,7 @@ namespace IssueNotificationBot.Services
             return tcs.Task.GetAwaiter().GetResult();
         }
 
-        public async Task SendIssueNotificationToUserAsync(TrackedUser user, GitHubIssueNode issue, string nearingOrExpiredMessage, DateTime expires, string action, CancellationToken cancellationToken = default)
+        public async Task SendIssueNotificationToUserAsync(TrackedUser user, GitHubIssue issue, string nearingOrExpiredMessage, DateTime expires, string action, CancellationToken cancellationToken = default)
         {
             Logger.LogInformation($"Sending notification to {user.TeamsUserInfo.Name} for {issue.Number}");
 

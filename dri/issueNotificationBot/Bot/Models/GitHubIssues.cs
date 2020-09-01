@@ -6,31 +6,16 @@ using System;
 
 namespace IssueNotificationBot.Models
 {
-    public class GitHubServiceData
+    public class GitHubIssues
     {
         [JsonProperty(PropertyName = "reportedNotReplied")]
-        public readonly GitHubIssueNode[] ReportedNotReplied;
+        public readonly GitHubIssue[] ReportedNotReplied;
         [JsonProperty(PropertyName = "reportedAndReplied")]
-        public readonly GitHubIssueNode[] ReportedAndReplied;
+        public readonly GitHubIssue[] ReportedAndReplied;
         [JsonProperty(PropertyName = "reportedNotRepliedNoAssignee")]
-        public readonly GitHubIssueNode[] ReportedNotRepliedNoAssignee;
+        public readonly GitHubIssue[] ReportedNotRepliedNoAssignee;
         [JsonProperty(PropertyName = "reportedAndRepliedNoAssignee")]
-        public readonly GitHubIssueNode[] ReportedAndRepliedNoAssignee;
-    }
-
-    public class GitHubIssueNode
-    {
-        [JsonProperty(PropertyName = "node")]
-        private readonly GitHubIssue Node;
-        public int Number { get { return Node.Number; } }
-        public GitHubRepository Repository { get { return Node.Repository; } }
-        public string Title { get { return Node.Title; } }
-        public GitHubLabel[] Labels { get { return Node.Labels.Nodes; } }
-        public GitHubAssignee[] Assignees { get { return Node.Assignees.Nodes; } }
-        public GitHubAuthor Author { get { return Node.Author; } }
-        public string Body { get { return Node.Body; } }
-        public DateTime CreatedAt { get { return Node.CreatedAt; } }
-        public Uri Url { get { return Node.Url; } }
+        public readonly GitHubIssue[] ReportedAndRepliedNoAssignee;
     }
 
     public class GitHubIssue
@@ -42,9 +27,9 @@ namespace IssueNotificationBot.Models
         [JsonProperty(PropertyName = "title")]
         public readonly string Title;
         [JsonProperty(PropertyName = "labels")]
-        public readonly GitHubLabelsNodes Labels;
+        public readonly GitHubLabel[] Labels;
         [JsonProperty(PropertyName = "assignees")]
-        public readonly GitHubAssigneesNodes Assignees;
+        public readonly GitHubAssignee[] Assignees;
         [JsonProperty(PropertyName = "author")]
         public readonly GitHubAuthor Author;
         [JsonProperty(PropertyName = "body")]
@@ -63,12 +48,6 @@ namespace IssueNotificationBot.Models
         public readonly Uri Url;
     }
 
-    public class GitHubLabelsNodes
-    {
-        [JsonProperty(PropertyName = "nodes")]
-        public readonly GitHubLabel[] Nodes;
-    }
-
     public class GitHubLabel
     {
         [JsonProperty(PropertyName = "name")]
@@ -77,12 +56,6 @@ namespace IssueNotificationBot.Models
         public readonly DateTime UpdatedAt;
         [JsonProperty(PropertyName = "url")]
         public readonly Uri Url;
-    }
-
-    public class GitHubAssigneesNodes
-    {
-        [JsonProperty(PropertyName = "nodes")]
-        public readonly GitHubAssignee[] Nodes;
     }
 
     public class GitHubAssignee

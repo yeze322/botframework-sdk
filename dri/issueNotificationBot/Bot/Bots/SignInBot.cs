@@ -166,18 +166,15 @@ namespace IssueNotificationBot
 
             var fakeIssue = new
             {
-                Node = new
-                {
-                    Title = "Test Title",
-                    CreatedAt = new DateTime(),
-                    Body = "Test Body",
-                    Url = "www.contoso.com",
-                    Number = 999
-                }
+                Title = "Test Title",
+                CreatedAt = new DateTime(),
+                Body = "Test Body",
+                Url = "www.contoso.com",
+                Number = 999
             };
 
             var issueCard = TemplateCardHelper.GetPersonalIssueCard(
-                JsonConvert.DeserializeObject<GitHubIssueNode>(JsonConvert.SerializeObject(fakeIssue)),
+                JsonConvert.DeserializeObject<GitHubIssue>(JsonConvert.SerializeObject(fakeIssue)),
                 "TEST EXIRE MESSAGE",
                 new DateTime(),
                 "TEST ACTION",

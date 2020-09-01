@@ -26,7 +26,7 @@ namespace IssueNotificationBot.Services
             Logger = logger;
         }
 
-        public async Task ProcessData(GitHubServiceData data)
+        public async Task ProcessData(GitHubIssues data)
         {
             Logger.LogInformation("Processing data");
             TrackedUsers = await UserStorage.GetGitHubUsers();
@@ -34,7 +34,7 @@ namespace IssueNotificationBot.Services
             await ProcessReportedNotReplied(data.ReportedNotReplied);
         }
 
-        private async Task ProcessReportedNotReplied(GitHubIssueNode[] issues)
+        private async Task ProcessReportedNotReplied(GitHubIssue[] issues)
         {
             Logger.LogInformation("Processing ProcessReportedNotReplied");
             foreach (var issue in issues)
@@ -46,7 +46,7 @@ namespace IssueNotificationBot.Services
             }
         }
 
-        private List<TrackedUser> GetAssigneeUserData(GitHubIssueNode issue)
+        private List<TrackedUser> GetAssigneeUserData(GitHubIssue issue)
         {
             var users = new List<TrackedUser>();
             foreach (var assignee in issue.Assignees)
@@ -59,7 +59,7 @@ namespace IssueNotificationBot.Services
             return users;
         }
 
-        private async Task NotifyAssigneeAsNecessary(TrackedUser user, GitHubIssueNode issue)
+        private async Task NotifyAssigneeAsNecessary(TrackedUser user, GitHubIssue issue)
         {
             var now = DateTime.UtcNow;
             if (user.NotificationSettings.Enabled)
@@ -107,7 +107,7 @@ namespace IssueNotificationBot.Services
             }
         }
 
-        private DateTime GetExpiration(GitHubIssueNode issue, TimePeriodNotification timePeriod, DateTime now)
+        private DateTime GetExpiration(GitHubIssue issue, TimePeriodNotification timePeriod, DateTime now)
         {
             var adjustedExpiration = issue.CreatedAt.AddHours(timePeriod.ExpireHours);
 
@@ -147,7 +147,7 @@ namespace IssueNotificationBot.Services
             return now >= expires.AddHours(-timePeriod.NotifyPriorToExpiryHours);
         }
 
-        private bool UserNotifiedWithinWindow(TimePeriodNotification timePeriod, DateTime now, GitHubIssueNode issue, string teamsUserId)
+        private bool UserNotifiedWithinWindow(TimePeriodNotification timePeriod, DateTime now, GitHubIssue issue, string teamsUserId)
         {
             var mappedActivity = NotificationHelper.GetMappedIssue(issue.Number);
             if (mappedActivity != null && mappedActivity.Users.TryGetValue(teamsUserId, out MappedActivityUser mappedUser))

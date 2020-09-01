@@ -38,7 +38,7 @@ namespace IssueNotificationBot.Services
             };
         }
 
-        public static Attachment GetPersonalIssueCard(GitHubIssueNode issue, string nearingOrExpiredMessage, DateTime expires, string action, TrackedUser maintainer)
+        public static Attachment GetPersonalIssueCard(GitHubIssue issue, string nearingOrExpiredMessage, DateTime expires, string action, TrackedUser maintainer)
         {
             var paths = new[] { ".", "Resources", "personalIssueCard.json" };
             var adaptiveCardJson = File.ReadAllText(Path.Combine(paths));
