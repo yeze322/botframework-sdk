@@ -47,11 +47,11 @@ module.exports = class GitHubService {
 
         return result;
       }, []);
-      return issues;
+      return flattenNodesAndEdges(issues);
     } else {
       const query = getIssueQuery(`repo:${ org }/${ repo } is:issue ${ ignoreLabels.map(ignore => `-label:${ ignore }`).join(' ') }`);
       const { data: { data: { search: { edges: issues } } } } = await axios({ ...this.gitHubQueryConfig, data: query });
-      return issues;
+      return flattenNodesAndEdges(issues);
     }
   }
 

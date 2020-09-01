@@ -4,6 +4,10 @@
 using Newtonsoft.Json;
 using System;
 
+
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+
+#nullable enable
 namespace IssueNotificationBot.Models
 {
     public class GitHubIssues
@@ -29,9 +33,9 @@ namespace IssueNotificationBot.Models
         [JsonProperty(PropertyName = "labels")]
         public readonly GitHubLabel[] Labels;
         [JsonProperty(PropertyName = "assignees")]
-        public readonly GitHubAssignee[] Assignees;
+        public readonly GitHubBasicUserInfo[] Assignees;
         [JsonProperty(PropertyName = "author")]
-        public readonly GitHubAuthor Author;
+        public readonly GitHubBasicUserInfo Author;
         [JsonProperty(PropertyName = "body")]
         public readonly string Body;
         [JsonProperty(PropertyName = "createdAt")]
@@ -58,20 +62,12 @@ namespace IssueNotificationBot.Models
         public readonly Uri Url;
     }
 
-    public class GitHubAssignee
+    public class GitHubBasicUserInfo
     {
         [JsonProperty(PropertyName = "login")]
         public readonly string Login;
         [JsonProperty(PropertyName = "name")]
-        public readonly string Name;
-        [JsonProperty(PropertyName = "url")]
-        public readonly Uri Url;
-    }
-
-    public class GitHubAuthor
-    {
-        [JsonProperty(PropertyName = "login")]
-        public readonly string Login;
+        public readonly string? Name;
         [JsonProperty(PropertyName = "url")]
         public readonly Uri Url;
     }

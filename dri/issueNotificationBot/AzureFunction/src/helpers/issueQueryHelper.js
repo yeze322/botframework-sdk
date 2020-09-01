@@ -29,7 +29,7 @@ function getIssueQuery(search) {
                     }
                     author {
                       login
-                        url
+					  url
                     }
                     body
                     createdAt,
@@ -72,9 +72,9 @@ function groupIssues(issues, context) {
 
 function issueReportedNotReplied(issue, context) {
 	try {
-		const labels = issue.node.labels.nodes;
+		const labels = issue.labels;
 		const labelValues = labels.map(label => label.name.toLowerCase());
-		const assignees = issue.node.assignees.nodes;
+		const assignees = issue.assignees;
 		return labelValues.includes('customer-reported') && !labelValues.includes('customer-replied-to') && assignees.length > 0;
 	} catch (err) {
 		context.error(err);
@@ -83,9 +83,9 @@ function issueReportedNotReplied(issue, context) {
 
 function issueReportedAndReplied(issue, context) {
 	try {
-		const labels = issue.node.labels.nodes;
+		const labels = issue.labels;
 		const labelValues = labels.map(label => label.name.toLowerCase());
-		const assignees = issue.node.assignees.nodes;
+		const assignees = issue.assignees;
 		return labelValues.includes('customer-reported') && labelValues.includes('customer-replied-to') && assignees.length > 0;
 	} catch (err) {
 		context.error(err);
@@ -94,9 +94,9 @@ function issueReportedAndReplied(issue, context) {
 
 function issueReportedNotRepliedNoAssignee(issue, context) {
 	try {
-		const labels = issue.node.labels.nodes;
+		const labels = issue.labels;
 		const labelValues = labels.map(label => label.name.toLowerCase());
-		const assignees = issue.node.assignees.nodes;
+		const assignees = issue.assignees;
 		return labelValues.includes('customer-reported') && !labelValues.includes('customer-replied-to') && assignees.length === 0;
 	} catch (err) {
 		context.error(err);
@@ -105,9 +105,9 @@ function issueReportedNotRepliedNoAssignee(issue, context) {
 
 function issueReportedAndRepliedNoAssignee(issue, context) {
 	try {
-		const labels = issue.node.labels.nodes;
+		const labels = issue.labels;
 		const labelValues = labels.map(label => label.name.toLowerCase());
-		const assignees = issue.node.assignees.nodes;
+		const assignees = issue.assignees;
 		return labelValues.includes('customer-reported') && labelValues.includes('customer-replied-to') && assignees.length === 0;
 	} catch (err) {
 		context.error(err);
