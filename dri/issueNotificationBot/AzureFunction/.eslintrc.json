@@ -4,9 +4,6 @@
         "es2020": true,
         "node": true
     },
-    "extends": [
-        "standard"
-    ],
     "parserOptions": {
         "ecmaVersion": 9,
         "sourceType": "module",
@@ -15,6 +12,9 @@
         }
     },
     "rules": {
+        "indent": ["error", "tab"],
+        "allowIndentationTabs": true,
+        "no-tabs": 0,
         "semi": ["error", "always"],
         "no-return-await": 0,
         "space-before-function-paren": ["error", {

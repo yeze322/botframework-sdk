@@ -27,7 +27,7 @@ At 8am every morning, the Azure Function queries GitHub for all open PRs. It cat
 Rename `.env.sample` to `.env` and fill out the following environment variables:
 
 ```cmd
-GitHubToken=<Your GitHub Access Token Created in GitHub>
+GitHubToken=<Your GitHub Access Token Created in GitHub> // Ensure this token has SSO Access to Microsoft Org and scopes `read:discussion` and `read:org`
 
 MicrosoftAppId=<AppId of the Bot>
 MicrosoftAppPassword=<AppPassword of the Bot>

@@ -1,10 +1,16 @@
 {
   "bindings": [
     {
-      "name": "myTimer",
+      "name": "everyHalfHour",
       "type": "timerTrigger",
       "direction": "in",
       "schedule": "0 */30 * * * *"
+    },
+    {
+      "name": "atEightAM",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0 0 8 * * *"
     }
   ]
 }
