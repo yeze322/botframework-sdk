@@ -10,12 +10,12 @@ using System.Collections.Generic;
 #nullable enable
 namespace IssueNotificationBot.Models
 {
-    public class GitHubPRs
+    public class GitHubPRReviewer
     {
-        [JsonProperty(PropertyName = "singleReviewers")]
-        public readonly Dictionary<string, GitHubPR[]> SingleReviewers;
-        [JsonProperty(PropertyName = "groupReviewers")]
-        public readonly Dictionary<string, GitHubPR[]> GroupReviewers;
+        [JsonProperty(PropertyName = "single")]
+        public readonly GitHubPR[] Single;
+        [JsonProperty(PropertyName = "group")]
+        public readonly GitHubPR[] Group;
     }
 
     public class GitHubPR

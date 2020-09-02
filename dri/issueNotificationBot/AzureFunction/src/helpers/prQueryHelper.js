@@ -85,8 +85,7 @@ function getPRQuery(search) {
 }
 
 function groupPRs(prArray) {
-  const singleReviewers = {};
-  const groupReviewers = {};
+  const prsByReviewer = {};
 
   prArray.forEach((pr) => {
     if (prWaitingOnReviewer(pr)) {
@@ -118,10 +117,13 @@ function groupPRs(prArray) {
               prReviewers.add(member.login);
               const newPR = { ...pr, reviewingForGroup: reviewer.name };
 
-              if (!groupReviewers[member.login]) {
-                groupReviewers[member.login] = [newPR];
+              if (!prsByReviewer[member.login]) {
+                prsByReviewer[member.login] = {
+                  single: [],
+                  group: [newPR]
+                };
               } else {
-                groupReviewers[member.login].push(newPR); 
+                prsByReviewer[member.login].group.push(newPR); 
               }
             }            
           });
@@ -137,20 +139,20 @@ function groupPRs(prArray) {
       // Separate reviewers who are not part of requested review groups
       singles.forEach((reviewer) => {
         if (!groupMembers.has(reviewer.login)) {
-          if (!singleReviewers[reviewer.login]) {
-            singleReviewers[reviewer.login] = [pr];
+          if (!prsByReviewer[reviewer.login]) {
+            prsByReviewer[reviewer.login] = {
+              single: [pr],
+              group: []
+            };
           } else {
-            singleReviewers[reviewer.login].push(pr);
+            prsByReviewer[reviewer.login].single.push(pr); 
           }
         }
       })
     }
   });
 
-  return {
-    singleReviewers,
-    groupReviewers
-  };
+  return prsByReviewer;
 }
 
 const reviewDecisions = {

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.Rest.Serialization;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -47,7 +48,7 @@ namespace IssueNotificationBot
                 if (await IsAuthenticatedAsync(Request))
                 {
                     var gitHubData = SafeJsonConvert.DeserializeObject<GitHubIssues>(json);
-                    await GitHubDataProcessor.ProcessData(gitHubData);
+                    //await GitHubDataProcessor.ProcessData(gitHubData);
 
                     Logger.LogInformation("Finished processing post on /api/data/issues");
                     return HttpStatusCode.OK;
@@ -77,7 +78,7 @@ namespace IssueNotificationBot
             {
                 if (await IsAuthenticatedAsync(Request))
                 {
-                    var gitHubData = SafeJsonConvert.DeserializeObject<GitHubPRs>(json);
+                    var gitHubData = SafeJsonConvert.DeserializeObject<Dictionary<string, GitHubPRReviewer>>(json);
                     // TODO: Process Data
                     //await GitHubDataProcessor.ProcessData(gitHubData);
 
