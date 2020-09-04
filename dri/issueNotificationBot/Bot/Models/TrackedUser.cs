@@ -53,12 +53,12 @@ namespace IssueNotificationBot.Models
         public int NotifyPriorToExpiryHours;
         public int NotificationFrequency;
 
-        public TimePeriodNotification(int _expireHours, string name, int notifyPriorToExpiryHours, int notificationFrequency, bool enabled = true)
+        public TimePeriodNotification(int _expireHours, string name, int notifyPriorToExpiryHours, int notificationFrequencyHours, bool enabled = true)
         {
             ExpireHours = _expireHours;
             Name = name;
             NotifyPriorToExpiryHours = notifyPriorToExpiryHours;
-            NotificationFrequency = notificationFrequency;
+            NotificationFrequency = notificationFrequencyHours;
             Enabled = enabled;
         }
     }

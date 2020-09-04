@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -50,7 +51,7 @@ namespace IssueNotificationBot.Services
                 if (NotifyMaintainer)
                 {
                     var maintainer = await userStorage.GetTrackedUserFromGitHubUserId(Constants.MaintainerGitHubId);
-                    if (maintainer != null)
+                    if (maintainer != null && turnContext.Activity.From.Name != maintainer.TeamsUserInfo.Name)
                     {
                         var errorMessage = $"Error occurred for {turnContext?.Activity?.From?.Name}:\n{exception.Message}\n{exception.StackTrace}\n{turnContext?.Activity}";
                         Logger.LogError(errorMessage);
@@ -78,7 +79,7 @@ namespace IssueNotificationBot.Services
 
         public async Task SendIssueNotificationToUserAsync(TrackedUser user, GitHubIssue issue, string nearingOrExpiredMessage, DateTime expires, string action, CancellationToken cancellationToken = default)
         {
-            Logger.LogInformation($"Sending notification to {user.TeamsUserInfo.Name} for {issue.Number}");
+            Logger.LogInformation($"Sending Issue notification to {user.TeamsUserInfo.Name} for {issue.Number}");
 
             var maintainer = await UserStorage.GetTrackedUserFromGitHubUserId(Constants.MaintainerGitHubId);
 
@@ -89,6 +90,20 @@ namespace IssueNotificationBot.Services
 
             var activityId = await SendProactiveNotificationToUserAsync(user, activity, cancellationToken);
             StoreIssueCardActivityId(activityId.Id, issue.Number, user.TeamsUserInfo.Id);
+        }
+
+        public async Task SendPRNotificationToUserAsync(TrackedUser user, PRCardTemplate prs, CancellationToken cancellationToken = default)
+        {
+            Logger.LogInformation($"Sending PR notification to {user.TeamsUserInfo.Name} with {prs.SinglePRs.Length} single and {prs.GroupPRs.Length} group");
+
+            var maintainer = await UserStorage.GetTrackedUserFromGitHubUserId(Constants.MaintainerGitHubId);
+
+            var card = TemplateCardHelper.GetPersonalPRCard(prs, maintainer);
+
+            var activity = MessageFactory.Attachment(card);
+            activity.TeamsNotifyUser();
+
+            await SendProactiveNotificationToUserAsync(user, activity, cancellationToken);
         }
 
         public async Task CreatePersonalConversationAsync(ConversationReference conversationReference, BotCallbackHandler callback, CancellationToken cancellationToken)

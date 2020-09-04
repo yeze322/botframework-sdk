@@ -80,7 +80,8 @@ namespace IssueNotificationBot
             services.AddSingleton<IStorage>(storage);
             services.AddSingleton<UserStorage>();
 
-            services.AddSingleton<GitHubDataProcessor>();
+            services.AddSingleton<GitHubIssueProcessor>();
+            services.AddSingleton<GitHubPRProcessor>();
             services.AddSingleton<NotificationHelper>();
         }
 

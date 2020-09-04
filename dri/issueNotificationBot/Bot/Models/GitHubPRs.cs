@@ -52,6 +52,7 @@ namespace IssueNotificationBot.Models
         public readonly string Title;
         [JsonProperty(PropertyName = "url")]
         public readonly Uri Url;
+        public bool Highlight;
     }
 
     public class GitHubReviewRequest

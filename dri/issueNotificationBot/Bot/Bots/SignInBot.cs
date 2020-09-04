@@ -13,6 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace IssueNotificationBot
 {
@@ -49,11 +51,17 @@ namespace IssueNotificationBot
         {
             var handled = false;
 
+            if (Maintainer == null)
+            {
+                Maintainer = await UserStorage.GetTrackedUserFromGitHubUserId(Constants.MaintainerGitHubId);
+            }
+
             turnContext.Activity.RemoveMentionText(turnContext.Activity.Recipient.Id);
 
-            //If the user sends the Login Command and we don't have their info, send them through the auth dialog
+            // If the user sends the Login Command and we don't have their info, send them through the auth dialog
             if (string.Equals(turnContext.Activity.Text, Constants.LoginCommand, StringComparison.InvariantCultureIgnoreCase) ||
-                !await UserStorage.HaveUserDetails(turnContext.Activity.From.Id))
+                // Prompt users to login if we don't have their user details, but skip for maintainer.
+                (!await UserStorage.HaveUserDetails(turnContext.Activity.From.Id) && turnContext.Activity.From.Name != Maintainer?.TeamsUserInfo.Name))
             {
                 // We don't want to send the OAuth card to a group conversation
                 if (turnContext.Activity.Conversation.ConversationType == Constants.PersonalConversationType)
@@ -70,12 +78,6 @@ namespace IssueNotificationBot
                 }
 
                 handled = true;
-            }
-
-            // Handle maintainer commands
-            if (Maintainer == null)
-            {
-                Maintainer = await UserStorage.GetTrackedUserFromGitHubUserId(Constants.MaintainerGitHubId);
             }
 
             // Check if Maintainer name matches incoming. ID seems to change between bots.
@@ -100,6 +102,9 @@ namespace IssueNotificationBot
                 else if (string.Equals(turnContext.Activity.Text, Constants.MaintainerResendGreetings, StringComparison.InvariantCultureIgnoreCase))
                 {
                     await ResendGreetings(turnContext, cancellationToken);
+                } else
+                {
+                    await turnContext.SendActivityAsync("unknown command");
                 }
 
                 handled = true;
@@ -180,7 +185,14 @@ namespace IssueNotificationBot
                 "TEST ACTION",
                 Maintainer);
 
-            await turnContext.SendActivitiesAsync(new IActivity[] { MessageFactory.Attachment(welcomeCard), MessageFactory.Attachment(issueCard) });
+            var fakePRs = GetFakePRs();
+
+            var prCard = TemplateCardHelper.GetPersonalPRCard(
+                JsonConvert.DeserializeObject<PRCardTemplate>(JsonConvert.SerializeObject(fakePRs)),
+                Maintainer
+            );
+
+            await turnContext.SendActivitiesAsync(new IActivity[] { MessageFactory.Attachment(welcomeCard), MessageFactory.Attachment(issueCard), MessageFactory.Attachment(prCard) });
         }
 
         private async Task ResendGreetings(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
@@ -230,6 +242,33 @@ namespace IssueNotificationBot
                 activity.TeamsNotifyUser();
                 await turnContext2.SendActivityAsync(activity, cancellationToken2);
             }, cancellationToken);
+        }
+
+        private object GetFakePRs()
+        {
+            var template = new
+            {
+                SinglePRs = new List<object>(),
+                GroupPRs = new List<object>()
+            };
+
+            for (int i = 0; i < 10; i++)
+            {
+                var pr = new
+                {
+                    Title = $"{i}FAKE PR TITLE DO SOME THINGS",
+                    Repository = $"{i}FAKE REPOSITORY",
+                    CreatedAt = DateTime.Now.AddDays(-(10 - i)),
+                    URL = $"wwww.{i}.com",
+                    Highlight = i < 2,
+                    Group = "fakeGroup"
+                };
+
+                template.SinglePRs.Add(pr);
+                template.GroupPRs.Add(pr);
+            }
+
+            return template;
         }
     }
 }

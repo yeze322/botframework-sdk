@@ -24,14 +24,16 @@ namespace IssueNotificationBot
     public class DataController : ControllerBase
     {
         private readonly IConfiguration Configuration;
-        private readonly GitHubDataProcessor GitHubDataProcessor;
+        private readonly GitHubIssueProcessor GitHubIssueProcessor;
+        private readonly GitHubPRProcessor GitHubPRProcessor;
         private readonly ILogger Logger;
         private readonly SimpleCredentialProvider Credentials;
 
-        public DataController(IConfiguration configuration, GitHubDataProcessor gitHubDataProcessor, ILogger<DataController> logger)
+        public DataController(IConfiguration configuration, GitHubIssueProcessor gitHubIssueProcessor, GitHubPRProcessor gitHubPRProcessor, ILogger<DataController> logger)
         {
             Configuration = configuration;
-            GitHubDataProcessor = gitHubDataProcessor;
+            GitHubIssueProcessor = gitHubIssueProcessor;
+            GitHubPRProcessor = gitHubPRProcessor;
             Logger = logger;
             Credentials = new SimpleCredentialProvider(Configuration["MicrosoftAppId"], Configuration["MicrosoftAppPassword"]);
         }
@@ -47,8 +49,9 @@ namespace IssueNotificationBot
             {
                 if (await IsAuthenticatedAsync(Request))
                 {
-                    var gitHubData = SafeJsonConvert.DeserializeObject<GitHubIssues>(json);
-                    //await GitHubDataProcessor.ProcessData(gitHubData);
+                    var issues = SafeJsonConvert.DeserializeObject<GitHubIssues>(json);
+                    //await GitHubIssueProcessor.ProcessIssues(issues);
+                    // TODO: Uncomment
 
                     Logger.LogInformation("Finished processing post on /api/data/issues");
                     return HttpStatusCode.OK;
@@ -78,9 +81,8 @@ namespace IssueNotificationBot
             {
                 if (await IsAuthenticatedAsync(Request))
                 {
-                    var gitHubData = SafeJsonConvert.DeserializeObject<Dictionary<string, GitHubPRReviewer>>(json);
-                    // TODO: Process Data
-                    //await GitHubDataProcessor.ProcessData(gitHubData);
+                    var prs = SafeJsonConvert.DeserializeObject<Dictionary<string, GitHubPRReviewer>>(json);
+                    await GitHubPRProcessor.ProcessPRs(prs);
 
                     Logger.LogInformation("Finished processing post on /api/data/prs");
                     return HttpStatusCode.OK;
