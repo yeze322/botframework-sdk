@@ -26,14 +26,6 @@ namespace IssueNotificationBot.Services
 
         public async Task SendNotificationsForStalePRs(Dictionary<string, GitHubPRReviewer> prs)
         {
-            var expirePeriod = new TimePeriodNotification
-                (
-                    72,
-                    "PR Notification",
-                    0,
-                    23
-                );
-
             var now = DateTime.Now;
 
             foreach(var user in TrackedUsers)
@@ -41,17 +33,24 @@ namespace IssueNotificationBot.Services
                 // If we're tracking the user and they have PRs they're a reviewer for
                 if (prs.TryGetValue(user.Value.GitHubDetails.Login, out GitHubPRReviewer reviewer))
                 {
+                    var notificationSetting = user.Value.NotificationSettings.TimePeriodNotifications.Single(setting => setting.Name == "PR Notification");
+
+                    if (!user.Value.NotificationSettings.AllEnabled || !notificationSetting.Enabled)
+                    {
+                        continue;
+                    }
+
                     var cardTemplate = new PRCardTemplate
                     {
                         SinglePRs = new List<GitHubPRForCardTemplate>(),
                         GroupPRs = new List<GitHubPRForCardTemplate>(),
                         PRQueryUrl = $"https://github.com/search?q=is%3Aopen+review-requested%3A{user.Value.GitHubDetails.Login}+sort%3Acreated-asc+repo%3AMicrosoft%2Fbotbuilder-azure+repo%3AMicrosoft%2Fbotbuilder-cognitiveservices+repo%3AMicrosoft%2Fbotbuilder-dotnet+repo%3AMicrosoft%2Fbotbuilder-java+repo%3AMicrosoft%2Fbotbuilder-js+repo%3AMicrosoft%2Fbotbuilder-python+repo%3AMicrosoft%2Fbotbuilder-samples+repo%3AMicrosoft%2Fbotbuilder-tools+repo%3AMicrosoft%2Fbotbuilder-v3+repo%3AMicrosoft%2Fbotframework-emulator+repo%3AMicrosoft%2Fbotframework-directlinejs+repo%3AMicrosoft%2Fbotframework-solutions+repo%3AMicrosoft%2Fbotframework-services+repo%3AMicrosoft%2Fbotframework-sdk+repo%3AMicrosoft%2Fbotframework-composer+repo%3AMicrosoft%2Fbotframework-cli+repo%3AMicrosoft%2Fbotframework-webchat+repo%3AMicrosoftDocs%2Fbot-docs+is%3Apr&type=Issues"
-                };
+                    };
 
                     // Highlight > 3 day old PRs in Adaptive Card
                     foreach(var pr in reviewer.Single.OrderBy(pr => pr.CreatedAt))
                     {
-                        var expires = GetExpiration(pr, expirePeriod, now);
+                        var expires = GetExpiration(pr, notificationSetting, now);
                         if (now > expires)
                         {
                             pr.Highlight = true;
@@ -63,7 +62,7 @@ namespace IssueNotificationBot.Services
                     }
                     foreach (var pr in reviewer.Group.OrderBy(pr => pr.CreatedAt))
                     {
-                        var expires = GetExpiration(pr, expirePeriod, now);
+                        var expires = GetExpiration(pr, notificationSetting, now);
                         if (now > expires)
                         {
                             pr.Highlight = true;
