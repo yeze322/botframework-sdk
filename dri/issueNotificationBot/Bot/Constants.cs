@@ -31,6 +31,7 @@
         public const string DisableMaintainerNotificationsCommand = MaintainerCommandPrefix + "disableNotifications";
         public const string MaintainerTestCards = MaintainerCommandPrefix + "sendCards";
         public const string MaintainerResendGreetings = MaintainerCommandPrefix + "resendGreetings";
+        public const string UpdateUserNotificationSettings = MaintainerCommandPrefix + "updateNotificationSettings";
 
         public const string TestRepo = "testRepoForIssueNotificationBot";
     }

@@ -21,7 +21,7 @@ namespace IssueNotificationBot.Models
 
     public class NotificationSettings
     {
-        public bool Enabled = true;
+        public bool AllEnabled = true;
         public TimePeriodNotification[] TimePeriodNotifications =
         {
             new TimePeriodNotification(
@@ -41,6 +41,12 @@ namespace IssueNotificationBot.Models
                 "90d",
                 24 * 7,
                 24 * 3
+                ),
+            new TimePeriodNotification(
+                24 * 3,
+                "PR Notification",
+                0,
+                23
                 )
         };
     }

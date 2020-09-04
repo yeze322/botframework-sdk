@@ -25,7 +25,7 @@ namespace IssueNotificationBot.Services
 
             var users = await GetGitHubUsers();
             users.TryAdd(user.GitHubDetails.Login, user);
-            await Db.WriteAsync(new Dictionary<string, object>() { { Constants.GitHubUserStorageKey, users } });
+            await OverwriteGitHubUsersDatabase(users);
         }
 
         public async Task RemoveGitHubUser(string gitHubUserLogin)
@@ -34,7 +34,7 @@ namespace IssueNotificationBot.Services
 
             var users = await GetGitHubUsers();
             users.Remove(gitHubUserLogin);
-            await Db.WriteAsync(new Dictionary<string, object>() { { Constants.GitHubUserStorageKey, users } });
+            await OverwriteGitHubUsersDatabase(users);
         }
 
         public async Task<Dictionary<string, TrackedUser>> GetGitHubUsers()
@@ -56,7 +56,7 @@ namespace IssueNotificationBot.Services
 
             var users = await GetTeamsUsers();
             users.TryAdd(user.TeamsUserId, user);
-            await Db.WriteAsync(new Dictionary<string, object>() { { Constants.TeamsIdToGitHubUserMapStorageKey, users } });
+            await OverwriteTeamsUsersDatabase(users);
         }
 
         public async Task RemoveFromTeamsUserToGitHubUserMap(TeamsUserToGitHubMap user)
@@ -65,7 +65,7 @@ namespace IssueNotificationBot.Services
 
             var users = await GetTeamsUsers();
             users.Remove(user.TeamsUserId);
-            await Db.WriteAsync(new Dictionary<string, object>() { { Constants.TeamsIdToGitHubUserMapStorageKey, users } });
+            await OverwriteTeamsUsersDatabase(users);
         }
 
         public async Task<TeamsUserToGitHubMap> GetTeamsUserToGitHubMap(string teamsUserId)
@@ -108,6 +108,30 @@ namespace IssueNotificationBot.Services
         {
             var gitHubUserId = (await GetTeamsUserToGitHubMap(teamsUserId))?.GitHubUserLogin;
             return await GetTrackedUserFromGitHubUserId(gitHubUserId);
+        }
+
+        public async Task OverwriteNotificationSettingsForAllUsers(NotificationSettings toOverwrite = null)
+        {
+            toOverwrite ??= new NotificationSettings();
+
+            var users = await GetGitHubUsers();
+
+            foreach(var user in users)
+            {
+                user.Value.NotificationSettings = toOverwrite;
+            }
+
+            await OverwriteGitHubUsersDatabase(users);
+        }
+
+        private async Task OverwriteGitHubUsersDatabase(object users)
+        {
+            await Db.WriteAsync(new Dictionary<string, object>() { { Constants.GitHubUserStorageKey, users } });
+        }
+
+        private async Task OverwriteTeamsUsersDatabase(object users)
+        {
+            await Db.WriteAsync(new Dictionary<string, object>() { { Constants.TeamsIdToGitHubUserMapStorageKey, users } });
         }
 
         private async Task<Dictionary<string, T>> GetUsersDb<T>(string key)

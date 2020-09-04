@@ -53,7 +53,7 @@ namespace IssueNotificationBot.Services
         private async Task NotifyAssigneeAsNecessary(TrackedUser user, GitHubIssue issue)
         {
             var now = DateTime.UtcNow;
-            if (user.NotificationSettings.Enabled)
+            if (user.NotificationSettings.AllEnabled)
             {
                 // Check each time period from largest to smallest
                 foreach (TimePeriodNotification timePeriod in user.NotificationSettings.TimePeriodNotifications.OrderByDescending(item => item.ExpireHours).ToList())

@@ -102,7 +102,13 @@ namespace IssueNotificationBot
                 else if (string.Equals(turnContext.Activity.Text, Constants.MaintainerResendGreetings, StringComparison.InvariantCultureIgnoreCase))
                 {
                     await ResendGreetings(turnContext, cancellationToken);
-                } else
+                }
+                else if (string.Equals(turnContext.Activity.Text, Constants.UpdateUserNotificationSettings, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    await UserStorage.OverwriteNotificationSettingsForAllUsers();
+                    await turnContext.SendActivityAsync("All users have default notification settings");
+                }
+                else
                 {
                     await turnContext.SendActivityAsync("unknown command");
                 }
