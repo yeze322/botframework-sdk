@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace IssueNotificationBot.Services
@@ -40,20 +41,15 @@ namespace IssueNotificationBot.Services
                 // If we're tracking the user and they have PRs they're a reviewer for
                 if (prs.TryGetValue(user.Value.GitHubDetails.Login, out GitHubPRReviewer reviewer))
                 {
-                    var tempCardObject = new
+                    var cardTemplate = new PRCardTemplate
                     {
-                        SinglePRs = from createdAt in reviewer.Single
-                                    orderby createdAt descending
-                                    select createdAt,
-                        GroupPRs = from createdAt in reviewer.Group
-                                   orderby createdAt descending
-                                   select createdAt
-                    };
-
-                    var cardTemplate = new PRCardTemplate();
+                        SinglePRs = new List<GitHubPRForCardTemplate>(),
+                        GroupPRs = new List<GitHubPRForCardTemplate>(),
+                        PRQueryUrl = $"https://github.com/search?q=is%3Aopen+review-requested%3A{user.Value.GitHubDetails.Login}+sort%3Acreated-asc+repo%3AMicrosoft%2Fbotbuilder-azure+repo%3AMicrosoft%2Fbotbuilder-cognitiveservices+repo%3AMicrosoft%2Fbotbuilder-dotnet+repo%3AMicrosoft%2Fbotbuilder-java+repo%3AMicrosoft%2Fbotbuilder-js+repo%3AMicrosoft%2Fbotbuilder-python+repo%3AMicrosoft%2Fbotbuilder-samples+repo%3AMicrosoft%2Fbotbuilder-tools+repo%3AMicrosoft%2Fbotbuilder-v3+repo%3AMicrosoft%2Fbotframework-emulator+repo%3AMicrosoft%2Fbotframework-directlinejs+repo%3AMicrosoft%2Fbotframework-solutions+repo%3AMicrosoft%2Fbotframework-services+repo%3AMicrosoft%2Fbotframework-sdk+repo%3AMicrosoft%2Fbotframework-composer+repo%3AMicrosoft%2Fbotframework-cli+repo%3AMicrosoft%2Fbotframework-webchat+repo%3AMicrosoftDocs%2Fbot-docs+is%3Apr&type=Issues"
+                };
 
                     // Highlight > 3 day old PRs in Adaptive Card
-                    foreach(var pr in tempCardObject.SinglePRs)
+                    foreach(var pr in reviewer.Single.OrderBy(pr => pr.CreatedAt))
                     {
                         var expires = GetExpiration(pr, expirePeriod, now);
                         if (now > expires)
@@ -63,9 +59,9 @@ namespace IssueNotificationBot.Services
 
                         var prTemplate = ConvertPRtoTemplate(pr);
 
-                        cardTemplate.SinglePRs.Append(prTemplate);
+                        cardTemplate.SinglePRs.Add(prTemplate);
                     }
-                    foreach (var pr in tempCardObject.GroupPRs)
+                    foreach (var pr in reviewer.Group.OrderBy(pr => pr.CreatedAt))
                     {
                         var expires = GetExpiration(pr, expirePeriod, now);
                         if (now > expires)
@@ -75,7 +71,7 @@ namespace IssueNotificationBot.Services
 
                         var prTemplate = ConvertPRtoTemplate(pr);
 
-                        cardTemplate.GroupPRs.Append(prTemplate);
+                        cardTemplate.GroupPRs.Add(prTemplate);
                     }
 
                     await NotificationHelper.SendPRNotificationToUserAsync(user.Value, cardTemplate);
@@ -85,12 +81,20 @@ namespace IssueNotificationBot.Services
 
         private GitHubPRForCardTemplate ConvertPRtoTemplate(GitHubPR pr)
         {
+            var group = !string.IsNullOrEmpty(pr.ReviewingForGroup) ? pr.ReviewingForGroup : "";
+            const string groupReplacePattern = "(bf-)|(bb-)";
+            group = Regex.Replace(group, groupReplacePattern, "", RegexOptions.IgnoreCase);
+
+            var repo = pr.Repository.Name;
+            const string repoReplacePattern = "(botframework-)|(botbuilder-)";
+            repo = Regex.Replace(repo, repoReplacePattern, "", RegexOptions.IgnoreCase);
+
             return new GitHubPRForCardTemplate
             {
                 CreatedAt = pr.CreatedAt,
-                Group = !string.IsNullOrEmpty(pr.ReviewingForGroup) ? pr.ReviewingForGroup : "",
+                Group = group,
                 Highlight = pr.Highlight,
-                Respository = pr.Repository.Name,
+                Repository = repo,
                 Title = pr.Title,
                 Url = pr.Url.ToString()
             };

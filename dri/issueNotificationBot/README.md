@@ -33,7 +33,8 @@ MicrosoftAppId=<AppId of the Bot>
 MicrosoftAppPassword=<AppPassword of the Bot>
 BotBaseUrl=<https://<myBot>.azurewebsites.net>
 
-UseTestRepo=<true|false - this allows you to create a test repo and fake issues. The bot then changes the expiration time so the issue appears expired>
+UseTestRepo=<true|false> - This allows you to create a test repo and fake issues. The bot then changes the expiration time so the issue appears expired
+SendAllTo=<GitHubUsername> - For testing. This ensures that all issues and PR assignees/reviewers are set to the login you set here so that person receives all notifications.
 ```
 
 ### Run

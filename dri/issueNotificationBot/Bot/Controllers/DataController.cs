@@ -41,7 +41,7 @@ namespace IssueNotificationBot
         [HttpPost("/api/issues")]
         public async Task<HttpStatusCode> PostIssuesAsync()
         {
-            Logger.LogInformation("Received post on /api/data/issues");
+            Logger.LogInformation("Received post on /api/issues");
             using var reader = new System.IO.StreamReader(Request.Body);
             var json = await reader.ReadToEndAsync().ConfigureAwait(true);
 
@@ -50,10 +50,9 @@ namespace IssueNotificationBot
                 if (await IsAuthenticatedAsync(Request))
                 {
                     var issues = SafeJsonConvert.DeserializeObject<GitHubIssues>(json);
-                    //await GitHubIssueProcessor.ProcessIssues(issues);
-                    // TODO: Uncomment
+                    await GitHubIssueProcessor.ProcessIssues(issues);
 
-                    Logger.LogInformation("Finished processing post on /api/data/issues");
+                    Logger.LogInformation("Finished processing post on /api/issues");
                     return HttpStatusCode.OK;
                 }
 
@@ -61,11 +60,16 @@ namespace IssueNotificationBot
             }
             catch (JsonException)
             {
-                Logger.LogError("Received invalid data on /api/data/issues");
+                Logger.LogError("Received invalid data on /api/issues");
             }
             catch (Exception e)
             {
-                Logger.LogError($"Something went wrong in /api/data/issues controller: {e.Message}");
+                if (e.Message.Contains("Invalid AppId"))
+                {
+                    return HttpStatusCode.Forbidden;
+                }
+
+                Logger.LogError($"Something went wrong in /api/issues controller: {e.Message}");
             }
             return HttpStatusCode.BadRequest;
         }
@@ -73,7 +77,7 @@ namespace IssueNotificationBot
         [HttpPost("/api/prs")]
         public async Task<HttpStatusCode> PostPRsAsync()
         {
-            Logger.LogInformation("Received post on /api/data/prs");
+            Logger.LogInformation("Received post on /api/prs");
             using var reader = new System.IO.StreamReader(Request.Body);
             var json = await reader.ReadToEndAsync().ConfigureAwait(true);
 
@@ -84,7 +88,7 @@ namespace IssueNotificationBot
                     var prs = SafeJsonConvert.DeserializeObject<Dictionary<string, GitHubPRReviewer>>(json);
                     await GitHubPRProcessor.ProcessPRs(prs);
 
-                    Logger.LogInformation("Finished processing post on /api/data/prs");
+                    Logger.LogInformation("Finished processing post on /api/prs");
                     return HttpStatusCode.OK;
                 }
 
@@ -92,11 +96,11 @@ namespace IssueNotificationBot
             }
             catch (JsonException)
             {
-                Logger.LogError("Received invalid data on /api/data/prs");
+                Logger.LogError("Received invalid data on /api/prs");
             }
             catch (Exception e)
             {
-                Logger.LogError($"Something went wrong in /api/data/prs controller: {e.Message}");
+                Logger.LogError($"Something went wrong in /api/prs controller: {e.Message}");
             }
             return HttpStatusCode.BadRequest;
         }

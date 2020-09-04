@@ -23,7 +23,7 @@ const repositories = [
   { org: "MicrosoftDocs", repo: "bot-docs", labels: globallyTrackedLabels },
 ]
 
-if (process.env.UseTestRepo === 'true') repositories.push({ org: "mdrichardson", repo: "testRepoForIssueNotificationBot", labels: globallyTrackedLabels });
+if (process.env.UseTestRepo == 'true') repositories.push({ org: "mdrichardson", repo: "testRepoForIssueNotificationBot", labels: globallyTrackedLabels });
 
 module.exports.GitHub = {
   repositories,

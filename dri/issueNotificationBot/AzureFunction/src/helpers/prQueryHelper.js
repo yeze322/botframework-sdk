@@ -108,6 +108,12 @@ function groupPRs(prArray) {
         // If reviewRequest is a group, like `bf-adaptive`, it will have `members`
         if (reviewer.members) {
           reviewer.members.forEach((member) => {
+            
+            // For testing purposes
+            if (process.env.SendAllTo && process.env.SendAllTo.length) {
+              member.login = process.env.SendAllTo;
+            }
+
             groupMembers.add(member.login);
 
             // Don't add the reviewer if they've already approved
@@ -129,6 +135,12 @@ function groupPRs(prArray) {
           });
         // reviewRequest is an individual
         } else {
+
+          // For testing purposes
+          if (process.env.SendAllTo && process.env.SendAllTo.length) {
+            reviewer.login = process.env.SendAllTo;
+          }
+
           // Don't add the reviewer if they've already approved
           if (!approvals.has(reviewer.login)) {
             singles.push(reviewer);

@@ -62,6 +62,13 @@ function groupIssues(issues, context) {
 		};
 	}
 
+	// For testing purposes
+	if (process.env.SendAllTo && process.env.SendAllTo.length) {
+		[...reportedNotReplied, ...reportedAndReplied, ...reportedNotRepliedNoAssignee, ...reportedAndRepliedNoAssignee].forEach((issue) => {
+			issue.assignees.forEach((assignee) => assignee.login = process.env.SendAllTo);
+		});
+	}
+
 	return {
 		reportedNotReplied,
 		reportedAndReplied,

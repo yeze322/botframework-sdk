@@ -53,6 +53,7 @@ namespace IssueNotificationBot.Services
             {
                 singlePRs = prs.SinglePRs,
                 groupPRs = prs.GroupPRs,
+                prQueryUrl = prs.PRQueryUrl,
                 maintainerName = maintainer?.TeamsUserInfo?.Name,
                 maintainerEmail = maintainer?.TeamsUserInfo?.Email
             };

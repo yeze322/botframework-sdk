@@ -94,7 +94,7 @@ namespace IssueNotificationBot.Services
 
         public async Task SendPRNotificationToUserAsync(TrackedUser user, PRCardTemplate prs, CancellationToken cancellationToken = default)
         {
-            Logger.LogInformation($"Sending PR notification to {user.TeamsUserInfo.Name} with {prs.SinglePRs.Length} single and {prs.GroupPRs.Length} group");
+            Logger.LogInformation($"Sending PR notification to {user.TeamsUserInfo.Name} with {prs.SinglePRs.Count} single and {prs.GroupPRs.Count} group");
 
             var maintainer = await UserStorage.GetTrackedUserFromGitHubUserId(Constants.MaintainerGitHubId);
 
