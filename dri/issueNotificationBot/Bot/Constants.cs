@@ -26,13 +26,26 @@
         public const string NoOAuthInGroupConversationsResponse = "Please sign in via the 1:1 conversation that I sent you previously. If you need me to send it again, please type \"login\" **in our 1:1 conversation**";
 
         public const string LoginCommand = "login";
-        public const string MaintainerCommandPrefix = "command:";
-        public const string EnableMaintainerNotificationsCommand = MaintainerCommandPrefix + "enableNotifications";
-        public const string DisableMaintainerNotificationsCommand = MaintainerCommandPrefix + "disableNotifications";
-        public const string MaintainerTestCards = MaintainerCommandPrefix + "sendCards";
-        public const string MaintainerResendGreetings = MaintainerCommandPrefix + "resendGreetings";
-        public const string UpdateUserNotificationSettings = MaintainerCommandPrefix + "updateNotificationSettings";
 
         public const string TestRepo = "testRepoForIssueNotificationBot";
+    }
+
+    static public class MaintainerCommands
+    {
+        public const string CommandPrefix = "command:";
+        public const string ShowCommands = CommandPrefix + "showCommands";
+
+        public const string EnableMaintainerNotifications = CommandPrefix + "enableNotifications";
+        public const string DisableMaintainerNotifications = CommandPrefix + "disableNotifications";
+
+        public const string TestCards = CommandPrefix + "testCards";
+
+        public const string ResendGrettings = CommandPrefix + "resendGreetings";
+
+        public const string UpdateUserNotificationSettings = CommandPrefix + "updateNotificationSettings";
+
+        public const string SetBroadcastMessage = CommandPrefix + "setBroadcastMessage";
+        public const string ViewBroadcastMessage = CommandPrefix + "viewBroadcastMessage";
+        public const string SendBroadcastMessage = CommandPrefix + "sendBroadcastMessage";
     }
 }

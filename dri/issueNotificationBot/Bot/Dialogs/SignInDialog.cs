@@ -17,12 +17,14 @@ namespace IssueNotificationBot
     public class SignInDialog : LogoutDialog
     {
         protected readonly ILogger Logger;
+        protected readonly NotificationHelper NotificationHelper;
         protected readonly UserStorage UserStorage;
 
-        public SignInDialog(IConfiguration configuration, ILogger<SignInDialog> logger, UserStorage userStorage)
+        public SignInDialog(IConfiguration configuration, ILogger<SignInDialog> logger, NotificationHelper notificationHelper, UserStorage userStorage)
             : base(nameof(SignInDialog), configuration["ConnectionName"], logger)
         {
             Logger = logger;
+            NotificationHelper = notificationHelper;
             UserStorage = userStorage;
 
             AddDialog(new OAuthPrompt(
@@ -68,8 +70,7 @@ namespace IssueNotificationBot
                     ConversationReference = stepContext.Context.Activity.GetConversationReference()
                 };
 
-                var maintainer = await UserStorage.GetTrackedUserFromGitHubUserId(Constants.MaintainerGitHubId);
-                var card = TemplateCardHelper.GetUserWelcomeCard(user.GitHubDetails.Avatar_url, user.GitHubDetails.Login, user.GitHubDetails.Name, maintainer);
+                var card = TemplateCardHelper.GetUserWelcomeCard(user.GitHubDetails.Avatar_url, user.GitHubDetails.Login, user.GitHubDetails.Name, NotificationHelper.Maintainer);
 
                 await stepContext.Context.SendActivityAsync(MessageFactory.Attachment(card), cancellationToken);
 

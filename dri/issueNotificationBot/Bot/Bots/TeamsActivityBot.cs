@@ -16,10 +16,20 @@ using System.Threading.Tasks;
 
 namespace IssueNotificationBot
 {
-    public class IssueNotificationBot<T> : SignInBot<T> where T : Dialog
+    public class TeamsActivityBot<TUserDialog, TMaintainerDialog> : MessagesBot<TUserDialog, TMaintainerDialog>
+        where TUserDialog : Dialog
+        where TMaintainerDialog : Dialog
     {
-        public IssueNotificationBot(ConversationState conversationState, UserState userState, T dialog, ILogger<SignInBot<T>> logger, UserStorage userStorage, NotificationHelper notificatioHelper)
-            : base(conversationState, userState, dialog, logger, userStorage, notificatioHelper)
+        public TeamsActivityBot(
+            ConversationState conversationState,
+            UserState userState,
+            TUserDialog userDialog,
+            TMaintainerDialog maintainerDialog,
+            ILogger<MessagesBot<TUserDialog, TMaintainerDialog>> logger,
+            UserStorage userStorage,
+            MessageBroadcaster messageBroadcaster,
+            NotificationHelper notificationHelper)
+            : base(conversationState, userState, userDialog, maintainerDialog, logger, userStorage, messageBroadcaster, notificationHelper)
         {
         }
 
@@ -34,7 +44,7 @@ namespace IssueNotificationBot
                     // Greet each new user when user is added
                     if (member.Id != turnContext.Activity.Recipient.Id && !await UserStorage.HaveUserDetails(member.Id))
                     {
-                        await GreetNewTeamMember(member, turnContext, cancellationToken);
+                        await NotificationHelper.GreetNewTeamMember(member, turnContext, cancellationToken);
                     }
                     // If the bot is added, we need to get all members and message them to login, proactively, if we don't have their information already
                     else
@@ -48,7 +58,7 @@ namespace IssueNotificationBot
                                 {
                                     try
                                     {
-                                        await GreetNewTeamMember(teamMember, turnContext, cancellationToken);
+                                        await NotificationHelper.GreetNewTeamMember(teamMember, turnContext, cancellationToken);
                                     }
                                     // Users that block the bot throw Forbidden errors. We'll catch all exceptions in case
                                     // unforseen errors occur; we want to message as many members as possible.
@@ -56,7 +66,7 @@ namespace IssueNotificationBot
                                     {
                                         Logger.LogError(new EventId(1), e, $"Something went wrong when greeting { member.Name }");
                                     }
-                    }
+                                }
                             }
                         }
                         catch (InvalidOperationException e)
@@ -82,6 +92,16 @@ namespace IssueNotificationBot
                     }
                 }
             }
+        }
+
+        protected override async Task OnTeamsSigninVerifyStateAsync(ITurnContext<IInvokeActivity> turnContext, CancellationToken cancellationToken)
+        {
+            Logger.LogInformation("Running dialog with signin/verifystate from an Invoke Activity.");
+
+            // The OAuth Prompt needs to see the Invoke Activity in order to complete the login process.
+
+            // Run the Dialog with the new Invoke Activity.
+            await UserDialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
         }
     }
 }

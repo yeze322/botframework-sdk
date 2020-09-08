@@ -26,6 +26,14 @@ namespace IssueNotificationBot.Services
         private readonly ILogger Logger;
         public bool NotifyMaintainer = true;
         private readonly UserStorage UserStorage;
+        private TrackedUser _Maintainer;
+        public TrackedUser Maintainer
+        {
+            get
+            {
+                return _Maintainer ??= (UserStorage.GetTrackedUserFromGitHubUserId(Constants.MaintainerGitHubId)).GetAwaiter().GetResult();
+            }
+        }
 
         public NotificationHelper(IBotFrameworkHttpAdapter adapter, IConfiguration configuration, ILogger<NotificationHelper> logger, UserStorage userStorage)
         {
@@ -50,19 +58,42 @@ namespace IssueNotificationBot.Services
             {
                 if (NotifyMaintainer)
                 {
-                    var maintainer = await userStorage.GetTrackedUserFromGitHubUserId(Constants.MaintainerGitHubId);
-                    if (maintainer != null && turnContext.Activity.From.Name != maintainer.TeamsUserInfo.Name)
+                    if (Maintainer != null && turnContext.Activity.From.Name != Maintainer.TeamsUserInfo.Name)
                     {
                         var errorMessage = $"Error occurred for {turnContext?.Activity?.From?.Name}:\n{exception.Message}\n{exception.StackTrace}\n{turnContext?.Activity}";
                         Logger.LogError(errorMessage);
-                        await SendProactiveNotificationToUserAsync(maintainer, MessageFactory.Text(errorMessage));
+                        await SendProactiveNotificationToUserAsync(Maintainer, MessageFactory.Text(errorMessage));
                     }
 
                     await turnContext.SendActivityAsync("I've notified the maintainer of this bot about this error.");
                 }
-
-                await originalOnTurnError(turnContext, exception);
+                else
+                {
+                    await originalOnTurnError(turnContext, exception);
+                }
             };
+        }
+
+        public async Task GreetNewTeamMember(ChannelAccount member, ITurnContext turnContext, CancellationToken cancellationToken)
+        {
+            Logger.LogInformation($"Greeting new member: { member.Name }");
+
+            var conversationReference = turnContext.Activity.GetConversationReference();
+            conversationReference.User = member;
+
+            // TODO: Eventually, it would be nice to begin the SignInDialog here, proactively.
+            // However, I believe the user has to have sent a message, first, before the OAuthPrompt can be sent.
+            await CreatePersonalConversationAsync(conversationReference, async (turnContext2, cancellationToken2) =>
+            {
+                var activity = MessageFactory.Text($"Hello! I am {Constants.UserAgent} and I can notify you about your GitHub issues in the Bot Framework repositories that are about to \"expire\".\n" +
+                        "An \"expired\" issue is one with the `customer-reported` tag, and is nearing or past:\n" +
+                        "* 72 hours with no `customer-replied` tag\n" +
+                        "* 30 days and still open\n" +
+                        "* 90 days and still open\n\n" +
+                        "To get started, type \"login\" so that I can get your GitHub information.");
+                activity.TeamsNotifyUser();
+                await turnContext2.SendActivityAsync(activity, cancellationToken2);
+            }, cancellationToken);
         }
 
         public async Task<ResourceResponse> SendProactiveNotificationToUserAsync(TrackedUser user, IActivity activity, CancellationToken cancellationToken = default)
