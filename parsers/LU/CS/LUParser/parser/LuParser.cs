@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Antlr4.Runtime;
 
 namespace Microsoft.Botframework.LUParser.parser
@@ -35,16 +36,17 @@ namespace Microsoft.Botframework.LUParser.parser
             return null;
         }
 
-        static List<Object> ExtractModelInfoSections(LUFileParser.FileContext fileContext)
+        static List<ModelInfoSection> ExtractModelInfoSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
-                return new List<object>();
+                return new List<ModelInfoSection>();
             }
 
             var modelInfoSections = fileContext.paragraph().Select(x => x.modelInfoSection()).Where(x => x != null);
 
-            // var modelInfoSectionList
+            var modelInfoSectionList = modelInfoSections.Select(x => new ModelInfoSection(x));
+
             return null;
         }
 
@@ -57,26 +59,35 @@ namespace Microsoft.Botframework.LUParser.parser
 
             var fileContent = parser.file();
 
-            var hey = fileContent.paragraph().Select(x => x.modelInfoSection());
+            var modelInfoSectionList = fileContent.paragraph().Select(x => x.modelInfoSection());
 
             return null;
         }
 
-        static bool IsSectionEnabled(Section[] sections)
+        static bool IsSectionEnabled(List<ModelInfoSection> sections)
         {
             var modelInfoSections = sections.Where(s => s.SectionType == SectionType.ModelInfoSection);
             bool enableSections = false;
 
             if (modelInfoSections.Any())
             {
-                foreach (Section modelInfo in modelInfoSections)
+                foreach (ModelInfoSection modelInfo in modelInfoSections)
                 {
-                    // TODO: this logic is not clear due to typing
+                    var line = modelInfo.ModelInfo;
+                    var kvPair = Regex.Split(line, @"@\b(enableSections).(.*)=").Select(item => item.Trim()).ToArray();
+                    if (kvPair.Length == 4)
+                    {
+                        if (String.Equals(kvPair[1], "enableSections", StringComparison.InvariantCultureIgnoreCase) && String.Equals(kvPair[3], "true", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            enableSections = true;
+                            break;
+                        }
+                    }
                 }
             }
 
             // TODO: this is a mock behavior
-            return false;
+            return enableSections;
         }
     }
 }
