@@ -1,4 +1,7 @@
-﻿using IssueNotificationBot.Models;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using IssueNotificationBot.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Bot.Builder;
 using Microsoft.Extensions.Logging;
