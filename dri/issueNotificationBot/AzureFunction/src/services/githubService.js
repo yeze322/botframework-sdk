@@ -64,7 +64,7 @@ module.exports = class GitHubService {
 
       await this.bot.sendPRs(groupedPRs);
     } catch ({ message }) {
-      this.context.error(message);
+      this.context.log(message);
     }
   }
 
