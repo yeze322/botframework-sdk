@@ -30,7 +30,7 @@ namespace IssueNotificationBot
         private readonly UserStorage UserStorage;
         private const string CommandKey = "Command";
 
-        public MaintainerDialog(ILogger<LogoutDialog> logger, MessageBroadcaster messageBroadcaster, NotificationHelper notificationHelper, UserStorage userStorage)
+        public MaintainerDialog(ILogger<LogoutDialog> logger, MessageBroadcaster messageBroadcaster, NotificationHelper notificationHelper, UserStorage userStorage, SignInDialog dialog)
             : base(nameof(MaintainerDialog))
         {
             Logger = logger;
@@ -40,6 +40,7 @@ namespace IssueNotificationBot
 
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
+            AddDialog(dialog);
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
@@ -63,7 +64,7 @@ namespace IssueNotificationBot
                 stepContext.Context.Activity.Text = MaintainerCommands.ShowCommands;
             }
 
-            var commandsNeedingDialog = new HashSet<string>()
+            var commandsNeedingMaintainerDialog = new HashSet<string>()
             {
                 MaintainerCommands.UpdateUserNotificationSettings,
                 MaintainerCommands.SetBroadcastMessage,
@@ -73,7 +74,7 @@ namespace IssueNotificationBot
 
             if (MessageContainsCommandPrefix(stepContext.Context.Activity.Text))
             {
-                if (commandsNeedingDialog.Contains(stepContext.Context.Activity.Text))
+                if (commandsNeedingMaintainerDialog.Contains(stepContext.Context.Activity.Text))
                 {
                     return await stepContext.NextAsync();
                 }
@@ -82,6 +83,10 @@ namespace IssueNotificationBot
                     await HandleNonDialogCommands(stepContext, cancellationToken);
                     return await stepContext.EndDialogAsync();
                 }
+            }
+            else if (stepContext.Context.Activity.Text == Constants.LoginCommand)
+            {
+                return await stepContext.BeginDialogAsync(nameof(SignInDialog), null, cancellationToken);
             }
 
             return await stepContext.EndDialogAsync();

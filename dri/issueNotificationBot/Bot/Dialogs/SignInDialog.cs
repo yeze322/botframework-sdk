@@ -61,7 +61,7 @@ namespace IssueNotificationBot
             var tokenResponse = (TokenResponse)stepContext.Result;
             if (tokenResponse != null)
             {
-                Logger.LogInformation($"{stepContext.Context.Activity.From} has logged in");
+                Logger.LogInformation($"{stepContext.Context.Activity.From?.Name} has logged in");
 
                 // Get the user's GitHub information with their token
                 var client = new GitHubClient(tokenResponse.Token);
@@ -91,7 +91,7 @@ namespace IssueNotificationBot
             else
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text("Login was not successful please try again."), cancellationToken);
-                Logger.LogWarning($"Unsuccessful login for {stepContext.Context.Activity.From}");
+                Logger.LogWarning($"Unsuccessful login for {stepContext.Context.Activity.From?.Name}");
             }
 
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);

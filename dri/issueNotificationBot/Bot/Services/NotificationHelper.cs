@@ -58,7 +58,7 @@ namespace IssueNotificationBot.Services
             {
                 if (NotifyMaintainer)
                 {
-                    if (Maintainer != null && turnContext.Activity.From.Name != Maintainer.TeamsUserInfo.Name)
+                    if (Maintainer != null && turnContext.Activity.From?.Name != Maintainer.TeamsUserInfo.Name)
                     {
                         var errorMessage = $"Error occurred for {turnContext?.Activity?.From?.Name}:\n{exception.Message}\n{exception.StackTrace}\n{turnContext?.Activity}";
                         Logger.LogError(errorMessage);
