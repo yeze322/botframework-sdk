@@ -21,5 +21,18 @@ namespace Microsoft.Botframework.LUParser.parser
         {
             return parseTree.nestedIntentNameLine().nestedIntentName().GetText().Trim();
         }
+
+        public List<SimpleIntentSection> ExtractSimpleIntentSections(LUFileParser.NestedIntentSectionContext parseTree, string content)
+        {
+            var simpleIntentSections = new List<SimpleIntentSection>();
+            foreach (var subIntentDefinition in parseTree.nestedIntentBodyDefinition().subIntentDefinition())
+            {
+                var simpleIntentSection = new SimpleIntentSection(subIntentDefinition.simpleIntentSection(), content);
+                simpleIntentSection.Range.Start.Character = 0;
+                simpleIntentSections.Add(simpleIntentSection);
+            }
+
+            return simpleIntentSections;
+        }
     }
 }

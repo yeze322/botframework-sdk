@@ -4,19 +4,31 @@ using System.Text;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
-    class SimpleIntentSection: Section
+    public class SimpleIntentSection: Section
     {
-        SimpleIntentSection(LUFileParser.SimpleIntentSectionContext parseTree, string content)
+        public SimpleIntentSection()
         {
-            this.SectionType = SectionType.SimpleIntentSection;
-            this.UtteranceAndEntitiesMap = new List<UtteranceAndEntitiesMap>();
-            this.Entities = new List<Entity>();
-            this.Errors = new List<Error>();
-            this.Body = String.Empty;
+        }
+
+        public SimpleIntentSection(LUFileParser.SimpleIntentSectionContext parseTree, string content)
+        {
+            SectionType = SectionType.SimpleIntentSection;
+            UtteranceAndEntitiesMap = new List<UtteranceAndEntitiesMap>();
+            Entities = new List<Entity>();
+            Errors = new List<Error>();
+            Body = String.Empty;
 
             if (parseTree != null)
             {
-                this.Name;
+                Name = ExtractName(parseTree);
+                IntentNameLine = ExtractIntentNameLine(parseTree);
+                var result = ExtractUtterancesAndEntitiesMap(parseTree);
+                UtteranceAndEntitiesMap = result.utterances;
+                Errors = result.errors;
+                Id = $"{SectionType}_{Name}";
+                var startPosition = new Position { Line = parseTree.Start.Line, Character = parseTree.Start.Column };
+                var stopPosition = new Position { Line = parseTree.Stop.Line, Character = parseTree.Stop.Column + parseTree.Stop.Text.Length };
+                Range = new Range { Start = startPosition, End = stopPosition };
             }
         }
 
@@ -30,7 +42,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return parseTree.intentDefinition().intentNameLine().GetText().Trim();
         }
 
-        public List<UtteranceAndEntitiesMap> ExtractUtterancesAndEntitiesMap(LUFileParser.SimpleIntentSectionContext parseTree)
+        public (List<UtteranceAndEntitiesMap>utterances, List<Error> errors) ExtractUtterancesAndEntitiesMap(LUFileParser.SimpleIntentSectionContext parseTree)
         {
             var utterancesAndEntitiesMap = new List<UtteranceAndEntitiesMap>();
             var errors = new List<Error>();
@@ -48,17 +60,58 @@ namespace Microsoft.Botframework.LUParser.parser
                         );
                     }
                 }
-            }
 
-            foreach (var normalIntentStr in parseTree.intentDefinition().intentBody().normalIntentBody().normalIntentString())
-            {
-                UtteranceAndEntitiesMap utteranceAndEntities = null;
-
-                try
+                foreach (var normalIntentStr in parseTree.intentDefinition().intentBody().normalIntentBody().normalIntentString())
                 {
-                    utteranceAndEntities = 
+                    UtteranceAndEntitiesMap utteranceAndEntities = null;
+
+                    try
+                    {
+                        utteranceAndEntities = Visitor.VisitNormalIntentStringContext(normalIntentStr);
+                    }
+                    catch
+                    {
+                        errors.Add(
+                            Diagnostic.BuildDiagnostic(
+                                message: "Invalid utterance definition found. Did you miss a '{' or '}'?",
+                                context: normalIntentStr
+                            )
+                        );
+                    }
+                    if (utteranceAndEntities != null)
+                    {
+                        utteranceAndEntities.ContextText = normalIntentStr.GetText();
+                        var startPos = new Position { Line = normalIntentStr.Start.Line, Character = normalIntentStr.Start.Column };
+                        var stopPos = new Position { Line = normalIntentStr.Stop.Line, Character = normalIntentStr.Stop.Column + normalIntentStr.Stop.Text.Length };
+                        utteranceAndEntities.Range = new Range { Start = startPos, End = stopPos };
+
+                        utterancesAndEntitiesMap.Add(utteranceAndEntities);
+                        foreach (var errorMsg in utteranceAndEntities.ErrorMsgs)
+                        {
+                            errors.Add(
+                                Diagnostic.BuildDiagnostic(
+                                    message: errorMsg,
+                                    context: normalIntentStr
+                                )
+                            );
+                        }
+                    }
                 }
             }
+
+            if (utterancesAndEntitiesMap.Count == 0)
+            {
+                var errorMsg = $"no utterances found for intent definition: \"# {this.Name}\"";
+                var error = Diagnostic.BuildDiagnostic(
+                    message: errorMsg,
+                    context: parseTree.intentDefinition().intentNameLine(),
+                    severity: DiagnosticSeverity.Warn
+                );
+
+                errors.Add(error);
+            }
+
+            return (utterances: utterancesAndEntitiesMap, errors);
         }
     }
 }
