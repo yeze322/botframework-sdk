@@ -73,7 +73,17 @@ namespace IssueNotificationBot.Services
                         cardTemplate.GroupPRs.Add(prTemplate);
                     }
 
-                    await NotificationHelper.SendPRNotificationToUserAsync(user.Value, cardTemplate);
+                    if (cardTemplate.GroupPRs.Count > 0 || cardTemplate.SinglePRs.Count > 0)
+                    {
+                        try
+                        {
+                            await NotificationHelper.SendPRNotificationToUserAsync(user.Value, cardTemplate);
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.LogError($"Error sending PR card for {user.Value.TeamsUserInfo.Name}:\n{e}");
+                        }
+                    }
                 }
             }
         }
