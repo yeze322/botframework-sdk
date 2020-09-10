@@ -14,10 +14,10 @@ namespace Microsoft.Botframework.LUParser.parser
             this.Errors = new List<Error>();
             this.Body = String.Empty;
 
-            if (parseTree != null)
-            {
-                this.Name;
-            }
+            //if (parseTree != null)
+            //{
+            //    this.Name;
+            //}
         }
 
         public string ExtractName(LUFileParser.SimpleIntentSectionContext parseTree)
@@ -54,11 +54,12 @@ namespace Microsoft.Botframework.LUParser.parser
             {
                 UtteranceAndEntitiesMap utteranceAndEntities = null;
 
-                try
-                {
-                    utteranceAndEntities = 
-                }
+                //try
+                //{
+                //    utteranceAndEntities = 
+                //}
             }
+            return null;
         }
     }
 }

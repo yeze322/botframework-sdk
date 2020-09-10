@@ -7,18 +7,30 @@ using Antlr4.Runtime;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
-    class LuParser
+    public static class LuParser
     {
         static Object ParseWithRef(string text, LuResource luResource)
         {
             if (String.IsNullOrEmpty(text))
             {
-                return new LuResource(new Section[] { }, String.Empty, new Error[] { });
+                // return new LuResource(new Section[] { }, String.Empty, new Error[] { });
             }
 
             // TODO: bool? sectionEnabled = luResource != null ? IsSectionEnabled(luResource.Sections) : null;
 
             return null;
+        }
+
+        public static Object parse(string text, bool sectionEnabled)
+        {
+            if (String.IsNullOrEmpty(text))
+            {
+                // return new LuResource(new Section[] { }, String.Empty, new Error[] { });
+            }
+
+            var fileContent = GetFileContent(text);
+
+            return ExtractFileContent(fileContent, text, new Error[2], sectionEnabled);
         }
 
         static Object ExtractFileContent(Object fileContent, string content, Error[] errors, bool? sectionEnabled)
@@ -27,37 +39,27 @@ namespace Microsoft.Botframework.LUParser.parser
 
             try
             {
-                //var modelInfoSections = ExtractModelInfoSections(fileContent);
-            } catch
+                var modelInfoSections = ExtractModelInfoSections(fileContent);
+            } catch (Exception e)
             {
-
-            }
-
-            try
-            {
-                var isSectionEnabled = sectionEnabled == null ? IsSectionEnabled(sections) : sectionEnabled;
-
-                var nestedIntentSections = ExtractFileContent
-            } catch
-            {
-
+     
             }
 
             return null;
         }
 
-        static List<ModelInfoSection> ExtractModelInfoSections(LUFileParser.FileContext fileContext)
+        static IEnumerable<object> ExtractModelInfoSections(Object fileContext)
         {
             if (fileContext == null)
             {
                 return new List<ModelInfoSection>();
             }
-
-            var modelInfoSections = fileContext.paragraph().Select(x => x.modelInfoSection()).Where(x => x != null);
+            var context = (LUFileParser.FileContext)fileContext;
+            var modelInfoSections = context.paragraph().Select(x => x.modelInfoSection()).Where(x => x != null);
 
             var modelInfoSectionList = modelInfoSections.Select(x => new ModelInfoSection(x));
 
-            return null;
+            return modelInfoSectionList;
         }
 
         static List<ModelInfoSection> ExtractNestedIntentSections(LUFileParser.FileContext fileContext, string content)
@@ -81,12 +83,8 @@ namespace Microsoft.Botframework.LUParser.parser
             var lexer = new LUFileLexer(chars);
             var tokens = new CommonTokenStream(lexer);
             var parser = new LUFileParser(tokens);
-
-            var fileContent = parser.file();
-
-            var modelInfoSectionList = fileContent.paragraph().Select(x => x.modelInfoSection());
-
-            return null;
+            parser.BuildParseTree = true;
+            return  parser.file();
         }
 
         static bool IsSectionEnabled(List<ModelInfoSection> sections)
