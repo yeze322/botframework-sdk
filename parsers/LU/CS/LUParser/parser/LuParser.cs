@@ -7,7 +7,7 @@ using Antlr4.Runtime;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
-    class LuParser
+    public class LuParser
     {
         static Object ParseWithRef(string text, LuResource luResource)
         {
@@ -21,14 +21,27 @@ namespace Microsoft.Botframework.LUParser.parser
             return null;
         }
 
+        public static Object parse(string text, bool sectionEnabled)
+        {
+            if (String.IsNullOrEmpty(text))
+            {
+                // return new LuResource(new Section[] { }, String.Empty, new Error[] { });
+            }
+
+            var fileContent = GetFileContent(text);
+
+            return ExtractFileContent((LUFileParser.FileContext)fileContent, text, new List<Error>(), sectionEnabled);
+        }
+
         static LuResource ExtractFileContent(LUFileParser.FileContext fileContent, string content, List<Error> errors, bool? sectionEnabled)
         {
             var sections = new List<Section>();
 
             try
             {
-                //var modelInfoSections = ExtractModelInfoSections(fileContent);
-            } catch
+                var modelInfoSections = ExtractModelInfoSections(fileContent);
+            }
+            catch
             {
 
             }
@@ -78,7 +91,8 @@ namespace Microsoft.Botframework.LUParser.parser
                         }
                     }
                 }
-            } catch (Exception err)
+            }
+            catch (Exception err)
             {
                 errors.Add(
                     Diagnostic.BuildDiagnostic(
@@ -126,18 +140,18 @@ namespace Microsoft.Botframework.LUParser.parser
             return null;
         }
 
-        static List<ModelInfoSection> ExtractModelInfoSections(LUFileParser.FileContext fileContext)
+        static IEnumerable<ModelInfoSection> ExtractModelInfoSections(Object fileContext)
         {
             if (fileContext == null)
             {
                 return new List<ModelInfoSection>();
             }
-
-            var modelInfoSections = fileContext.paragraph().Select(x => x.modelInfoSection()).Where(x => x != null);
+            var context = (LUFileParser.FileContext)fileContext;
+            var modelInfoSections = context.paragraph().Select(x => x.modelInfoSection()).Where(x => x != null);
 
             var modelInfoSectionList = modelInfoSections.Select(x => new ModelInfoSection(x));
 
-            return null;
+            return modelInfoSectionList;
         }
 
         static List<NestedIntentSection> ExtractNestedIntentSections(LUFileParser.FileContext fileContext, string content)
@@ -179,19 +193,14 @@ namespace Microsoft.Botframework.LUParser.parser
             return entitySectionsList;
         }
 
-
         static Object GetFileContent(string text)
         {
             var chars = new AntlrInputStream(text);
             var lexer = new LUFileLexer(chars);
             var tokens = new CommonTokenStream(lexer);
             var parser = new LUFileParser(tokens);
-
-            var fileContent = parser.file();
-
-            var modelInfoSectionList = fileContent.paragraph().Select(x => x.modelInfoSection());
-
-            return null;
+            parser.BuildParseTree = true;
+            return parser.file();
         }
 
         static bool IsSectionEnabled(List<Section> sections)
