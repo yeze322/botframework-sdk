@@ -12,13 +12,13 @@ namespace Microsoft.Botframework.LUParser.parser
     public partial class LuResource
     {
         [JsonProperty("sections")]
-        public Section[] Sections { get; set; }
+        public List<Section> Sections { get; set; }
         [JsonProperty("content")]
         public string Content { get; set; }
         [JsonProperty("errors")]
-        public Error[] Errors { get; set; }
+        public List<Error> Errors { get; set; }
 
-        public LuResource(Section[] sections, string content, Error[] errors)
+        public LuResource(List<Section> sections, string content, List<Error> errors)
         {
             Sections = sections;
             Content = content;
@@ -40,6 +40,18 @@ namespace Microsoft.Botframework.LUParser.parser
         public Position Start { get; set; }
         [JsonProperty("End")]
         public Position End { get; set; }
+
+        public string StringMessage()
+        {
+            var result = Start.StringMessage();
+            if (Start.Line <= End.Line && Start.Character < End.Character)
+            {
+                result += " - ";
+                result += End.StringMessage();
+            }
+
+            return result;
+        }
     }
     public partial class Position
     {
@@ -47,11 +59,16 @@ namespace Microsoft.Botframework.LUParser.parser
         public int Line { get; set; }
         [JsonProperty("Character")]
         public int Character { get; set; }
+
+        public string StringMessage()
+        {
+            return $"line {Line}:{Character}";
+        }
     }
     public partial class Section
     {
         [JsonProperty("Errors")]
-        public Error[] Errors { get; set; }
+        public List<Error> Errors { get; set; }
         [JsonProperty("SectionType")]
         public SectionType SectionType { get; set; }
         [JsonProperty("Id")]
@@ -59,9 +76,9 @@ namespace Microsoft.Botframework.LUParser.parser
         [JsonProperty("Body")]
         public string Body { get; set; }
         [JsonProperty("UtteranceAndEntitiesMap")]
-        public UtteranceAndEntitiesMap[] UtteranceAndEntitiesMap { get; set; }
+        public List<UtteranceAndEntitiesMap> UtteranceAndEntitiesMap { get; set; }
         [JsonProperty("Entities")]
-        public Entity[] Entities { get; set; }
+        public List<Entity> Entities { get; set; }
         [JsonProperty("Name")]
         public string Name { get; set; }
         [JsonProperty("IntentNameLine")]
@@ -72,7 +89,7 @@ namespace Microsoft.Botframework.LUParser.parser
     public partial class Entity
     {
         [JsonProperty("Errors")]
-        public object[] Errors { get; set; }
+        public List<object> Errors { get; set; }
         [JsonProperty("SectionType")]
         public SectionType SectionType { get; set; }
         [JsonProperty("Id")]
@@ -86,7 +103,7 @@ namespace Microsoft.Botframework.LUParser.parser
         [JsonProperty("Roles", NullValueHandling = NullValueHandling.Ignore)]
         public string Roles { get; set; }
         [JsonProperty("ListBody", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] ListBody { get; set; }
+        public List<string> ListBody { get; set; }
         [JsonProperty("Range")]
         public Range Range { get; set; }
         [JsonProperty("CompositeDefinition", NullValueHandling = NullValueHandling.Ignore)]
@@ -94,7 +111,7 @@ namespace Microsoft.Botframework.LUParser.parser
         [JsonProperty("RegexDefinition", NullValueHandling = NullValueHandling.Ignore)]
         public string RegexDefinition { get; set; }
         [JsonProperty("SynonymsOrPhraseList", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] SynonymsOrPhraseList { get; set; }
+        public List<string> SynonymsOrPhraseList { get; set; }
         [JsonProperty("Features", NullValueHandling = NullValueHandling.Ignore)]
         public string Features { get; set; }
     }
@@ -103,9 +120,9 @@ namespace Microsoft.Botframework.LUParser.parser
         [JsonProperty("utterance")]
         public string Utterance { get; set; }
         [JsonProperty("entities")]
-        public EntityElement[] Entities { get; set; }
+        public List<EntityElement> Entities { get; set; }
         [JsonProperty("errorMsgs")]
-        public object[] ErrorMsgs { get; set; }
+        public List<object> ErrorMsgs { get; set; }
         [JsonProperty("contextText")]
         public string ContextText { get; set; }
         [JsonProperty("range")]

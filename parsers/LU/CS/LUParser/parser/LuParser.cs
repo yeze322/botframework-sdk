@@ -21,13 +21,23 @@ namespace Microsoft.Botframework.LUParser.parser
             return null;
         }
 
-        static Object ExtractFileContent(Object fileContent, string content, Error[] errors, bool sectionEnabled)
+        static Object ExtractFileContent(Object fileContent, string content, Error[] errors, bool? sectionEnabled)
         {
-            var sections = new List<Section>();
+            var sections = new List<ModelInfoSection>();
 
             try
             {
                 //var modelInfoSections = ExtractModelInfoSections(fileContent);
+            } catch
+            {
+
+            }
+
+            try
+            {
+                var isSectionEnabled = sectionEnabled == null ? IsSectionEnabled(sections) : sectionEnabled;
+
+                var nestedIntentSections = ExtractFileContent
             } catch
             {
 
@@ -49,6 +59,21 @@ namespace Microsoft.Botframework.LUParser.parser
 
             return null;
         }
+
+        static List<ModelInfoSection> ExtractNestedIntentSections(LUFileParser.FileContext fileContext, string content)
+        {
+            if (fileContext == null)
+            {
+                return new List<ModelInfoSection>();
+            }
+
+            var modelInfoSections = fileContext.paragraph().Select(x => x.modelInfoSection()).Where(x => x != null);
+
+            var modelInfoSectionList = modelInfoSections.Select(x => new ModelInfoSection(x));
+
+            return null;
+        }
+
 
         static Object GetFileContent(string text)
         {
