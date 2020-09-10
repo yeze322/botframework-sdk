@@ -7,7 +7,7 @@ using Antlr4.Runtime;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
-    class LuParser
+    public class LuParser
     {
         static Object ParseWithRef(string text, LuResource luResource)
         {
@@ -104,7 +104,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return null;
         }
 
-        static IEnumerable<object> ExtractModelInfoSections(Object fileContext)
+        static IEnumerable<ModelInfoSection> ExtractModelInfoSections(Object fileContext)
         {
             if (fileContext == null)
             {
@@ -131,19 +131,14 @@ namespace Microsoft.Botframework.LUParser.parser
             return nestedIntentSectionsList;
         }
 
-
         static Object GetFileContent(string text)
         {
             var chars = new AntlrInputStream(text);
             var lexer = new LUFileLexer(chars);
             var tokens = new CommonTokenStream(lexer);
             var parser = new LUFileParser(tokens);
-
-            var fileContent = parser.file();
-
-            var modelInfoSectionList = fileContent.paragraph().Select(x => x.modelInfoSection());
-
-            return null;
+            parser.BuildParseTree = true;
+            return parser.file();
         }
 
         static bool IsSectionEnabled(List<Section> sections)
