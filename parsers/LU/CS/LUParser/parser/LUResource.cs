@@ -86,26 +86,14 @@ namespace Microsoft.Botframework.LUParser.parser
         [JsonProperty("Range")]
         public Range Range { get; set; }
     }
-    public partial class Entity
+    public partial class Entity: Section
     {
-        [JsonProperty("Errors")]
-        public List<object> Errors { get; set; }
-        [JsonProperty("SectionType")]
-        public SectionType SectionType { get; set; }
-        [JsonProperty("Id")]
-        public string Id { get; set; }
-        [JsonProperty("Body")]
-        public string Body { get; set; }
-        [JsonProperty("Name")]
-        public string Name { get; set; }
         [JsonProperty("Type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type { get; set; }
         [JsonProperty("Roles", NullValueHandling = NullValueHandling.Ignore)]
         public string Roles { get; set; }
         [JsonProperty("ListBody", NullValueHandling = NullValueHandling.Ignore)]
         public List<string> ListBody { get; set; }
-        [JsonProperty("Range")]
-        public Range Range { get; set; }
         [JsonProperty("CompositeDefinition", NullValueHandling = NullValueHandling.Ignore)]
         public string CompositeDefinition { get; set; }
         [JsonProperty("RegexDefinition", NullValueHandling = NullValueHandling.Ignore)]
@@ -247,7 +235,7 @@ namespace Microsoft.Botframework.LUParser.parser
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
-                case "intents";
+                case "intents":
                     break;
                 case "entities":
                     return TypeEnum.Entities;

@@ -87,6 +87,42 @@ namespace Microsoft.Botframework.LUParser.parser
                 );
             }
 
+            try
+            {
+                var simpleIntentSections = ExtractSimpleIntentSections(fileContent, content);
+                foreach (var section in simpleIntentSections)
+                {
+                    errors.AddRange(section.Errors);
+                }
+                sections.AddRange(simpleIntentSections);
+            }
+            catch (Exception err)
+            {
+                errors.Add(
+                    Diagnostic.BuildDiagnostic(
+                        message: $"Error happened when parsing simple intent section: {err.Message}"
+                    )
+                );
+            }
+
+            try
+            {
+                var entitySections = ExtractEntitiesSections(fileContent, content);
+                foreach (var section in entitySections)
+                {
+                    errors.AddRange(section.Errors);
+                }
+                sections.AddRange(entitySections);
+            }
+            catch (Exception err)
+            {
+                errors.Add(
+                    Diagnostic.BuildDiagnostic(
+                        message: $"Error happened when parsing entities: {err.Message}"
+                    )
+                );
+            }
+
             return null;
         }
 
@@ -115,6 +151,32 @@ namespace Microsoft.Botframework.LUParser.parser
             var nestedIntentSectionsList = nestedIntentSections.Select(x => new NestedIntentSection(x, content)).ToList();
 
             return nestedIntentSectionsList;
+        }
+
+        static List<SimpleIntentSection> ExtractSimpleIntentSections(LUFileParser.FileContext fileContext, string content)
+        {
+            if (fileContext == null)
+            {
+                return new List<SimpleIntentSection>();
+            }
+
+            var simpleIntentSections = fileContext.paragraph().Select(x => x.simpleIntentSection()).Where(x => x != null && x.intentDefinition() != null);
+            var simpleIntentSectionsList = simpleIntentSections.Select(x => new SimpleIntentSection(x, content)).ToList();
+
+            return simpleIntentSectionsList;
+        }
+
+        static List<Entity> ExtractEntitiesSections(LUFileParser.FileContext fileContext, string content)
+        {
+            if (fileContext == null)
+            {
+                return new List<Entity>();
+            }
+
+            var entitySections = fileContext.paragraph().Select(x => x.entitySection()).Where(x => x != null && x.entityDefinition() != null);
+            var entitySectionsList = entitySections.Select(x => new Entity(x)).ToList();
+
+            return entitySectionsList;
         }
 
 
