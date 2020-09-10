@@ -7,13 +7,13 @@ using Antlr4.Runtime;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
-    public static class LuParser
+    class LuParser
     {
         static Object ParseWithRef(string text, LuResource luResource)
         {
             if (String.IsNullOrEmpty(text))
             {
-                // return new LuResource(new Section[] { }, String.Empty, new Error[] { });
+                return new LuResource(new List<Section>(), String.Empty, new List<Error>());
             }
 
             // TODO: bool? sectionEnabled = luResource != null ? IsSectionEnabled(luResource.Sections) : null;
@@ -30,19 +30,75 @@ namespace Microsoft.Botframework.LUParser.parser
 
             var fileContent = GetFileContent(text);
 
-            return ExtractFileContent(fileContent, text, new Error[2], sectionEnabled);
+            return ExtractFileContent((LUFileParser.FileContext)fileContent, text, new List<Error>(), sectionEnabled);
         }
 
-        static Object ExtractFileContent(Object fileContent, string content, Error[] errors, bool? sectionEnabled)
+        static LuResource ExtractFileContent(LUFileParser.FileContext fileContent, string content, List<Error> errors, bool? sectionEnabled)
         {
-            var sections = new List<ModelInfoSection>();
+            var sections = new List<Section>();
 
             try
             {
                 var modelInfoSections = ExtractModelInfoSections(fileContent);
-            } catch (Exception e)
+            }
+            catch
             {
-     
+
+            }
+
+            try
+            {
+                var isSectionEnabled = sectionEnabled == null ? IsSectionEnabled(sections) : sectionEnabled;
+
+                var nestedIntentSections = ExtractNestedIntentSections(fileContent, content);
+                foreach (var section in nestedIntentSections)
+                {
+                    errors.AddRange(section.Errors);
+                }
+                if (isSectionEnabled.HasValue ? isSectionEnabled.Value : false)
+                {
+                    sections.AddRange(nestedIntentSections);
+                }
+                else
+                {
+                    foreach (var section in nestedIntentSections)
+                    {
+                        var emptyIntentSection = new SimpleIntentSection();
+                        emptyIntentSection.Name = section.Name;
+                        emptyIntentSection.Id = $"{emptyIntentSection.SectionType}_{emptyIntentSection.Name}";
+
+                        // get the end character index
+                        // this is default value
+                        // it will be reset in function extractSectionBody()
+                        var endCharacter = section.Name.Length + 2;
+
+                        var range = new Range { Start = section.Range.Start, End = new Position { Line = section.Range.Start.Line, Character = endCharacter } };
+                        emptyIntentSection.Range = range;
+                        var errorMsg = $"no utterances found for intent definition: \"# {emptyIntentSection.Name}\"";
+                        var error = Diagnostic.BuildDiagnostic(
+                            message: errorMsg,
+                            range: emptyIntentSection.Range,
+                            severity: DiagnosticSeverity.Warn
+                        );
+
+                        errors.Add(error);
+                        sections.Add(emptyIntentSection);
+
+                        foreach (var subSection in section.SimpleIntentSections)
+                        {
+                            sections.Add(subSection);
+                            errors.AddRange(subSection.Errors);
+                        }
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                errors.Add(
+                    Diagnostic.BuildDiagnostic(
+                        message: $"Error happened when parsing nested intent section: {err.Message}"
+                    )
+                );
             }
 
             return null;
@@ -62,18 +118,17 @@ namespace Microsoft.Botframework.LUParser.parser
             return modelInfoSectionList;
         }
 
-        static List<ModelInfoSection> ExtractNestedIntentSections(LUFileParser.FileContext fileContext, string content)
+        static List<NestedIntentSection> ExtractNestedIntentSections(LUFileParser.FileContext fileContext, string content)
         {
             if (fileContext == null)
             {
-                return new List<ModelInfoSection>();
+                return new List<NestedIntentSection>();
             }
 
-            var modelInfoSections = fileContext.paragraph().Select(x => x.modelInfoSection()).Where(x => x != null);
+            var nestedIntentSections = fileContext.paragraph().Select(x => x.nestedIntentSection()).Where(x => x != null);
+            var nestedIntentSectionsList = nestedIntentSections.Select(x => new NestedIntentSection(x, content)).ToList();
 
-            var modelInfoSectionList = modelInfoSections.Select(x => new ModelInfoSection(x));
-
-            return null;
+            return nestedIntentSectionsList;
         }
 
 
@@ -83,11 +138,15 @@ namespace Microsoft.Botframework.LUParser.parser
             var lexer = new LUFileLexer(chars);
             var tokens = new CommonTokenStream(lexer);
             var parser = new LUFileParser(tokens);
-            parser.BuildParseTree = true;
-            return  parser.file();
+
+            var fileContent = parser.file();
+
+            var modelInfoSectionList = fileContent.paragraph().Select(x => x.modelInfoSection());
+
+            return null;
         }
 
-        static bool IsSectionEnabled(List<ModelInfoSection> sections)
+        static bool IsSectionEnabled(List<Section> sections)
         {
             var modelInfoSections = sections.Where(s => s.SectionType == SectionType.ModelInfoSection);
             bool enableSections = false;

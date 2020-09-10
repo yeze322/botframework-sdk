@@ -122,7 +122,7 @@ namespace Microsoft.Botframework.LUParser.parser
         [JsonProperty("entities")]
         public List<EntityElement> Entities { get; set; }
         [JsonProperty("errorMsgs")]
-        public List<object> ErrorMsgs { get; set; }
+        public List<string> ErrorMsgs { get; set; }
         [JsonProperty("contextText")]
         public string ContextText { get; set; }
         [JsonProperty("range")]
@@ -150,7 +150,18 @@ namespace Microsoft.Botframework.LUParser.parser
         ModelInfoSection,
         QnaSection
     };
-    public enum TypeEnum { Entities, PatternAnyEntities };
+    public enum TypeEnum {
+        Intent,
+        Entities,
+        PatternAnyEntities,
+        ClosedLists,
+        Prebuilt,
+        Utterance,
+        Patterns,
+        Regex,
+        Composites,
+        MachineLearned
+    };
     internal static class Converter
     {
         public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
@@ -236,10 +247,26 @@ namespace Microsoft.Botframework.LUParser.parser
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
+                case "intents";
+                    break;
                 case "entities":
                     return TypeEnum.Entities;
                 case "patternAnyEntities":
                     return TypeEnum.PatternAnyEntities;
+                case "closedLists":
+                    return TypeEnum.ClosedLists;
+                case "prebuiltEntities":
+                    return TypeEnum.Prebuilt;
+                case "utterances":
+                    return TypeEnum.Utterance;
+                case "patterns":
+                    return TypeEnum.Patterns;
+                case "regex_entities":
+                    return TypeEnum.Regex;
+                case "composites":
+                    return TypeEnum.Composites;
+                case "ml":
+                    return TypeEnum.MachineLearned;
             }
             throw new Exception("Cannot unmarshal type TypeEnum");
         }
@@ -253,11 +280,35 @@ namespace Microsoft.Botframework.LUParser.parser
             var value = (TypeEnum)untypedValue;
             switch (value)
             {
+                case TypeEnum.Intent:
+                    serializer.Serialize(writer, "intents");
+                    return;
                 case TypeEnum.Entities:
                     serializer.Serialize(writer, "entities");
                     return;
                 case TypeEnum.PatternAnyEntities:
                     serializer.Serialize(writer, "patternAnyEntities");
+                    return;
+                case TypeEnum.ClosedLists:
+                    serializer.Serialize(writer, "closedLists");
+                    return;
+                case TypeEnum.Prebuilt:
+                    serializer.Serialize(writer, "prebuiltEntities");
+                    return;
+                case TypeEnum.Utterance:
+                    serializer.Serialize(writer, "utterances");
+                    return;
+                case TypeEnum.Patterns:
+                    serializer.Serialize(writer, "patterns");
+                    return;
+                case TypeEnum.Regex:
+                    serializer.Serialize(writer, "regex_entities");
+                    return;
+                case TypeEnum.Composites:
+                    serializer.Serialize(writer, "composites");
+                    return;
+                case TypeEnum.MachineLearned:
+                    serializer.Serialize(writer, "ml");
                     return;
             }
             throw new Exception("Cannot marshal type TypeEnum");
