@@ -1367,7 +1367,7 @@ The `semanticEntityInstance` type references to source information about where t
 11. [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) -- *Country codes*
 12. [Bot Framework Cards](botframework-cards.md)
 13. [Adaptive Cards](https://adaptivecards.io)
-14. [Bot Framework Manifest](../fileformats/manifest/botframework-manifest.md)
+14. [Bot Framework Manifest](../manifest/botframework-manifest.md)
 15. [RFC 4627](http://www.ietf.org/rfc/rfc4627.txt) -- *The application/json Media Type for JavaScript Object Notation (JSON)*
 16. [Transcript](../../fileformats/transcript/transcript.md)
 17. [RFC 6557](https://tools.ietf.org/html/rfc6557)
@@ -1375,6 +1375,9 @@ The `semanticEntityInstance` type references to source information about where t
 19. [IETF BCP-47](https://tools.ietf.org/html/bcp47) -- *Language tag*
 
 # Appendix I - Changes
+
+## 2020-07-07 - contact.me@nlchar.rocks
+* Fix the broken link to the Bot Framework Manifest Spec in the References section
 
 ## 2020-06-19 - dandris@microsoft.com
 * Fix `A7420` and `A7430` text to reflect original intent of `playAudio` and `playVideo` actions
