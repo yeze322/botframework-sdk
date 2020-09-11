@@ -82,12 +82,10 @@ Color: This subcategory uses different colors for each label.
 
 | Name | Description | Color | Example |
 |---|---|:-:|:--|
-|Draft| The issue definition is still being worked on and it is not ready to start development. Once the issue is ready the status should be changed to `needs-triage`,`approved` or `backlog`.| ![#ededed](https://via.placeholder.com/15/ededed/000000?text=+) `#ededed` | `draft` |
-|New| The issue has just been created and it has not been reviewed by the team. Once the issue is reviewed the status can be changed to `approved`, `backlog`, `needs-author-feedback` or just closed.| ![#f7ffa3](https://via.placeholder.com/15/f7ffa3/000000?text=+) `#f7ffa3` | `needs-triage` |
+|Draft| The issue definition is still being worked on and it is not ready to start development.<br/>Once the issue is ready the label should be removed or the status changed to `needs-triage` or `backlog`.| ![#ededed](https://via.placeholder.com/15/ededed/000000?text=+) `#ededed` | `draft` |
+|New| The issue has just been created and it has not been reviewed by the team. <br/>Once the issue is reviewed the label should be removed or changed to `backlog`, `needs-author-feedback` or just closed.| ![#f7ffa3](https://via.placeholder.com/15/f7ffa3/000000?text=+) `#f7ffa3` | `needs-triage` |
 |Needs author information| The issue as described is incomplete or not well understood. It is waiting for further information before it can continue.<br>Keep in mind that the issue author may not always flip the tag back to `needs-team-attention` when it responds so scan the issues periodically to see if the author has responded.| ![#f7ffa3](https://via.placeholder.com/15/f7ffa3/000000?text=+) `#f7ffa3` | `needs-author-feedback` |
 |Needs team information| The issue has a comment from the author and needs SDK Team or service team’s attention.| ![#f7ffa3](https://via.placeholder.com/15/f7ffa3/000000?text=+) `#f7ffa3` | `needs-team-attention` |
-|Approved| The issue has been reviewed and is ready to start working on it, it will be added to the work queue in the current iteration. | ![#0e8a16](https://via.placeholder.com/15/0e8a16/000000?text=+) `#0e8a16` | `approved` |
-|In progress| The issue is assigned and it is being worked on. | ![#0e8a16](https://via.placeholder.com/15/0e8a16/000000?text=+) `#0e8a16` | `in-progress` |
 |Backlog| The issue is out of scope for the current iteration but it will be evaluated in a future release. | ![#fbca04](https://via.placeholder.com/15/fbca04/000000?text=+) `#fbca04` | `backlog` |
 |Blocked| Current progress is blocked on something else.<br>Make sure you add a note in the issue history when you apply this tag describing what's blocking it for future reference.| ![#ff8c00](https://via.placeholder.com/15/FF8C00/000000?text=+) `#ff8c00` | `blocked` |
 |Stale| The issue hasn't been updated in a long time and will be automatically closed. | ![#ededed](https://via.placeholder.com/15/ededed/000000?text=+) `#ededed` | `stale` |
@@ -100,7 +98,7 @@ Do not create repo specific labels for this category.
 
 These labels are used to map issues to a feature or functional area in the product. This category informs several reports, the labels in this category should only be created by feature and product owners and documented in the table below.
 
-All the issues labeled as `approved` should have at least one of these labels before they can be worked on.
+All the issues assigned to a milestone should have at least one of these labels before they can be worked on.
 
 ### Area labels <!-- omit in toc -->
 
@@ -136,7 +134,7 @@ It is OK to create repo specific sub categories for area, for example, composer 
 
 Use these labels to describe the type of the issue.
 
-All the issues labeled as `approved` should have one of these labels before they can be worked on.
+All the issues assigned to a milestone should have one of these labels before they can be worked on.
 
 Color: This subcategory uses different colors for each label.
 
@@ -154,7 +152,9 @@ Do not create repo specific labels for this category.
 
 ## Priority
 
-Describes the priority of the issue. This label is required for any issue that is in scope for an iteration. High priority issues will be addressed first. All the issues with an `approved` status should have one of these labels before they can be worked on.
+Describes the priority of the issue. This label is required for any issue that is in scope for an iteration. High priority issues will be addressed first. 
+
+All the issues assigned to a milestone should have one of these labels before they can be worked on.
 
 Color: This subcategory uses different colors for each label.
 
