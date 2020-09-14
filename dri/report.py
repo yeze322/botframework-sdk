@@ -53,6 +53,7 @@ REPOS = [
     'botbuilder-python',
     'botbuilder-java',
     'botbuilder-samples',
+    'botframework-samples',
     'botframework-emulator',
     'botframework-webchat',
     'botbuilder-tools',

@@ -32,6 +32,7 @@ MILESTONE_LABELS = [
     'R10',
     'R11',
     'Backlog',
+    'backlog',
 ]
 
 # pylint: disable=missing-docstring, line-too-long
