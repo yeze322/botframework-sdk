@@ -102,6 +102,8 @@ namespace Microsoft.Botframework.LUParser.parser
         public List<string> SynonymsOrPhraseList { get; set; }
         [JsonProperty("Features", NullValueHandling = NullValueHandling.Ignore)]
         public string Features { get; set; }
+
+        public Entity() {}
     }
     public partial class UtteranceAndEntitiesMap
     {

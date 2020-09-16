@@ -121,7 +121,7 @@ namespace Microsoft.Botframework.LUParser.parser
 
             try
             {
-                var entitySections = ExtractEntitiesSections(fileContent, content);
+                var entitySections = ExtractEntitiesSections(fileContent);
                 foreach (var section in entitySections)
                 {
                     errors.AddRange(section.Errors);
@@ -133,6 +133,42 @@ namespace Microsoft.Botframework.LUParser.parser
                 errors.Add(
                     Diagnostic.BuildDiagnostic(
                         message: $"Error happened when parsing entities: {err.Message}"
+                    )
+                );
+            }
+
+            try
+            {
+                var newEntitySections = ExtractNewEntitiesSections(fileContent);
+                foreach (var section in newEntitySections)
+                {
+                    errors.AddRange(section.Errors);
+                }
+                sections.AddRange(newEntitySections);
+            }
+            catch (Exception err)
+            {
+                errors.Add(
+                    Diagnostic.BuildDiagnostic(
+                        message: $"Error happened when parsing new entities: {err.Message}"
+                    )
+                );
+            }
+
+            try
+            {
+                var importSections = ExtractImportSections(fileContent);
+                foreach (var section in importSections)
+                {
+                    errors.AddRange(section.Errors);
+                }
+                sections.AddRange(importSections);
+            }
+            catch (Exception err)
+            {
+                errors.Add(
+                    Diagnostic.BuildDiagnostic(
+                        message: $"Error happened when parsing import section: {err.Message}"
                     )
                 );
             }
@@ -180,7 +216,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return simpleIntentSectionsList;
         }
 
-        static List<Entity> ExtractEntitiesSections(LUFileParser.FileContext fileContext, string content)
+        static List<Entity> ExtractEntitiesSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
@@ -191,6 +227,32 @@ namespace Microsoft.Botframework.LUParser.parser
             var entitySectionsList = entitySections.Select(x => new Entity(x)).ToList();
 
             return entitySectionsList;
+        }
+
+        static List<NewEntitySection> ExtractNewEntitiesSections(LUFileParser.FileContext fileContext)
+        {
+            if (fileContext == null)
+            {
+                return new List<NewEntitySection>();
+            }
+
+            var newEntitySections = fileContext.paragraph().Select(x => x.newEntitySection()).Where(x => x != null && x.newEntityDefinition() != null);
+            var newEntitySectionsList = newEntitySections.Select(x => new NewEntitySection(x)).ToList();
+
+            return newEntitySectionsList;
+        }
+
+        static List<ImportSection> ExtractImportSections(LUFileParser.FileContext fileContext)
+        {
+            if (fileContext == null)
+            {
+                return new List<ImportSection>();
+            }
+
+            var importSections = fileContext.paragraph().Select(x => x.importSection()).Where(x => x != null && x.importDefinition() != null);
+            var importSectionsList = importSections.Select(x => new ImportSection(x)).ToList();
+
+            return importSectionsList;
         }
 
         static Object GetFileContent(string text)

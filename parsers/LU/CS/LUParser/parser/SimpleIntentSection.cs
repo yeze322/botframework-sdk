@@ -42,7 +42,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return parseTree.intentDefinition().intentNameLine().GetText().Trim();
         }
 
-        public (List<UtteranceAndEntitiesMap>utterances, List<Error> errors) ExtractUtterancesAndEntitiesMap(LUFileParser.SimpleIntentSectionContext parseTree)
+        public (List<UtteranceAndEntitiesMap> utterances, List<Error> errors) ExtractUtterancesAndEntitiesMap(LUFileParser.SimpleIntentSectionContext parseTree)
         {
             var utterancesAndEntitiesMap = new List<UtteranceAndEntitiesMap>();
             var errors = new List<Error>();
