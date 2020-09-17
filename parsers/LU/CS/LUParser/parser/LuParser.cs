@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Antlr4.Runtime;
+using Newtonsoft.Json;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
@@ -173,7 +174,90 @@ namespace Microsoft.Botframework.LUParser.parser
                 );
             }
 
-            return null;
+            try
+            {
+                var qnaSections = ExtractQnaSections(fileContent);
+                foreach (var section in qnaSections)
+                {
+                    errors.AddRange(section.Errors);
+                }
+                sections.AddRange(qnaSections);
+            }
+            catch (Exception err)
+            {
+                errors.Add(
+                    Diagnostic.BuildDiagnostic(
+                        message: $"Error happened when parsing qna section: {err.Message}"
+                    )
+                );
+            }
+
+            sections = ReconstructIntentSections(sections);
+
+            ExtractSectionBody(sections, content);
+            var result = new LuResource(sections, content, errors);
+            Console.WriteLine(JsonConvert.SerializeObject(result));
+
+            return result;
+        }
+
+        static List<Section> ReconstructIntentSections(List<Section> sections)
+        {
+            var newSections = new List<Section>();
+            sections.Sort((a, b) => a.Range.Start.Line - b.Range.Start.Line);
+
+            for (int index = 0; index < sections.Count; index++)
+            {
+                var section = sections[index];
+                if (sections.Count == index + 1)
+                {
+                    newSections.Add(section);
+                    break;
+                }
+
+                if (section is NestedIntentSection nestedSection)
+                {
+                    if (sections[index+1].SectionType == SectionType.EntitySection || sections[index + 1].SectionType == SectionType.NewEntitySection)
+                    {
+                        var simpleIntentSections = nestedSection.SimpleIntentSections;
+                        simpleIntentSections[simpleIntentSections.Count - 1].Entities.Add(sections[index + 1] as Entity);
+                        simpleIntentSections[simpleIntentSections.Count - 1].Errors.AddRange(sections[index + 1].Errors);
+                        index++;
+
+                        while (index + 1 < sections.Count
+                            && (sections[index + 1] is Entity
+                            || (sections[index + 1].SectionType == SectionType.SimpleIntentSection && sections[index + 1].IntentNameLine.Contains("##"))))
+                        {
+                            if (sections[index + 1] is Entity entitySection)
+                            {
+                                simpleIntentSections[simpleIntentSections.Count - 1].Entities.Add(entitySection);
+                                simpleIntentSections[simpleIntentSections.Count - 1].Errors.AddRange(entitySection.Errors);
+                            }
+                            else
+                            {
+                                simpleIntentSections.Add(sections[index + 1] as SimpleIntentSection);
+                            }
+
+                            index++;
+                        }
+
+                        simpleIntentSections.ForEach(s => nestedSection.Errors.AddRange(s.Errors));
+                        nestedSection.SimpleIntentSections = simpleIntentSections;
+                    }
+                }
+                else if (section is SimpleIntentSection simpleIntentSection)
+                {
+                    while (index + 1 < sections.Count && (sections[index + 1] is Entity entitySection))
+                    {
+                        section.Entities.Add(entitySection);
+                        section.Errors.AddRange(entitySection.Errors);
+                        index++;
+                    }
+                }
+                newSections.Add(section);
+            }
+
+            return newSections;
         }
 
         static IEnumerable<ModelInfoSection> ExtractModelInfoSections(Object fileContext)
@@ -249,13 +333,26 @@ namespace Microsoft.Botframework.LUParser.parser
                 return new List<ImportSection>();
             }
 
-            var importSections = fileContext.paragraph().Select(x => x.importSection()).Where(x => x != null && x.importDefinition() != null);
+            var importSections = fileContext.paragraph().Select(x => x.importSection()).Where(x => x != null);
             var importSectionsList = importSections.Select(x => new ImportSection(x)).ToList();
 
             return importSectionsList;
         }
 
-        static Object GetFileContent(string text)
+        static List<QnaSection> ExtractQnaSections(LUFileParser.FileContext fileContext)
+        {
+            if (fileContext == null)
+            {
+                return new List<QnaSection>();
+            }
+
+            var qnaSections = fileContext.paragraph().Select(x => x.qnaSection()).Where(x => x != null);
+            var qnaSectionsList = qnaSections.Select(x => new QnaSection(x)).ToList();
+
+            return qnaSectionsList;
+        }
+
+        static LUFileParser.FileContext GetFileContent(string text)
         {
             var chars = new AntlrInputStream(text);
             var lexer = new LUFileLexer(chars);
@@ -263,6 +360,57 @@ namespace Microsoft.Botframework.LUParser.parser
             var parser = new LUFileParser(tokens);
             parser.BuildParseTree = true;
             return parser.file();
+        }
+
+        static void ExtractSectionBody(List<Section> sections, string content)
+        {
+            var originList = Regex.Split(content, @"\r?\n");
+            var qnaSectionIndex = 0;
+            foreach (var sectionIter in sections.Select((x, i) => new { Value = x, Index = i }))
+            {
+                var section = sectionIter.Value;
+                if (section is SimpleIntentSection || section is NestedIntentSection || section is QnaSection)
+                {
+                    var startLine = section.Range.Start.Line - 1;
+                    int stopLine = -1;
+                    if (sectionIter.Index + 1 < sections.Count)
+                    {
+                        stopLine = sections[sectionIter.Index + 1].Range.Start.Line - 1;
+                        if (startLine < 0 || startLine > stopLine)
+                        {
+                            throw new IndexOutOfRangeException();
+                        }
+                    }
+                    else
+                    {
+                        stopLine = originList.Length;
+                    }
+                    section.Range.End.Line = stopLine;
+                    section.Range.End.Character = originList[stopLine - 1].Length;
+
+                    var destList = new List<string>();
+                    if (section is QnaSection)
+                    {
+                        destList = originList.Skip(startLine).Take(stopLine).ToList();
+                        // TODO: maybe change the model so Id is int
+                        section.Id = qnaSectionIndex.ToString();
+                        qnaSectionIndex++;
+                    }
+                    else
+                    {
+                        destList = originList.Skip(startLine + 1).Take(stopLine).ToList();
+                    }
+
+                    section.Body = String.Join(Environment.NewLine, destList);
+
+                    if (section is NestedIntentSection nestedIntentSection)
+                    {
+                        // TODO: check if this downcast can re-cast
+                        var sectionList = nestedIntentSection.SimpleIntentSections.ToList<Section>();
+                        ExtractSectionBody(sectionList, String.Join(Environment.NewLine, originList.Skip(0).Take(stopLine)));
+                    }
+                }
+            }
         }
 
         static bool IsSectionEnabled(List<Section> sections)
