@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
-    class NestedIntentSection: Section
+    public class NestedIntentSection: Section
     {
-        List<SimpleIntentSection> SimpleIntentSections { get; set; }
+        public List<SimpleIntentSection> SimpleIntentSections { get; set; }
 
 
         public NestedIntentSection(LUFileParser.NestedIntentSectionContext parseTree, string content)

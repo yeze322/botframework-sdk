@@ -247,7 +247,7 @@ namespace Microsoft.Botframework.LUParser.parser
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
-                case "intents";
+                case "intents":
                     break;
                 case "entities":
                     return TypeEnum.Entities;
