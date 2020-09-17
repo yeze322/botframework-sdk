@@ -19,13 +19,13 @@ namespace Microsoft.Botframework.LUParser.Tests.parser
             // var folders = Directory.GetDirectories(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
             // var files = Directory.GetFiles(path);
             var luContent = File.ReadAllText(path);
-            // var result = LuParser.parse(luContent, false);
+            var result = LuParser.parse(luContent, false);
             LuResource expected = JsonConvert.DeserializeObject<LuResource>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Fixtures/LU_Sections.json")));
 
-            //var obj1Str = JsonConvert.SerializeObject(result);
-            var obj2Str = JsonConvert.SerializeObject(expected);
+            var serializedResult = JsonConvert.SerializeObject(result);
+            var serializedExpected = JsonConvert.SerializeObject(expected);
 
-            // Assert.Equal(obj1Str, obj2Str);
+            // Assert.Equal(serializedResult, serializedExpected);
         }
     }
 }
