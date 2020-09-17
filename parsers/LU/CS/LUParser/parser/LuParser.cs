@@ -201,6 +201,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return result;
         }
 
+
         static List<Section> ReconstructIntentSections(List<Section> sections)
         {
             var newSections = new List<Section>();
@@ -360,6 +361,7 @@ namespace Microsoft.Botframework.LUParser.parser
             var parser = new LUFileParser(tokens);
             parser.BuildParseTree = true;
             return parser.file();
+
         }
 
         static void ExtractSectionBody(List<Section> sections, string content)
