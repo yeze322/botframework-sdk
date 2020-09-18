@@ -68,13 +68,13 @@ namespace Microsoft.Botframework.LUParser.parser
     public partial class Section
     {
         [JsonProperty("Errors")]
-        public List<Error> Errors { get; set; }
+        public List<Error> Errors { get; set; } = new List<Error>();
         [JsonProperty("SectionType")]
         public SectionType SectionType { get; set; }
         [JsonProperty("Id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = String.Empty;
         [JsonProperty("Body")]
-        public string Body { get; set; }
+        public string Body { get; set; } = String.Empty;
         [JsonProperty("UtteranceAndEntitiesMap")]
         public List<UtteranceAndEntitiesMap> UtteranceAndEntitiesMap { get; set; }
         [JsonProperty("Entities")]

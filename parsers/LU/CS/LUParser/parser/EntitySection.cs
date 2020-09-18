@@ -11,10 +11,12 @@ namespace Microsoft.Botframework.LUParser.parser
         public Entity(LUFileParser.EntitySectionContext parseTree)
         {
             SectionType = SectionType.EntitySection;
+            Errors = new List<Error>();
             Name = ExtractName(parseTree);
             Type = ExtractType(parseTree);
             SynonymsOrPhraseList = ExtractSynonymsOrPhraseList(parseTree);
-            Id = $"{SectionType}_{Name}";
+            string secTypeStr = $"{SectionType}";
+            Id = $"{char.ToLower(secTypeStr[0]) + secTypeStr.Substring(1)}_{Name}";
             var startPosition = new Position { Line = parseTree.Start.Line, Character = parseTree.Start.Column };
             var stopPosition = new Position { Line = parseTree.Stop.Line, Character = parseTree.Stop.Column + parseTree.Stop.Text.Length };
             Range = new Range { Start = startPosition, End = stopPosition };

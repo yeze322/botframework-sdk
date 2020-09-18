@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
     public class NewEntitySection: Entity
     {
+        [JsonProperty("SynonymsList", NullValueHandling = NullValueHandling.Ignore)]
+        public List<SynonymElement> SynonymsList { get; set; } = null;
+        public class SynonymElement
+        {
+            [JsonProperty("NormalizedValue", NullValueHandling = NullValueHandling.Ignore)]
+            public string NormalizedValue { get; set; } = null;
+            [JsonProperty("Synonyms", NullValueHandling = NullValueHandling.Ignore)]
+            public List<string> Synonyms { get; set; } = new List<string>();
+        }
         // TODO: pass this constant to a helper class.
         private char[] invalidCharsInIntentOrEntityName = { '<', '>', '*', '%', '&', ':', '\\', '$' };
         public NewEntitySection(LUFileParser.NewEntitySectionContext parseTree)
@@ -18,8 +28,16 @@ namespace Microsoft.Botframework.LUParser.parser
             Features = ExtractFeatures(parseTree);
             CompositeDefinition = ExtractCompositeDefinition(parseTree);
             RegexDefinition = ExtractRegexDefinition(parseTree);
-            ListBody = ExtractSynonymsOrPhraseList(parseTree);
-            Id = $"{SectionType}_{Name}";
+            if (String.Equals(Type, "list"))
+            {
+                SynonymsList = ExtractSynonyms(parseTree);
+            }
+            else
+            {
+                ListBody = ExtractPhraseList(parseTree);
+            }
+            string secTypeStr = $"{SectionType}";
+            Id = $"{char.ToLower(secTypeStr[0]) + secTypeStr.Substring(1)}_{Name}";
             var startPosition = new Position { Line = parseTree.Start.Line, Character = parseTree.Start.Column };
             var stopPosition = new Position { Line = parseTree.Stop.Line, Character = parseTree.Stop.Column + parseTree.Stop.Text.Length };
             Range = new Range { Start = startPosition, End = stopPosition };
@@ -111,7 +129,66 @@ namespace Microsoft.Botframework.LUParser.parser
             return null;
         }
 
-        public List<string> ExtractSynonymsOrPhraseList(LUFileParser.NewEntitySectionContext parseTree)
+        public List<SynonymElement> ExtractSynonyms(LUFileParser.NewEntitySectionContext parseTree)
+        {
+            var synonymsOrPhraseList = new List<SynonymElement>();
+            if (parseTree.newEntityDefinition().newEntityListbody() != null)
+            {
+                foreach (var errorItemStr in parseTree.newEntityDefinition().newEntityListbody().errorString())
+                {
+                    if (!String.IsNullOrEmpty(errorItemStr.GetText().Trim()))
+                    {
+                        Errors.Add(
+                            Diagnostic.BuildDiagnostic(
+                                message: "Invalid list entity line, did you miss '-' at line begin?",
+                                context: errorItemStr
+                            )
+                        );
+                    }
+                }
+                var bodyElement = new SynonymElement();
+                foreach (var normalItemStr in parseTree.newEntityDefinition().newEntityListbody().normalItemString())
+                {
+                    var trimedItemStr = normalItemStr.GetText().Trim();
+                    var normalizedValueMatch = Regex.Match(trimedItemStr, @"(?: |\t)*-(?: |\t)*(.*)(?: |\t)*:$");
+                    if (normalizedValueMatch.Success)
+                    {
+                        if (bodyElement.NormalizedValue != null)
+                        {
+                            // This is not the first value in the list
+                            synonymsOrPhraseList.Add(bodyElement);
+                            bodyElement = new SynonymElement();
+                        }
+                        bodyElement.NormalizedValue = normalizedValueMatch.Groups[1].Value.Trim();
+                    }
+                    else
+                    {
+                        var splitedStr = trimedItemStr.Split("-");
+                        bodyElement.Synonyms.Add(splitedStr[1].Trim());
+                    }
+                }
+                if (bodyElement.NormalizedValue != null)
+                {
+                    // There was at least one
+                    synonymsOrPhraseList.Add(bodyElement);
+                }
+
+            }
+
+            if (!String.IsNullOrEmpty(Type) && Type.IndexOf('=') > -1 && synonymsOrPhraseList.Count == 0)
+            {
+                var errorMsg = $"no synonyms list found for list entity definition: \"{ parseTree.newEntityDefinition().newEntityLine().GetText()}\"";
+                var error = Diagnostic.BuildDiagnostic(
+                    message: errorMsg,
+                    context: parseTree.newEntityDefinition().newEntityLine(),
+                    severity: DiagnosticSeverity.Warn
+                );
+                Errors.Add(error);
+            }
+            return synonymsOrPhraseList;
+        }
+
+        public List<string> ExtractPhraseList(LUFileParser.NewEntitySectionContext parseTree)
         {
             var synonymsOrPhraseList = new List<string>();
             if (parseTree.newEntityDefinition().newEntityListbody() != null)
@@ -130,8 +207,7 @@ namespace Microsoft.Botframework.LUParser.parser
                 }
                 foreach (var normalItemStr in parseTree.newEntityDefinition().newEntityListbody().normalItemString())
                 {
-                    var itemStr = normalItemStr.GetText().Trim();
-                    synonymsOrPhraseList.Add(itemStr.Substring(1).Trim());
+                    synonymsOrPhraseList.Add(normalItemStr.GetText());
                 }
             }
 

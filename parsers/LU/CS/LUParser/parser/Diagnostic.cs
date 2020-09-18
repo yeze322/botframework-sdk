@@ -42,7 +42,7 @@ namespace Microsoft.Botframework.LUParser.parser
                 actualRange = new Range { Start = startPosition, End = stopPosition };
             }
 
-            return new Diagnostic(range, message, severity.ToString().ToUpper());
+            return new Diagnostic(actualRange, message, severity.ToString().ToUpper());
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return null;
         }
 
-        public static Object parse(string text, bool sectionEnabled)
+        public static LuResource parse(string text, bool sectionEnabled)
         {
             if (String.IsNullOrEmpty(text))
             {
@@ -261,13 +261,13 @@ namespace Microsoft.Botframework.LUParser.parser
             return newSections;
         }
 
-        static IEnumerable<ModelInfoSection> ExtractModelInfoSections(Object fileContext)
+        static IEnumerable<ModelInfoSection> ExtractModelInfoSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
                 return new List<ModelInfoSection>();
             }
-            var context = (LUFileParser.FileContext)fileContext;
+            var context = fileContext;
             var modelInfoSections = context.paragraph().Select(x => x.modelInfoSection()).Where(x => x != null);
 
             var modelInfoSectionList = modelInfoSections.Select(x => new ModelInfoSection(x));
@@ -308,6 +308,7 @@ namespace Microsoft.Botframework.LUParser.parser
                 return new List<Entity>();
             }
 
+            var aux = fileContext.paragraph();
             var entitySections = fileContext.paragraph().Select(x => x.entitySection()).Where(x => x != null && x.entityDefinition() != null);
             var entitySectionsList = entitySections.Select(x => new Entity(x)).ToList();
 
@@ -393,14 +394,14 @@ namespace Microsoft.Botframework.LUParser.parser
                     var destList = new List<string>();
                     if (section is QnaSection)
                     {
-                        destList = originList.Skip(startLine).Take(stopLine).ToList();
+                        destList = originList.Skip(startLine).Take(stopLine - startLine).ToList();
                         // TODO: maybe change the model so Id is int
                         section.Id = qnaSectionIndex.ToString();
                         qnaSectionIndex++;
                     }
                     else
                     {
-                        destList = originList.Skip(startLine + 1).Take(stopLine).ToList();
+                        destList = originList.Skip(startLine + 1).Take(stopLine - (startLine + 1)).ToList();
                     }
 
                     section.Body = String.Join(Environment.NewLine, destList);
