@@ -113,6 +113,8 @@ namespace Microsoft.Botframework.LUParser.parser
         public List<string> SynonymsOrPhraseList { get; set; }
         [JsonProperty("Features", NullValueHandling = NullValueHandling.Ignore)]
         public string Features { get; set; }
+        [JsonProperty("SynonymsList", NullValueHandling = NullValueHandling.Ignore)]
+        public List<NewEntitySection.SynonymElement> SynonymsList { get; set; } = null;
 
         public SectionEntity() {}
     }

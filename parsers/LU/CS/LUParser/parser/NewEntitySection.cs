@@ -7,8 +7,6 @@ namespace Microsoft.Botframework.LUParser.parser
 {
     public class NewEntitySection: SectionEntity
     {
-        [JsonProperty("SynonymsList", NullValueHandling = NullValueHandling.Ignore)]
-        public List<SynonymElement> SynonymsList { get; set; } = null;
         public class SynonymElement
         {
             [JsonProperty("NormalizedValue", NullValueHandling = NullValueHandling.Ignore)]

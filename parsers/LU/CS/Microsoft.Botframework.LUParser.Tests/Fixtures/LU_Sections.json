@@ -145,7 +145,7 @@
             ],
             "SectionType": "simpleIntentSection",
             "Id": "simpleIntentSection_setThermostat",
-            "Body": "> This utterance labels ‘thermostat to 72’ as composite entity deviceTemperature\n    - Please set {deviceTemperature = thermostat to 72}\n> This is an example utterance that labels ‘owen’ as customDevice (ml entity) and wraps ‘owen to 72’ with the ‘deviceTemperature’ composite entity\n    - Set {deviceTemperature = {customDevice = owen} to 72}\n\n> Define a composite entity ‘deviceTemperature’ that has device (list entity), customDevice (ml entity), temperature (pre-built entity) as children\n\n@ composite deviceTemperature = [device, customDevice, temperature]\n\n@ list device =\n\t- thermostat :\n\t\t- Thermostat\n\t\t- Heater\n\\t\t- AC\n\t\t- Air conditioner\n\t- refrigerator :\n\t\t- Fridge\n    \t- Cooler\n\n@ ml customDevice\n\n@ prebuilt temperature\n\n> REGULAR EXPRESSION ENTITY\n> from, to are roles to hrf-number.\n@ regex hrf-number from, to = /hrf-[0-9]{6}/\n\n> ROLES\n",
+            "Body": "> This utterance labels ‘thermostat to 72’ as composite entity deviceTemperature\n    - Please set {deviceTemperature = thermostat to 72}\n> This is an example utterance that labels ‘owen’ as customDevice (ml entity) and wraps ‘owen to 72’ with the ‘deviceTemperature’ composite entity\n    - Set {deviceTemperature = {customDevice = owen} to 72}\n\n> Define a composite entity ‘deviceTemperature’ that has device (list entity), customDevice (ml entity), temperature (pre-built entity) as children\n\n@ composite deviceTemperature = [device, customDevice, temperature]\n\n@ list device =\n\t- thermostat :\n\t\t- Thermostat\n\t\t- Heater\n\t\t- AC\n\t\t- Air conditioner\n\t- refrigerator :\n\t\t- Fridge\n    \t- Cooler\n\n@ ml customDevice\n\n@ prebuilt temperature\n\n> REGULAR EXPRESSION ENTITY\n> from, to are roles to hrf-number.\n@ regex hrf-number from, to = /hrf-[0-9]{6}/\n\n> ROLES\n",
             "UtteranceAndEntitiesMap": [
                 {
                     "utterance": "Please set thermostat to 72",
@@ -241,15 +241,23 @@
                     "Body": "",
                     "Name": "device",
                     "Type": "list",
-                    "ListBody": [
-                        "\t- thermostat :",
-                        "\t\t- Thermostat",
-                        "\t\t- Heater",
-                        "\t\t- AC",
-                        "\\t\t- Air conditioner",
-                        "\t- refrigerator :",
-                        "\t\t- Fridge",
-                        "    \t- Cooler"
+                    "SynonymsList": [
+                        {
+                            "NormalizedValue": "thermostat",
+                            "Synonyms": [
+                                "Thermostat",
+                                "Heater",
+                                "AC",
+                                "Air conditioner"
+                            ]
+                        },
+                        {
+                            "NormalizedValue": "refrigerator",
+                            "Synonyms": [
+                                "Fridge",
+                                "Cooler"
+                            ]
+                        }
                     ],
                     "Range": {
                         "Start": {
@@ -1328,7 +1336,7 @@
                     "Body": "",
                     "Name": "listCity",
                     "Type": "list",
-                    "ListBody": [
+                    "SynonymsList": [
 
                     ],
                     "Range": {
@@ -1745,7 +1753,7 @@
             ],
             "SectionType": "simpleIntentSection",
             "Id": "simpleIntentSection_None",
-            "Body": "- [None uttearnces](./test_help.lu#Help)\n",
+            "Body": "- [None uttearnces](./test_help.lu#Help)",
             "UtteranceAndEntitiesMap": [
                 {
                     "utterance": "[None uttearnces](./test_help.lu#Help)",
@@ -1765,6 +1773,9 @@
                             "Line": 185,
                             "Character": 40
                         }
+                    },
+                    "references": {
+                        "source": "./test_help.lu#Help"
                     }
                 }
             ],
@@ -1785,7 +1796,7 @@
             }
         }
     ],
-    "content": "> This is a comment and will be ignored.\n> INTENT\n# Greeting\n- hi\n- hello\n\n> ML ENTITY. Without an explicit entity definition, 'userName' defaults to 'ml' entity type.\n# getUserName\n- my name is {username=vishwac}\n\n> PREBUILT ENTITIES\n@ prebuilt number numOfGuests, age\n\n> COMPOSITE ENTITIES\n# setThermostat\n> This utterance labels ‘thermostat to 72’ as composite entity deviceTemperature\n    - Please set {deviceTemperature = thermostat to 72}\n> This is an example utterance that labels ‘owen’ as customDevice (ml entity) and wraps ‘owen to 72’ with the ‘deviceTemperature’ composite entity\n    - Set {deviceTemperature = {customDevice = owen} to 72}\n\n> Define a composite entity ‘deviceTemperature’ that has device (list entity), customDevice (ml entity), temperature (pre-built entity) as children\n\n@ composite deviceTemperature = [device, customDevice, temperature]\n\n@ list device =\n\t- thermostat :\n\t\t- Thermostat\n\t\t- Heater\n\t\t- AC\n\t\t- Air conditioner\n\t- refrigerator :\n\t\t- Fridge\n    \t- Cooler\n\n@ ml customDevice\n\n@ prebuilt temperature\n\n> REGULAR EXPRESSION ENTITY\n> from, to are roles to hrf-number.\n@ regex hrf-number from, to = /hrf-[0-9]{6}/\n\n> ROLES\n\n# AskForUserName\n- {userName:firstName=vishwac} {userName:lastName=kannan}\n- I'm {userName:firstName=vishwac}\n- my first name is {userName:firstName=vishwac}\n- {userName=vishwac} is my name\n\n> In patterns, you can use roles using the {\\<entityName\\>:\\<roleName\\>} notation\n# getUserNameRoles\n- call me {name:userName}\n- I'm {name:userName}\n- my name is {name:userName}\n\n> roles can be specified for list entity types as well - in this case fromCity and toCity are added as roles to the 'city' list entity defined further below\n# BookFlight\n- book flight from {city:fromCity} to {city:toCity}\n- [can you] get me a flight from {city:fromCity} to {city:toCity}\n- get me a flight to {city:toCity}\n- I need to fly from {city:fromCity}\n\n$city:Seattle=\n- Seattle\n- Tacoma\n- SeaTac\n- SEA\n\n$city:Portland=\n- Portland\n- PDX\n\n> PATTERNS\n# DeleteAlarm\n- delete the {alarmTime} alarm\n\n> PHRASE LIST DEFINITION\n@ phraseList Want =\n    - require\n\t- need\n\t- desire\n\t- know\n\n@ phraselist question(interchangeable) =\n    - are you\n    - you are\n\n\n@ phraselist abc(interchangeable) =\n    - are you\n    - you are\n\n@ abc disabled\n\n> TIE FEATURES TO SPECIFIC MODEL\n# getUserProfile\n- my name is {@userName = vishwac}\n\n> phrase list definition\n@ phraselist PLCity(interchangeable) =\n    - seattle\n    - space needle\n    - SEATAC\n    - SEA\n> phrase list as feature to intent (also applicable to entities)\n@ intent getUserProfileIntent usesFeature PLCity\n\n> phrase list as a feature to an ml entity.\n@ ml myCity usesFeature PLCity\n\n@ regex regexZipcode = /[0-9]{5}/\n\n> phrase list as feature to n-depth entity with phrase list as a feature\n@ ml address2 fromAddress2, toAddress2\n@ address2 =\n    - @ number 'door number'\n    - @ ml streetName\n    - @ ml location\n        - @ ml city usesFeature PLCity\n        - @ regexZipcode zipcode \n\n\n> ADD ENTITY OR INTENT AS FEATURE\n> entity definition - @ <entityType> <entityName> [<roles>]\n\n@ prebuilt personName\n\n> entity definition with roles\n@ ml userN hasRoles fistN, lastN\n\n> add entity as a feature to another entity\n@ userN usesFeature personName\n\n> add entity as feature to an intent\n@ intent getUserNameIntent usesFeature personName\n\n> Intent definition\n# getUserNameIntent\n- utterances\n\n> multiple entities as a feature to a model\n@ intent getUserNameIntent usesFeature personName\n\n> intent as a feature to another intent\n@ intent getUserProfileI usesFeature getUserNameIntent\n\n# getUserProfileI\n- utterances\n\n> MACHINE_LEARNED ENTITY WITH CHILDREN\n@ list listCity\n@ prebuilt number\n@ prebuilt geographyV2\n@ regex regexZipcode = /[0-9]{5}/\n@ ml address hasRoles fromAddress, toAddress\n@ address =\n    - @ number 'door number'\n    - @ ml streetName\n    - @ ml location usesFeature geographyV2\n        - @ listCity city\n        - @ regexZipcode zipcode\n\n\n\n# getUserProfileIntent\n@ prebuilt number\n\n> LABELS\n# getUserP\n- my name is vishwac and I'm 36 years old\n    - my name is {@userProfile = vishwac and I'm 36 years old}\n    - my name is {@fstN = vishwac} and I'm 36 years old\n    - my name is vishwac and I'm {@userAge = 36} years old\n- i'm {@userProfile = {@fstN = vishwac}}\n\n@ ml userProfile\n    - @personName fstN\n    - @personName lstN\n\n@ prebuilt personName\n\n> EXTERNAL REFERENCES\n# None\n- [None uttearnces](./test_help.lu#Help)\n",
+    "content": "> This is a comment and will be ignored.\n> INTENT\n# Greeting\n- hi\n- hello\n\n> ML ENTITY. Without an explicit entity definition, 'userName' defaults to 'ml' entity type.\n# getUserName\n- my name is {username=vishwac}\n\n> PREBUILT ENTITIES\n@ prebuilt number numOfGuests, age\n\n> COMPOSITE ENTITIES\n# setThermostat\n> This utterance labels ‘thermostat to 72’ as composite entity deviceTemperature\n    - Please set {deviceTemperature = thermostat to 72}\n> This is an example utterance that labels ‘owen’ as customDevice (ml entity) and wraps ‘owen to 72’ with the ‘deviceTemperature’ composite entity\n    - Set {deviceTemperature = {customDevice = owen} to 72}\n\n> Define a composite entity ‘deviceTemperature’ that has device (list entity), customDevice (ml entity), temperature (pre-built entity) as children\n\n@ composite deviceTemperature = [device, customDevice, temperature]\n\n@ list device =\n\t- thermostat :\n\t\t- Thermostat\n\t\t- Heater\n\t\t- AC\n\t\t- Air conditioner\n\t- refrigerator :\n\t\t- Fridge\n    \t- Cooler\n\n@ ml customDevice\n\n@ prebuilt temperature\n\n> REGULAR EXPRESSION ENTITY\n> from, to are roles to hrf-number.\n@ regex hrf-number from, to = /hrf-[0-9]{6}/\n\n> ROLES\n\n# AskForUserName\n- {userName:firstName=vishwac} {userName:lastName=kannan}\n- I'm {userName:firstName=vishwac}\n- my first name is {userName:firstName=vishwac}\n- {userName=vishwac} is my name\n\n> In patterns, you can use roles using the {\\<entityName\\>:\\<roleName\\>} notation\n# getUserNameRoles\n- call me {name:userName}\n- I'm {name:userName}\n- my name is {name:userName}\n\n> roles can be specified for list entity types as well - in this case fromCity and toCity are added as roles to the 'city' list entity defined further below\n# BookFlight\n- book flight from {city:fromCity} to {city:toCity}\n- [can you] get me a flight from {city:fromCity} to {city:toCity}\n- get me a flight to {city:toCity}\n- I need to fly from {city:fromCity}\n\n$city:Seattle=\n- Seattle\n- Tacoma\n- SeaTac\n- SEA\n\n$city:Portland=\n- Portland\n- PDX\n\n> PATTERNS\n# DeleteAlarm\n- delete the {alarmTime} alarm\n\n> PHRASE LIST DEFINITION\n@ phraseList Want =\n    - require\n\t- need\n\t- desire\n\t- know\n\n@ phraselist question(interchangeable) =\n    - are you\n    - you are\n\n\n@ phraselist abc(interchangeable) =\n    - are you\n    - you are\n\n@ abc disabled\n\n> TIE FEATURES TO SPECIFIC MODEL\n# getUserProfile\n- my name is {@userName = vishwac}\n\n> phrase list definition\n@ phraselist PLCity(interchangeable) =\n    - seattle\n    - space needle\n    - SEATAC\n    - SEA\n> phrase list as feature to intent (also applicable to entities)\n@ intent getUserProfileIntent usesFeature PLCity\n\n> phrase list as a feature to an ml entity.\n@ ml myCity usesFeature PLCity\n\n@ regex regexZipcode = /[0-9]{5}/\n\n> phrase list as feature to n-depth entity with phrase list as a feature\n@ ml address2 fromAddress2, toAddress2\n@ address2 =\n    - @ number 'door number'\n    - @ ml streetName\n    - @ ml location\n        - @ ml city usesFeature PLCity\n        - @ regexZipcode zipcode \n\n\n> ADD ENTITY OR INTENT AS FEATURE\n> entity definition - @ <entityType> <entityName> [<roles>]\n\n@ prebuilt personName\n\n> entity definition with roles\n@ ml userN hasRoles fistN, lastN\n\n> add entity as a feature to another entity\n@ userN usesFeature personName\n\n> add entity as feature to an intent\n@ intent getUserNameIntent usesFeature personName\n\n> Intent definition\n# getUserNameIntent\n- utterances\n\n> multiple entities as a feature to a model\n@ intent getUserNameIntent usesFeature personName\n\n> intent as a feature to another intent\n@ intent getUserProfileI usesFeature getUserNameIntent\n\n# getUserProfileI\n- utterances\n\n> MACHINE_LEARNED ENTITY WITH CHILDREN\n@ list listCity\n@ prebuilt number\n@ prebuilt geographyV2\n@ regex regexZipcode = /[0-9]{5}/\n@ ml address hasRoles fromAddress, toAddress\n@ address =\n    - @ number 'door number'\n    - @ ml streetName\n    - @ ml location usesFeature geographyV2\n        - @ listCity city\n        - @ regexZipcode zipcode\n\n\n\n# getUserProfileIntent\n@ prebuilt number\n\n> LABELS\n# getUserP\n- my name is vishwac and I'm 36 years old\n    - my name is {@userProfile = vishwac and I'm 36 years old}\n    - my name is {@fstN = vishwac} and I'm 36 years old\n    - my name is vishwac and I'm {@userAge = 36} years old\n- i'm {@userProfile = {@fstN = vishwac}}\n\n@ ml userProfile\n    - @personName fstN\n    - @personName lstN\n\n@ prebuilt personName\n\n> EXTERNAL REFERENCES\n# None\n- [None uttearnces](./test_help.lu#Help)",
     "errors": [
         {
             "Message": "no utterances found for intent definition: \"# getUserProfileIntent\"",
