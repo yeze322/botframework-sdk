@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
@@ -14,7 +14,7 @@ namespace Microsoft.Botframework.LUParser.parser
         {
             SectionType = SectionType.SimpleIntentSection;
             UtteranceAndEntitiesMap = new List<UtteranceAndEntitiesMap>();
-            Entities = new List<Entity>();
+            Entities = new List<SectionEntity>();
             Errors = new List<Error>();
             Body = String.Empty;
 
@@ -85,6 +85,13 @@ namespace Microsoft.Botframework.LUParser.parser
                         var startPos = new Position { Line = normalIntentStr.Start.Line, Character = normalIntentStr.Start.Column };
                         var stopPos = new Position { Line = normalIntentStr.Stop.Line, Character = normalIntentStr.Stop.Column + normalIntentStr.Stop.Text.Length };
                         utteranceAndEntities.Range = new Range { Start = startPos, End = stopPos };
+
+                        var markdownUrlMatch = Regex.Match(utteranceAndEntities.Utterance, @"^\[(?:[^\[]+)\]\((.*)\)$");
+
+                        if (markdownUrlMatch.Success)
+                        {
+                            utteranceAndEntities.References = new Reference() { Source = markdownUrlMatch.Groups[1].Value };
+                        }
 
                         utterancesAndEntitiesMap.Add(utteranceAndEntities);
                         foreach (var errorMsg in utteranceAndEntities.ErrorMsgs)

@@ -6,9 +6,6 @@ namespace Microsoft.Botframework.LUParser.parser
 {
     public class NestedIntentSection: Section
     {
-        [JsonProperty("SimpleIntentSections")]
-        public List<SimpleIntentSection> SimpleIntentSections { get; set; }
-
         public NestedIntentSection(LUFileParser.NestedIntentSectionContext parseTree, string content)
         {
             this.SectionType = SectionType.NestedIntentSection;

@@ -8,12 +8,6 @@ namespace Microsoft.Botframework.LUParser.parser
 {
     public class ImportSection: Section
     {
-        [JsonProperty("Description")]
-        public string Description { get; set; }
-
-        [JsonProperty("Path")]
-        public string Path { get; set; }
-
         public ImportSection(LUFileParser.ImportSectionContext parseTree)
         {
             Errors = new List<Error>();
@@ -22,7 +16,7 @@ namespace Microsoft.Botframework.LUParser.parser
             Description = result.description;
             Path = result.path;
             string secTypeStr = $"{SectionType}";
-            Id = $"{char.ToLower(secTypeStr[0]) + secTypeStr.Substring(1)}_{Name}";
+            Id = $"{char.ToLower(secTypeStr[0]) + secTypeStr.Substring(1)}_{Path}";
             var startPosition = new Position { Line = parseTree.Start.Line, Character = parseTree.Start.Column };
             var stopPosition = new Position { Line = parseTree.Stop.Line, Character = parseTree.Stop.Column + parseTree.Stop.Text.Length };
             Range = new Range { Start = startPosition, End = stopPosition };
@@ -36,12 +30,12 @@ namespace Microsoft.Botframework.LUParser.parser
             string path = null;
 
             // TODO: check this regex correct logic
-            var groups = Regex.Matches(importStr, @"\[([^\]]*)\]\(([^\)]*)\)");
+            var regMatch = Regex.Match(importStr, @"\[([^\]]*)\]\(([^\)]*)\)");
 
-            if (groups.Count == 3)
+            if (regMatch.Success && regMatch.Groups.Count == 3)
             {
-                description = groups[1].ToString().Trim();
-                path = groups[2].ToString().Trim();
+                description = regMatch.Groups[1].ToString().Trim();
+                path = regMatch.Groups[2].ToString().Trim();
 
                 if (String.IsNullOrEmpty(path))
                 {

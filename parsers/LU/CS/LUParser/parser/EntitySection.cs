@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
-    partial class Entity
+    partial class SectionEntity
     {
         // TODO: pass this constant to a helper class.
         private char[] invalidCharsInIntentOrEntityName = { '<', '>', '*', '%', '&', ':', '\\', '$' };
-        public Entity(LUFileParser.EntitySectionContext parseTree)
+        public SectionEntity(LUFileParser.EntitySectionContext parseTree)
         {
             SectionType = SectionType.EntitySection;
             Errors = new List<Error>();

@@ -70,23 +70,34 @@ namespace Microsoft.Botframework.LUParser.parser
         [JsonProperty("Errors")]
         public List<Error> Errors { get; set; } = new List<Error>();
         [JsonProperty("SectionType")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public SectionType SectionType { get; set; }
         [JsonProperty("Id")]
         public string Id { get; set; } = String.Empty;
         [JsonProperty("Body")]
         public string Body { get; set; } = String.Empty;
-        [JsonProperty("UtteranceAndEntitiesMap")]
+        [JsonProperty("UtteranceAndEntitiesMap", NullValueHandling = NullValueHandling.Ignore)]
         public List<UtteranceAndEntitiesMap> UtteranceAndEntitiesMap { get; set; }
-        [JsonProperty("Entities")]
-        public List<Entity> Entities { get; set; }
-        [JsonProperty("Name")]
+        [JsonProperty("Entities", NullValueHandling = NullValueHandling.Ignore)]
+        public List<SectionEntity> Entities { get; set; }
+        [JsonProperty("Name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
-        [JsonProperty("IntentNameLine")]
+        [JsonProperty("IntentNameLine", NullValueHandling = NullValueHandling.Ignore)]
         public string IntentNameLine { get; set; }
         [JsonProperty("Range")]
         public Range Range { get; set; }
+        [JsonProperty("ModelInfo", NullValueHandling = NullValueHandling.Ignore)]
+        public string ModelInfo { get; set; }
+        [JsonProperty("SimpleIntentSections", NullValueHandling = NullValueHandling.Ignore)]
+        public List<SimpleIntentSection> SimpleIntentSections { get; set; }
+        [JsonProperty("SimpleIntentSection", NullValueHandling = NullValueHandling.Ignore)]
+        public List<SimpleIntentSection> SimpleIntentSection { get; set; }
+        [JsonProperty("Description", NullValueHandling = NullValueHandling.Ignore)]
+        public string Description { get; set; }
+        [JsonProperty("Path", NullValueHandling = NullValueHandling.Ignore)]
+        public string Path { get; set; }
     }
-    public partial class Entity: Section
+    public partial class SectionEntity : Section
     {
         [JsonProperty("Type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type { get; set; }
@@ -103,7 +114,7 @@ namespace Microsoft.Botframework.LUParser.parser
         [JsonProperty("Features", NullValueHandling = NullValueHandling.Ignore)]
         public string Features { get; set; }
 
-        public Entity() {}
+        public SectionEntity() {}
     }
     public partial class UtteranceAndEntitiesMap
     {
@@ -117,10 +128,18 @@ namespace Microsoft.Botframework.LUParser.parser
         public string ContextText { get; set; }
         [JsonProperty("range")]
         public Range Range { get; set; }
+        [JsonProperty("references", NullValueHandling = NullValueHandling.Ignore)]
+        public Reference References { get; set; }
+    }
+    public partial class Reference
+    {
+        [JsonProperty("source")]
+        public string Source { get; set; }
     }
     public partial class EntityElement
     {
         [JsonProperty("type")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public TypeEnum Type { get; set; }
         [JsonProperty("entity")]
         public string Entity { get; set; }

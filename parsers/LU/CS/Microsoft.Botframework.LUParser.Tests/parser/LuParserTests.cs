@@ -13,22 +13,23 @@ namespace Microsoft.Botframework.LUParser.Tests.parser
         {
             // var luContent = "# Help"+ Environment.NewLine + "- help" + Environment.NewLine + "- I need help" + Environment.NewLine + "- please help";
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Fixtures", "LU.txt");
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Fixtures", "ImportAllLu.txt");
             Console.WriteLine(path);
             // var folders = Directory.GetDirectories(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
             // var files = Directory.GetFiles(path);
             var luContent = File.ReadAllText(path);
-            var result = LuParser.parse(luContent, false);
-            // LuResource expected = JsonConvert.DeserializeObject<LuResource>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Fixtures", "LU_Sections.json")));
+            luContent = luContent.Substring(0, luContent.Length - 1);
+            var result = LuParser.parse(luContent);
+            LuResource expected = JsonConvert.DeserializeObject<LuResource>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Fixtures", "ImportAllLu.json")));
 
             var serializedResult = JsonConvert.SerializeObject(result).Replace("\\r", "");
-            // var serializedExpected = JsonConvert.SerializeObject(expected).Replace("\\r", "");
+            var serializedExpected = JsonConvert.SerializeObject(expected).Replace("\\r", "");
 
             Console.WriteLine(serializedResult);
             Console.WriteLine("-------------------------------------------------------------------------------");
-            // Console.WriteLine(serializedExpected);
+            Console.WriteLine(serializedExpected);
 
-            Assert.Equal(serializedResult, null);
+            Assert.Equal(serializedResult, serializedExpected);
         }
     }
 }

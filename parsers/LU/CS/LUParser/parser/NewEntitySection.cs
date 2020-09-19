@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Microsoft.Botframework.LUParser.parser
 {
-    public class NewEntitySection: Entity
+    public class NewEntitySection: SectionEntity
     {
         [JsonProperty("SynonymsList", NullValueHandling = NullValueHandling.Ignore)]
         public List<SynonymElement> SynonymsList { get; set; } = null;

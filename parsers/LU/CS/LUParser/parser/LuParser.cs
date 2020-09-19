@@ -22,7 +22,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return null;
         }
 
-        public static LuResource parse(string text, bool sectionEnabled)
+        public static LuResource parse(string text)
         {
             if (String.IsNullOrEmpty(text))
             {
@@ -31,32 +31,41 @@ namespace Microsoft.Botframework.LUParser.parser
 
             var fileContent = GetFileContent(text);
 
-            return ExtractFileContent((LUFileParser.FileContext)fileContent, text, new List<Error>(), sectionEnabled);
+            return ExtractFileContent((LUFileParser.FileContext)fileContent, text, new List<Error>());
         }
 
-        static LuResource ExtractFileContent(LUFileParser.FileContext fileContent, string content, List<Error> errors, bool? sectionEnabled)
+        static LuResource ExtractFileContent(LUFileParser.FileContext fileContent, string content, List<Error> errors)
         {
             var sections = new List<Section>();
 
             try
             {
                 var modelInfoSections = ExtractModelInfoSections(fileContent);
+                foreach (var section in modelInfoSections)
+                {
+                    errors.AddRange(section.Errors);
+                }
+                sections.AddRange(modelInfoSections);
             }
-            catch
+            catch (Exception err)
             {
-
+                errors.Add(
+                    Diagnostic.BuildDiagnostic(
+                        message: $"Error happened when parsing model info section: {err.Message}"
+                    )
+                );
             }
 
             try
             {
-                var isSectionEnabled = sectionEnabled == null ? IsSectionEnabled(sections) : sectionEnabled;
+                var isSectionEnabled = IsSectionEnabled(sections);
 
                 var nestedIntentSections = ExtractNestedIntentSections(fileContent, content);
                 foreach (var section in nestedIntentSections)
                 {
                     errors.AddRange(section.Errors);
                 }
-                if (isSectionEnabled.HasValue ? isSectionEnabled.Value : false)
+                if (isSectionEnabled)
                 {
                     sections.AddRange(nestedIntentSections);
                 }
@@ -221,15 +230,15 @@ namespace Microsoft.Botframework.LUParser.parser
                     if (sections[index+1].SectionType == SectionType.EntitySection || sections[index + 1].SectionType == SectionType.NewEntitySection)
                     {
                         var simpleIntentSections = nestedSection.SimpleIntentSections;
-                        simpleIntentSections[simpleIntentSections.Count - 1].Entities.Add(sections[index + 1] as Entity);
+                        simpleIntentSections[simpleIntentSections.Count - 1].Entities.Add(sections[index + 1] as SectionEntity);
                         simpleIntentSections[simpleIntentSections.Count - 1].Errors.AddRange(sections[index + 1].Errors);
                         index++;
 
                         while (index + 1 < sections.Count
-                            && (sections[index + 1] is Entity
+                            && (sections[index + 1] is SectionEntity
                             || (sections[index + 1].SectionType == SectionType.SimpleIntentSection && sections[index + 1].IntentNameLine.Contains("##"))))
                         {
-                            if (sections[index + 1] is Entity entitySection)
+                            if (sections[index + 1] is SectionEntity entitySection)
                             {
                                 simpleIntentSections[simpleIntentSections.Count - 1].Entities.Add(entitySection);
                                 simpleIntentSections[simpleIntentSections.Count - 1].Errors.AddRange(entitySection.Errors);
@@ -243,12 +252,12 @@ namespace Microsoft.Botframework.LUParser.parser
                         }
 
                         simpleIntentSections.ForEach(s => nestedSection.Errors.AddRange(s.Errors));
-                        nestedSection.SimpleIntentSections = simpleIntentSections;
+                        nestedSection.SimpleIntentSection = simpleIntentSections;
                     }
                 }
                 else if (section is SimpleIntentSection simpleIntentSection)
                 {
-                    while (index + 1 < sections.Count && (sections[index + 1] is Entity entitySection))
+                    while (index + 1 < sections.Count && (sections[index + 1] is SectionEntity entitySection))
                     {
                         section.Entities.Add(entitySection);
                         section.Errors.AddRange(entitySection.Errors);
@@ -261,7 +270,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return newSections;
         }
 
-        static IEnumerable<ModelInfoSection> ExtractModelInfoSections(LUFileParser.FileContext fileContext)
+        static List<ModelInfoSection> ExtractModelInfoSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
@@ -270,7 +279,7 @@ namespace Microsoft.Botframework.LUParser.parser
             var context = fileContext;
             var modelInfoSections = context.paragraph().Select(x => x.modelInfoSection()).Where(x => x != null);
 
-            var modelInfoSectionList = modelInfoSections.Select(x => new ModelInfoSection(x));
+            var modelInfoSectionList = modelInfoSections.Select(x => new ModelInfoSection(x)).ToList();
 
             return modelInfoSectionList;
         }
@@ -301,16 +310,16 @@ namespace Microsoft.Botframework.LUParser.parser
             return simpleIntentSectionsList;
         }
 
-        static List<Entity> ExtractEntitiesSections(LUFileParser.FileContext fileContext)
+        static List<SectionEntity> ExtractEntitiesSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
-                return new List<Entity>();
+                return new List<SectionEntity>();
             }
 
             var aux = fileContext.paragraph();
             var entitySections = fileContext.paragraph().Select(x => x.entitySection()).Where(x => x != null && x.entityDefinition() != null);
-            var entitySectionsList = entitySections.Select(x => new Entity(x)).ToList();
+            var entitySectionsList = entitySections.Select(x => new SectionEntity(x)).ToList();
 
             return entitySectionsList;
         }

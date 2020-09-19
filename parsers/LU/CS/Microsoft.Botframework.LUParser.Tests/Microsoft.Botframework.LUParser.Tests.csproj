@@ -15,16 +15,27 @@
 
   <ItemGroup>
     <Folder Include="parser\" />
-    <Folder Include="Fixtures\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LUParser\Microsoft.Botframework.LUParser.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Fixtures\LU.txt">
+    <None Update="Fixtures\ImportAllLu.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fixtures\ImportAllLu.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fixtures\LU_Sections.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Fixtures\LU_Sections.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fixtures\SectionsLU.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fixtures\SectionsLU.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
