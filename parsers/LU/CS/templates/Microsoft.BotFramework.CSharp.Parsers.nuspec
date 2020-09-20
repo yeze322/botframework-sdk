@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
-    <id>Microsoft.Bot.Framework.CSharp.CoreBot</id>
+    <id>Microsoft.Bot.Framework.CSharp.Parser</id>
     <version>4.10.2</version>
     <description>
-      A .NET Core Template for Microsoft Bot Framework v4.  Will let you quickly set up a conversational AI bot with core features every bot is likely to use.
+      A parser for language understanding files. 
     </description>
     <authors>Microsoft</authors>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
-    <title>.NET Core Template - CoreBot</title>
-    <projectUrl>https://github.com/Microsoft/BotBuilder-Samples/tree/master/generators/dotnet-templates/</projectUrl>
+    <title>LU Parser</title>
+    <projectUrl>https://github.com/Microsoft/BotFramework-SDK</projectUrl>
     <license type="file">LICENSE.txt</license>
     <icon>nuget_icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
