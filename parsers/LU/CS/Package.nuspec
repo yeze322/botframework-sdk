@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Microsoft.Bot.Framework.CSharp.Parser</id>
-    <version>1.1.1</version>
+    <version>1.0.0</version>
     <description>A CSharp parser for Language Understanding files.</description>
     <authors>Microsoft</authors>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
