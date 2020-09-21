@@ -1,4 +1,8 @@
 <Project>
+  <PropertyGroup>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)outputpackages</PackageOutputPath>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AssemblyOriginatorKeyFile>$(SolutionDir)\..\..\..\build\35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
