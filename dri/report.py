@@ -53,7 +53,9 @@ REPOS = [
     'botbuilder-python',
     'botbuilder-java',
     'botbuilder-samples',
+    'botframework-composer',
     'botframework-samples',
+    'botframework-solutions',
     'botframework-emulator',
     'botframework-webchat',
     'botbuilder-tools',
@@ -91,7 +93,8 @@ MICROSFT_EMPLOYEES = [
     'diegocardozo94',
     'v-madhal',
     'v-kydela',
-    'corinagum'
+    'corinagum',
+    'mrichardson'
 ]
 
 # When to begin searching for issues.

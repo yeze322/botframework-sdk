@@ -32,7 +32,7 @@ MILESTONE_LABELS = [
     'R10',
     'R11',
     'Backlog',
-    'backlog',
+    'backlog'
 ]
 
 # pylint: disable=missing-docstring, line-too-long
@@ -41,9 +41,8 @@ def filter_stale_customer_issues(issue, days_old=60):
     """Filter stale customer issues.
     Return True if it should filter the issue.
     """
-    for label in issue.labels:
-        if label.name in MILESTONE_LABELS:
-            return True
+    if filter_milestone_label(issue):
+        return True
     return not issue.created_at + timedelta(days=days_old) < datetime.now()
 
 def last_touched_by_microsoft(issue, microsoft_members) -> bool:
@@ -122,4 +121,9 @@ def filter_exempt_from_dri_label(issue):
     return any(label.name == EXEMPT_FROM_DAILY_DRI_REPORT_LABEL for label in issue.labels)
 
 def filter_milestone_label(issue):
-    return any(label.name in MILESTONE_LABELS or label.name == BUG_LABEL for label in issue.labels)
+    if any(label.name in MILESTONE_LABELS or label.name == BUG_LABEL for label in issue.labels):
+         return True
+    elif issue.milestone:
+         return True
+    else:
+         return False
