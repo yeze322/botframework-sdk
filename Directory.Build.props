@@ -1,10 +1,10 @@
 <Project>
   <PropertyGroup>
-    <PackageOutputPath>$(MSBuildThisFileFullPath)outputpackages</PackageOutputPath>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)outputpackages</PackageOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileFullPath)\build\35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\build\35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>
     <Note> Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'"</Note>
