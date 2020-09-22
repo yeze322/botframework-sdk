@@ -10,7 +10,7 @@ namespace Microsoft.Botframework.LUParser.parser
 {
     public class LuParser
     {
-        static Object ParseWithRef(string text, LuResource luResource)
+        private static Object ParseWithRef(string text, LuResource luResource)
         {
             if (String.IsNullOrEmpty(text))
             {
@@ -34,7 +34,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return ExtractFileContent((LUFileParser.FileContext)fileContent, text, new List<Error>());
         }
 
-        static LuResource ExtractFileContent(LUFileParser.FileContext fileContent, string content, List<Error> errors)
+        private static LuResource ExtractFileContent(LUFileParser.FileContext fileContent, string content, List<Error> errors)
         {
             var sections = new List<Section>();
 
@@ -211,7 +211,7 @@ namespace Microsoft.Botframework.LUParser.parser
         }
 
 
-        static List<Section> ReconstructIntentSections(List<Section> sections)
+        private static List<Section> ReconstructIntentSections(List<Section> sections)
         {
             var newSections = new List<Section>();
             sections.Sort((a, b) => a.Range.Start.Line - b.Range.Start.Line);
@@ -270,7 +270,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return newSections;
         }
 
-        static List<ModelInfoSection> ExtractModelInfoSections(LUFileParser.FileContext fileContext)
+        private static List<ModelInfoSection> ExtractModelInfoSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
@@ -284,7 +284,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return modelInfoSectionList;
         }
 
-        static List<NestedIntentSection> ExtractNestedIntentSections(LUFileParser.FileContext fileContext, string content)
+        private static List<NestedIntentSection> ExtractNestedIntentSections(LUFileParser.FileContext fileContext, string content)
         {
             if (fileContext == null)
             {
@@ -297,7 +297,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return nestedIntentSectionsList;
         }
 
-        static List<SimpleIntentSection> ExtractSimpleIntentSections(LUFileParser.FileContext fileContext, string content)
+        private static List<SimpleIntentSection> ExtractSimpleIntentSections(LUFileParser.FileContext fileContext, string content)
         {
             if (fileContext == null)
             {
@@ -310,7 +310,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return simpleIntentSectionsList;
         }
 
-        static List<SectionEntity> ExtractEntitiesSections(LUFileParser.FileContext fileContext)
+        private static List<SectionEntity> ExtractEntitiesSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
@@ -324,7 +324,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return entitySectionsList;
         }
 
-        static List<NewEntitySection> ExtractNewEntitiesSections(LUFileParser.FileContext fileContext)
+        private static List<NewEntitySection> ExtractNewEntitiesSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
@@ -337,7 +337,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return newEntitySectionsList;
         }
 
-        static List<ImportSection> ExtractImportSections(LUFileParser.FileContext fileContext)
+        private static List<ImportSection> ExtractImportSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
@@ -350,7 +350,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return importSectionsList;
         }
 
-        static List<QnaSection> ExtractQnaSections(LUFileParser.FileContext fileContext)
+        private static List<QnaSection> ExtractQnaSections(LUFileParser.FileContext fileContext)
         {
             if (fileContext == null)
             {
@@ -363,7 +363,7 @@ namespace Microsoft.Botframework.LUParser.parser
             return qnaSectionsList;
         }
 
-        static LUFileParser.FileContext GetFileContent(string text)
+        private static LUFileParser.FileContext GetFileContent(string text)
         {
             var chars = new AntlrInputStream(text);
             var lexer = new LUFileLexer(chars);
@@ -374,7 +374,7 @@ namespace Microsoft.Botframework.LUParser.parser
 
         }
 
-        static void ExtractSectionBody(List<Section> sections, string content)
+        private static void ExtractSectionBody(List<Section> sections, string content)
         {
             var originList = Regex.Split(content, @"\r?\n");
             var qnaSectionIndex = 0;
@@ -425,7 +425,7 @@ namespace Microsoft.Botframework.LUParser.parser
             }
         }
 
-        static bool IsSectionEnabled(List<Section> sections)
+        private static bool IsSectionEnabled(List<Section> sections)
         {
             var modelInfoSections = sections.Where(s => s.SectionType == SectionType.ModelInfoSection);
             bool enableSections = false;

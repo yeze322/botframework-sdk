@@ -17,9 +17,6 @@
     <Folder Include="parser\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LUParser\Microsoft.Botframework.LUParser.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <None Update="Fixtures\ImportAllLu.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -38,5 +35,8 @@
     <None Update="Fixtures\SectionsLU.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Botframework.LUParser\Microsoft.Botframework.LUParser.csproj" />
   </ItemGroup>
 </Project>
