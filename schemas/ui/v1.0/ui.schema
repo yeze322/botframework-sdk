@@ -50,6 +50,15 @@
                         "type": "string"
                     }
                 },
+                "intellisenseScopes": {
+                    "title": "Intellisense scopes",
+                    "description": "An array of valid scopes to help Intellisense return the correct type of results.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "examples": [["expressions","user-variables"]]
+                },
                 "label": {
                     "title": "Label",
                     "description": "Label override. Can either be a string or false to hide the label.",
