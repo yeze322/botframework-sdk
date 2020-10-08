@@ -5,7 +5,7 @@
 ## Testing matrix
 
 - Skill: [GetWeather](../SkillsFunctionalTesting.md#getweather-skill)
-- Topology: [Simple](#simple)
+- Topology: [Simple](../SkillsFunctionalTesting.md#simple)
 
 ![Bot SDLC](../media/Simple.jpg)
 
