@@ -8,7 +8,7 @@ TBD
 
 ## Testing matrix
 
-- Skill: [Card skill](../SkillsFunctionalTesting.md#card-skill)
+- Skill: [Cards skill](../SkillsFunctionalTesting.md#cards-skill)
 - Topology: [Simple](../SkillsFunctionalTesting.md#simple)
 
 ![Test matrix](../media/Simple.jpg)

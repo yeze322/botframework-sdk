@@ -4,9 +4,18 @@
 
 Functional tests aim to ensure skills and skill consumers function correctly across the breadth of the Bot Framework.
 
+### Goals <!-- omit in toc -->
+
+1. Validate existing functionality consistently, identify issues and potential regressions.
+2. New functionality can be easily tested, without the need to recreate the complex topologies required when working with skills.
+3. The test infrastructure can be used either directly or as a template for support scenarios to repro customer issues.
+4. Execute automated functional tests regularly (as part of the CI/CD pipeline, on a regular schedule or triggered manually).
+5. Ensure a skill built with any of the languages supported by the SDK will work with any other bot built with a different language SDK.
+
+To support these goals, the testing infrastructure used to validate the functional tests derived from this document must be carefully considered.
+
 ## Contents <!-- omit in toc -->
 
-- [Goals](#goals)
 - [Scenarios](#scenarios)
 - [Reference](#reference)
   - [Things a skill might want to do](#things-a-skill-might-want-to-do)
@@ -26,46 +35,38 @@ Functional tests aim to ensure skills and skill consumers function correctly acr
     - [OAuth skill](#oauth-skill)
     - [Teams skill](#teams-skill)
     - [Proactive Skill](#proactive-skill)
-    - [Card Skill](#card-skill)
+    - [Cards Skill](#cards-skill)
     - [RemindMe Skill](#remindme-skill)
   - [Infrastructure](#infrastructure)
 - [Glossary](#glossary)
 
-## Goals
-
-1. Validate existing functionality consistently, identify issues and potential regressions.
-2. New functionality can be easily tested, without the need to recreate the complex topologies required when working with skills.
-3. The test infrastructure can be used either directly or as a template for support scenarios to repro customer issues.
-4. Execute automated functional tests regularly (as part of the CI/CD pipeline, on a regular schedule or triggered manually).
-5. Ensure a skill built with any of the languages supported by the SDK will work with any other bot built with a different language SDK.
-
-To support these goals, the testing infrastructure used to validate the functional tests derived from this document must be carefully considered.
-
 ## Scenarios
 
-This section describes the testing scenarios for skills, for each one of them we provide a  high level description of the primary test case, the type of consumers used, the skill (or skills) involved and the [consumer/skill architecture](#consumerskill-architecture) used to deploy the testing components.
+This section enumerates the testing scenarios for skills, for each one of them we provide a  high level description of the primary test case, the type of consumers used, the skill (or skills) involved and the [consumer/skill architecture](#consumerskill-architecture) used to deploy the testing components.
 
 The different permutations between consumers, skills and their implementation language are represented using a test matrix.
 
 The variables section lists the set of [variables](#variables) that apply to the test case and  need to be configured for each case in the matrix.
 
-Wherever is relevant, we also include a list of variations that describe small variations in the test case (e.g.: state of the consumer, state of the skill, error condition, special considerations, etc.).
+Wherever is relevant, we also include a list of variations that describe small variants in the scenario (e.g.: state of the consumer, state of the skill, error condition, special considerations, etc.).
 
 Given these elements, the number of test cases for each scenario can be calculated by multiplying the number of permutations in the matrix by the number of values for each variable and then multiplied by the number of variations.
 
+The list below provides links to each scenario speacification:
+
 1. [Single turn interaction with a skill](scenarios/SingleTurnInteraction.md)
 2. [Multi turn interaction with a skill](scenarios/MultiTurnInteraction.md)
-3. [Skill sends a proactive message to consumer](scenarios/ProactiveMessage.md)
+3. [Skill sends a proactive message to the consumer](scenarios/ProactiveMessage.md)
 4. [Card actions that generate invokes and message activities](scenarios/CardActionsWithInvokes.md)
 5. [A skill can update and delete an adaptive card](scenarios/UpdateDeleteAdaptiveCard.md)
 6. [The skill needs to authenticate the user with an OAuthCard](scenarios/AuthWithOAuthCard.md)
 7. [The consumer authenticates the user and passes OAuth credentials to the skill using SSO](scenarios/AuthWithSSO.md)
 8. [A skill uses team specific APIs](scenarios/TeamsAPI.md)
-9. [A Skill calls another skill](scenarios/SkillCallsSkill.md)
+9. [A skill calls another skill](scenarios/SkillCallsSkill.md)
 10. [A skill provides a teams task module](scenarios/TeamsSkillWithTaskModule.md)
 11. [A skill receives an attachment](scenarios/SkillReceivesAttachment.md)
 12. [Skill proactively starts a conversation with a user](scenarios/SkillStartsConversation.md)
-13. [DraftScenarios](scenarios/DraftScenarios.md) (Collention of raw ideas for scenarios that need to be defined in more detail)
+13. [Draft scenarios](scenarios/DraftScenarios.md) (Collention of raw ideas for scenarios that need to be defined in more detail)
 
 ## Reference
 
@@ -217,7 +218,7 @@ C#, JS, Python
 
 **Note:** Implement as a refactor of [proactive messages sample](https://github.com/microsoft/BotBuilder-Samples/tree/main/samples/csharp_dotnetcore/16.proactive-messages)
 
-#### Card Skill
+#### Cards Skill
 
 C#, JS, Python
 

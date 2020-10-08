@@ -12,7 +12,7 @@
  
 ## Testing matrix
 
-- Skill: [Consolidate card functions](../SkillsFunctionalTesting.md#teams-skill)
+- Skill: [Teams skill](../SkillsFunctionalTesting.md#teams-skill)
 - Topology: [Simple](../SkillsFunctionalTesting.md#simple)
 
 ![Test matrix](../media/Simple.jpg)
