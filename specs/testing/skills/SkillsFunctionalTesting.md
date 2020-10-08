@@ -17,22 +17,54 @@ To support these goals, the testing infrastructure used to validate the function
 ## Contents <!-- omit in toc -->
 
 - [Scenarios](#scenarios)
-  - [1. Single turn interaction with a skill](#1-single-turn-interaction-with-a-skill)
   - [2. Multi turn interaction with a skill](#2-multi-turn-interaction-with-a-skill)
+- [Testing matrix](#testing-matrix)
+- [Variables](#variables)
+- [Variations](#variations)
   - [3. Skill sends a proactive message to consumer](#3-skill-sends-a-proactive-message-to-consumer)
+- [Testing matrix](#testing-matrix-1)
+- [Variables](#variables-1)
+- [Variations](#variations-1)
   - [4. Card actions that generate invokes and message activities](#4-card-actions-that-generate-invokes-and-message-activities)
+- [Testing matrix](#testing-matrix-2)
+- [Variables](#variables-2)
+- [Variations](#variations-2)
   - [5. A skill can update and delete an adaptive card](#5-a-skill-can-update-and-delete-an-adaptive-card)
+- [Testing matrix](#testing-matrix-3)
+- [Variables](#variables-3)
+- [Variations](#variations-3)
   - [6. The skill needs to authenticate the user with an OAuthCard](#6-the-skill-needs-to-authenticate-the-user-with-an-oauthcard)
+- [Testing matrix](#testing-matrix-4)
+- [Variables](#variables-4)
+- [Variations](#variations-4)
   - [7. The consumer authenticates the user and passes OAuth credentials to the skill using SSO](#7-the-consumer-authenticates-the-user-and-passes-oauth-credentials-to-the-skill-using-sso)
+- [Testing matrix](#testing-matrix-5)
+- [Variables](#variables-5)
+- [Variations](#variations-5)
   - [8. A skill uses team specific APIs](#8-a-skill-uses-team-specific-apis)
+- [Testing matrix](#testing-matrix-6)
+- [Variables](#variables-6)
+- [Variations](#variations-6)
   - [9. Skill calls another skill](#9-skill-calls-another-skill)
+- [Testing matrix](#testing-matrix-7)
+- [Variables](#variables-7)
+- [Variations](#variations-7)
   - [10. A skill provides a teams task module](#10-a-skill-provides-a-teams-task-module)
+- [Testing matrix](#testing-matrix-8)
+- [Variables](#variables-8)
+- [Variations](#variations-8)
   - [11. A skill receives an attachment](#11-a-skill-receives-an-attachment)
+- [Testing matrix](#testing-matrix-9)
+- [Variables](#variables-9)
+- [Variations](#variations-9)
   - [12. Skill proactively starts a conversation with a user](#12-skill-proactively-starts-a-conversation-with-a-user)
+- [Testing matrix](#testing-matrix-10)
+- [Variables](#variables-10)
+- [Variations](#variations-10)
   - [XX. Draft scenarios](#xx-draft-scenarios)
 - [Reference](#reference)
   - [Things a skill might want to do](#things-a-skill-might-want-to-do)
-  - [Variables](#variables)
+  - [Variables](#variables-11)
   - [Consumer/Skill architecture](#consumerskill-architecture)
     - [Simple](#simple)
     - [Multiple skills](#multiple-skills)
@@ -65,46 +97,26 @@ Wherever is relevant, we also include a list of variations that describe small v
 
 Given these elements, the number of test cases for each scenario can be calculated by multiplying the number of permutations in the matrix by the number of values for each variable and then multiplied by the number of variations.
 
-### 1. Single turn interaction with a skill
-
-> A consumer bot sends an activity to a skill (e.g.: GetWeather) and the skill responds to the user and ends.
-
-**Testing matrix**
-
-- Skill: [GetWeather](#getweather-skill)
-- Topology: [Simple](#simple)
-
-![Bot SDLC](media/Simple.jpg)
-
-**Variables**
-
-- Auth context: Public Cloud, Gov Cloud, Sandboxed
-- Delivery mode: Normal, ExpectReplies
-
-**Variations**
-
-1. Negative test, a consumer tries to call a regular bot as a skill (and the bot is not a skill).
-
-**Total test cases:** 96 (not including variations)
+[1. Single turn interaction with a skill](scenarios/SingleTurnInteraction.md)
 
 
 ### 2. Multi turn interaction with a skill
 
 > A consumer bot starts a multi turn interaction with a skill (e.g.: book a flight) and handles multiple turns (2 or more) until the skill completes the task. 
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: [Travel](#travel-skill)
 - Topology: [Simple](#simple)
 
 ![Bot SDLC](media/Simple.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 
 1. The consumer cancels the skill (sends EndOfConversation)
 2. The consumer sends parameters to the skill
@@ -119,19 +131,19 @@ Given these elements, the number of test cases for each scenario can be calculat
 > A consumer calls a _timer skill_ and the skill finishes the conversation but stores some tasks. Then, some time later the skill sends an update to the consumer as a message.
 
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: [Proactive skill](#proactive-skill)
 - Topology: [Simple](#simple)
 
 ![Bot SDLC](media/Simple.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 1. The skill starts a multiturn dialog.
    - When the timer is up the skill sends an option to snooze or end. 
 
@@ -141,19 +153,19 @@ Given these elements, the number of test cases for each scenario can be calculat
 
 > The Consumer invokes the skill through a dialog, and the Skill sends an Adaptive Card that collects some information with a "Submit" button using Action.Submit as the action type.
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: [Card skill](#card-skill)
 - Topology: [Simple](#simple)
 
 ![Bot SDLC](media/Simple.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 
 **Total test cases:** 96 (not including variations)
 
@@ -164,17 +176,17 @@ Given these elements, the number of test cases for each scenario can be calculat
 > The first button is "Update" which increases the number in the text field by 1
 > The second button is "Delete" which deletes the adaptive card  
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: [Consolidate card functions](#teams-skill)
 - Topology: [Simple](#simple)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 1. **Note** There is probably channel specific behavior that exists here. Need to understand how cards work in various channels
 2. **Note** We should also cross reference what kinds of cards work in what channels
 
@@ -184,19 +196,19 @@ Given these elements, the number of test cases for each scenario can be calculat
 
 > A consumer bot starts a multi turn interaction with a skill (e.g.: how does my day look like) and the skill renders an OAuthPrompt to allow the user to log in, once the skill obtains a token it performs an operation, returns a response to the user and logs it out.
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: [OAuthSkill](#oauth-skill)
 - Topology: [Simple](#simple)
 
 ![Bot SDLC](media/Simple.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 
 - The Skill sends a proactive OAuthPrompt because a user token has expired.
 - **Question:** Are there other timeout scenarios that exist here? 
@@ -207,19 +219,19 @@ Given these elements, the number of test cases for each scenario can be calculat
 
 > A consumer bot starts a multi turn interaction with a skill (e.g.: how does my day look like) and the skill renders an OAuthPrompt to allow the user to log in, once the skill obtains a token it performs an operation, returns a response to the user and logs it out.
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: TBD
 - Topology: [Simple](#simple)
 
 ![Bot SDLC](media/Simple.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 
 - TODO
 
@@ -232,19 +244,19 @@ Given these elements, the number of test cases for each scenario can be calculat
 > - Get members from a non-team-scoped conversation
 > - Retreive the _paged_ list of uses in a group where the group is large enough to necessitate more than one page.
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: [TeamsBot](https://github.com/microsoft/BotBuilder-Samples/tree/main/samples/csharp_dotnetcore/57.teams-conversation-bot)
 - Topology: [Simple](#simple)
 
 ![Bot SDLC](media/Simple.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 
 - Trying to access Team specific information from a 1:1 or group chat
   - EX: Calling `GetTeamChannels` from a 1:1 chat
@@ -255,7 +267,7 @@ Given these elements, the number of test cases for each scenario can be calculat
 
 > TODO
 
-**Testing matrix**
+## Testing matrix
 
 - Skill/Consumer: TBD
 - Skill: TBD
@@ -263,12 +275,12 @@ Given these elements, the number of test cases for each scenario can be calculat
 
 ![Bot SDLC](media/Chaining.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 
 - Proactively initiate a multi turn conversation.
 
@@ -279,19 +291,19 @@ Given these elements, the number of test cases for each scenario can be calculat
 > The Skill responds to an action/submit invoke with a `taskInfo` object containing a Task Module with an Adaptive Card
 > The Skill responds to the submit action of a TaskModule
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: [TeamsBot](https://fuselabs.visualstudio.com/TeamsIntegrationTesting/_git/TeamsIntegrationTesting?path=%2FDotnetIntegrationBot%2FBots%2FIntegrationBot.cs&version=GBmaster&line=94&lineEnd=95&lineStartColumn=1&lineEndColumn=1&lineStyle=plain)
 - Topology: [Simple](#simple)
 
 ![Bot SDLC](media/Simple.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 
 - TODO
 
@@ -301,22 +313,23 @@ Given these elements, the number of test cases for each scenario can be calculat
 
 > As part of a multi turn conversation a skill is expecting a file that needs to be uploaded consumer bot and then relayed to the skill
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: [File functionality](https://fuselabs.visualstudio.com/TeamsIntegrationTesting/_git/TeamsIntegrationTesting?path=%2FDotnetIntegrationBot%2FIntegrationCommandHandler.cs&version=GBmaster&line=222&lineEnd=223&lineStartColumn=1&lineEndColumn=1&lineStyle=plain)
 - Topology: [Simple](#simple)
 
 ![Bot SDLC](media/Simple.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 - Channel: TODO not sure about this yet
 
-**Variations**
+## Variations
 
 **Questions**
+
 - Are there any unsupported file types?
 - What happens if we upload the same file multiple times
 - What happens if we upload a file that's too large
@@ -332,19 +345,19 @@ Given these elements, the number of test cases for each scenario can be calculat
 > At 4 PM, the skill starts 1:1 a conversation (CreateConversation) and sends the reminder to the user.
 
 
-**Testing matrix**
+## Testing matrix
 
 - Skill: [RemindMe](#remindme-skill)
 - Topology: [Simple](#simple)
 
 ![Bot SDLC](media/Simple.jpg)
 
-**Variables**
+## Variables
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
 
-**Variations**
+## Variations
 
 1. The skill creates a conversation (in teams) and starts a 1:1 conversation with a user in the group. Note - the 1:1 conversations created persist, and there is no way to delete them. Repeated calls to createConversation will succeed however, and return the appropriate conversationId that can be re-used.
 
