@@ -5,7 +5,11 @@
 ## Variations
 
 - The Skill sends a proactive OAuthPrompt because a user token has expired.
-- **Question:** Are there other timeout scenarios that exist here? 
+- TODO: we may also need to consider negative/edge scenarios like:
+  - The user has never authorized the application
+  - The user has previously authorized the application
+  - The login fails
+  - Timeouts
 
 ## Testing matrix
 
