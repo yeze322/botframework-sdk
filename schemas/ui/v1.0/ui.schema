@@ -50,6 +50,64 @@
                         "type": "string"
                     }
                 },
+                "fieldsets": {
+                    "title": "Field Sets",
+                    "description": "An array of field sets.",
+                    "type": "array",
+                    "items": {
+                        "title": "Field set",
+                        "description": "Groups fields into collapsible sections in the UI.",
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "title": "Title",
+                                "description": "Field set title.",
+                                "type": "string"
+                            },
+                            "fields": {
+                                "title": "Fields",
+                                "description": "Array of property names.",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "properties": {
+                                                "title": {
+                                                    "title": "Title",
+                                                    "description": "Field set title.",
+                                                    "type": "string"
+                                                },
+                                                "fields": {
+                                                    "title": "Fields",
+                                                    "description": "Array of property names.",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "defaultExpanded": {
+                                                    "title": "Default expanded",
+                                                    "description": "Default expanded state for the field set.",
+                                                    "type": "boolean",
+                                                    "default": false
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "defaultExpanded": {
+                                "title": "Default expanded",
+                                "description": "Default expanded state for the field set.",
+                                "type": "boolean",
+                                "default": false
+                            }
+                        }
+                    }
+                },
                 "intellisenseScopes": {
                     "title": "Intellisense scopes",
                     "description": "An array of valid scopes to help Intellisense return the correct type of results.",
@@ -79,6 +137,11 @@
                         "type": "string"
                     },
                     "examples": [["*"]]
+                },
+                "pivotFieldsets": {
+                    "title": "Pivot Field Sets",
+                    "description": "If 'pivotFieldsets' is set to true, the field sets render in a tabbed view.",
+                    "type": "boolean"
                 },
                 "placeholder": {
                     "title": "Placeholder",
