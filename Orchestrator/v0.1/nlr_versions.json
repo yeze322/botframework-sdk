@@ -1,5 +1,6 @@
 {
   "version": "0.1",
+  "default": "pretrained.20200924.microsoft.dte.00.03.en.onnx",
   "models": {
     "pretrained.20200924.microsoft.dte.00.12.roberta.en.onnx": {
       "releaseDate": "09/24/2020",
