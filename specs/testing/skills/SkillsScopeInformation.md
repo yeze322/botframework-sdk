@@ -9,13 +9,12 @@ The purpose of this doc is to capture what is functionally in and out of scope a
 |   |   |   |   |
 |---|---|---|---|
 |                  |Public cloud| Gov Cloud| JEDI|
-|Console           |?|?|?|
 |Cortana           |?|?|?|
 |Composer          |?|?|?|
 |DirectLine        |✅|✅|?|
 |DirectLine Speech |?|?|?|
 |Email             |?|?|?|
-|Emulator          |?|?|?|
+|Emulator          |✅|✅|?|
 |Facebook          |?|?|?|
 |GroupMe           |?|?|?|
 |Kik               |?|?|?|
@@ -33,13 +32,12 @@ The purpose of this doc is to capture what is functionally in and out of scope a
 |   |   |   |   |
 |---|---|---|---|
 |                  |Public cloud| Gov Cloud| JEDI|
-|Console           |?|?|?|
 |Cortana           |?|?|?|
 |Composer          |?|?|?|
 |DirectLine        |✅|[❌](https://github.com/microsoft/botbuilder-js/issues/2953)|?|
 |DirectLine Speech |?|?|?|
 |Email             |?|?|?|
-|Emulator          |?|?|?|
+|Emulator          |✅|✅|?|
 |Facebook          |?|?|?|
 |GroupMe           |?|?|?|
 |Kik               |?|?|?|
@@ -57,13 +55,12 @@ The purpose of this doc is to capture what is functionally in and out of scope a
 |   |   |   |   |
 |---|---|---|---|
 |                  |Public cloud| Gov Cloud| JEDI|
-|Console           |?|?|?|
 |Cortana           |?|?|?|
 |Composer          |?|?|?|
 |DirectLine        |✅|[❌](https://github.com/microsoft/botbuilder-python/issues/1421)|?|
 |DirectLine Speech |?|?|?|
 |Email             |?|?|?|
-|Emulator          |?|?|?|
+|Emulator          |✅|✅|?|
 |Facebook          |?|?|?|
 |GroupMe           |?|?|?|
 |Kik               |?|?|?|
