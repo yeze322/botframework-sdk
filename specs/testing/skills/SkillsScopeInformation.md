@@ -2,6 +2,80 @@
 
 The purpose of this doc is to capture what is functionally in and out of scope across various Channels and BotFramework features
 
+✅ - works
+❌ - doesn't work
+
+# Dotnet echo bots - WIP
+|   |   |   |   |
+|---|---|---|---|
+|                  |Public cloud| Gov Cloud| JEDI|
+|Console           |?|?|?|
+|Cortana           |?|?|?|
+|Composer          |?|?|?|
+|DirectLine        |✅|✅|?|
+|DirectLine Speech |?|?|?|
+|Email             |?|?|?|
+|Emulator          |?|?|?|
+|Facebook          |?|?|?|
+|GroupMe           |?|?|?|
+|Kik               |?|?|?|
+|Line              |?|?|?|
+|MSTeams           |✅|✅|?|
+|Skype             |?|?|?|
+|Skype for Business|?|?|?|
+|Slack             |?|?|?|
+|SMS               |?|?|?|
+|Telegram          |?|?|?|
+|Webchat           |?|?|?|
+|Twilio-sms        |?|?|?|
+
+# Javascript echo bots - WIP
+|   |   |   |   |
+|---|---|---|---|
+|                  |Public cloud| Gov Cloud| JEDI|
+|Console           |?|?|?|
+|Cortana           |?|?|?|
+|Composer          |?|?|?|
+|DirectLine        |✅|[❌](https://github.com/microsoft/botbuilder-js/issues/2953)|?|
+|DirectLine Speech |?|?|?|
+|Email             |?|?|?|
+|Emulator          |?|?|?|
+|Facebook          |?|?|?|
+|GroupMe           |?|?|?|
+|Kik               |?|?|?|
+|Line              |?|?|?|
+|MSTeams           |✅|✅|?|
+|Skype             |?|?|?|
+|Skype for Business|?|?|?|
+|Slack             |?|?|?|
+|SMS               |?|?|?|
+|Telegram          |?|?|?|
+|Webchat           |?|?|?|
+|Twilio-sms        |?|?|?|
+
+# Python echo bots - WIP
+|   |   |   |   |
+|---|---|---|---|
+|                  |Public cloud| Gov Cloud| JEDI|
+|Console           |?|?|?|
+|Cortana           |?|?|?|
+|Composer          |?|?|?|
+|DirectLine        |✅|[❌](https://github.com/microsoft/botbuilder-python/issues/1421)|?|
+|DirectLine Speech |?|?|?|
+|Email             |?|?|?|
+|Emulator          |?|?|?|
+|Facebook          |?|?|?|
+|GroupMe           |?|?|?|
+|Kik               |?|?|?|
+|Line              |?|?|?|
+|MSTeams           |✅|✅|?|
+|Skype             |?|?|?|
+|Skype for Business|?|?|?|
+|Slack             |?|?|?|
+|SMS               |?|?|?|
+|Telegram          |?|?|?|
+|Webchat           |?|?|?|
+|Twilio-sms        |?|?|?|
 
 # Cards supported in Channels - WIP
 |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
