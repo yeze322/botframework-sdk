@@ -5,7 +5,7 @@ The purpose of this doc is to capture what is functionally in and out of scope a
 ✅ - works
 ❌ - doesn't work
 
-# Dotnet echo bots - WIP
+# Dotnet echo skill bots - WIP
 |   |   |   |   |
 |---|---|---|---|
 |                  |Public cloud| Gov Cloud| JEDI|
@@ -19,7 +19,7 @@ The purpose of this doc is to capture what is functionally in and out of scope a
 |GroupMe           |?|?|?|
 |Kik               |?|?|?|
 |Line              |?|?|?|
-|MSTeams           |✅|✅|?|
+|MSTeams           |✅|?|?|
 |Skype             |?|?|?|
 |Skype for Business|?|?|?|
 |Slack             |?|?|?|
@@ -28,7 +28,7 @@ The purpose of this doc is to capture what is functionally in and out of scope a
 |Webchat           |?|?|?|
 |Twilio-sms        |?|?|?|
 
-# Javascript echo bots - WIP
+# Javascript echo skill bots - WIP
 |   |   |   |   |
 |---|---|---|---|
 |                  |Public cloud| Gov Cloud| JEDI|
@@ -51,7 +51,7 @@ The purpose of this doc is to capture what is functionally in and out of scope a
 |Webchat           |?|?|?|
 |Twilio-sms        |?|?|?|
 
-# Python echo bots - WIP
+# Python echo skill bots - WIP
 |   |   |   |   |
 |---|---|---|---|
 |                  |Public cloud| Gov Cloud| JEDI|
