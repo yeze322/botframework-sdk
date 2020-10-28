@@ -17,3 +17,6 @@ bones/
 .vs/
 .vscode/
 .config/
+
+# Python virtual environments
+**/*env/
