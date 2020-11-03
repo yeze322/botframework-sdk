@@ -1,13 +1,13 @@
 
 # Interactive
 
-Orchestrator CLI has an "interactive" command which allows a user
-to dynamiclly interact with an Orchestrator base lanaguage model and
-refine a training utterance set through commandlets.
+Orchestrator CLI has an "interactive" command which enables a user
+dynamiclly interacts with an Orchestrator base lanaguage model and
+refine a training utterance set through some CLI commandlets.
 
 During an interactive session, the command loads an Orchestrator base model
 into memory and manage serveral input cache variables that can be used by
-ensuing commandlets. These variables include:
+ensuing commandlets for maintaining the base model's example set. These variables include:
 
 - "current" utterance       - A cache for storing an utterance that can be used by several commandlets
                               for interacting with an Orchestrator model.
