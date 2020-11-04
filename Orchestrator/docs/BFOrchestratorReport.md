@@ -1,10 +1,10 @@
 # Report Interpretation
 
 Orchestrator CLI can evaluate the performance of a language understanding applicationa
-along with the back-end base language model it uses. This document describes what is in a
-evaluation report.
+along with the back-end base language model it uses.
 After a user runs the bf-orchestrator-cli:test command, it creates report files in HTML format
 along with some auxiliary output files.
+This document describes what is in an evaluation report.
 For the "test" and "evaluation" model, an evaluation report contains the following sections/tabs.
 
 - Intent/Utterancce Statistics  -- descriptive statistics of labels and utterances for an evaluation set
@@ -111,29 +111,32 @@ If the label only exists in the utterance's predicted label set, then it's a fal
 If the label only exists in the utterance's ground-truth set, then it's a false negative.
 If the label does not exist in either the ground-truth or predicted set, then it's a true negative.
 
-By the way, for entity extraction problem, there can be way too many false negative as an entity label
-contains an entity name, the entity offset in an utterance and its length. The latter two can be predicted
-with many combination. Therefore, it is a customary not to count true negatives.
+By the way, for entity extraction, as a label contains an entity name, entity offset in an utterance and its length,
+there can be numerous true negatives, since there are limitless combinations of the entity attributes
+not in the ground-truth or the predicted sets.
 Thus, for intent prediction evaluation, all four cells are used to calculate confusion matrix metrics,
-but only the first three are used for entity.
+but only the first three are used for entity-extraction evaluation.
 
-Using the four cells, the Orchestrator test command can then calculate some
+Using just the first three cells of a binary confusion matrix,
+the Orchestrator "test" command can then calculate some
 more sophisticated metrics, including
 
-    - Precision
-    - Recall
-    - F1
+    - Precision     - TP / (TP + FP)
+    - Recall        - TP / (TP + FN)
+    - F1            - harmonic mean of precision and recall
 
-For details of all the confusion matrix metrics, please reference wikipedia.
+These three metrics do not use TN, but the simple accuracy metric need all 4 cells, including TN.
+
+For details of many confusion matrix metrics, please reference wikipedia.
 
 ### Average confusion matrix metrics
 
-Since an Orchestrator can evaluate multiple labels in one confusion matrix each, there can be many
-metrics for analysis. For reporting and comparison purpose, it would be great to aggregate all
-these metrics for overall performance.
+Since Orchestrator can evaluate multiple labels, one confusion matrix for each, there can be many
+metrics for detailed analysis. For reporting and KPI purpose, it would be great to aggregate all
+these metrics for an overall metric and model performance.
 
 There are many nuanced ways to aggregate confusion matrix metrics. For comparing models, it's critical
-to compare based on a consistent formula.
+to compare based on a consistent formula. Please reference the BF Orchestrator CLI [1] readme page for details.
 
 ## References
 
