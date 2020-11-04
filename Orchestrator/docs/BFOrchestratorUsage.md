@@ -26,33 +26,43 @@ In case of migration from legacy dispatch, you may need to retrieve your LUIS ap
 
 **TBD**: See sample (or example line) here...
 
-### 2. Create snapshot files
+### 2. Download Orchestrator base model
 
 Create a new folder, say *models*, and download the default base model using: 
 
 ```
-bf orchestrator:basemodel:get
+bf orchestrator:basemodel:get --out ./models
 ```
 
-Next use the  ```bf orchestrator:create``` command to combine the base model with the label file(s) to create snapshot file(s) for use by the orchestrator recognizer. If using a single folder, create it prior, say *generated*, and specify it in --out parameter:
+out parameter is optional.  If not specified, base model files will be downloaded to the current working directory.
 
-```
-bf orchestrator:create --model <base model folder> --in <label file folder> --out <generated folder>
-```
+See also the ```orchestrator:basemodel:list``` command if you wish to download and experiment with different base models.  (see descriptions [here][4] ).
 
-**TBD** explain other variations on create e.g. fullEmbeddings, hierarchical
+### 3. Create snapshot files
 
-If you already have an adaptive dialogs solution with .lu label files in different dialog folders for which you would like to create a top dispatcher, you need to use the  ```bf orchestrator:build``` to process the folder hierarchy and create snapshot files for each dialog (optionally a corresponding scaffold .dialog file for declarative scenario)
+There are two ways to create Orchestrator snapshot file(s), depending on the usage scenarios:
 
-**TBD** Explain add & add build command
+- **To route utterances to LUIS/QnA language services**
 
-```
-bf orchestrator:build ...
-```
+  Use ```bf orchestrator:create``` command to combine the base model with the label file(s) to create snapshot file for use by the orchestrator recognizer. If using a single folder, create it prior, say *generated*, and specify it in --out parameter:
 
-See also the ```orchestrator:basemodel:list``` command if you wish to experiment with different base models (see descriptions [here][4] ).
+  ```
+  bf orchestrator:create --model <base model folder> --in <label file/folder> --out <generated folder> --hierarchical
+  ```
 
-### 3. Evaluate language model
+  The create command generates a single Orchestrator snapshot file as output.  If folder is specified as input, it scans the subfolder hierarchy for .lu/.json/.tsv/.qna files and combine all utterances/labels found into the snapshot file.  
+  The *hierarchical* flag creates top level intents in the snapshot file derived from the .lu/.json/.tsv/.qna file names in the input folder.  This is useful to create a routing mechanism for further processing by subsequent skills or language services.
+
+- **For an adaptive dialogs solution with .lu label files in different dialog folders** 
+  Use the  ```bf orchestrator:build``` to process the folder hierarchy and create snapshot files for each dialog (optionally a corresponding scaffold .dialog file(s) for declarative scenario).
+
+  ```
+  bf orchestrator:build --in ./Dialogs --out ./generated --model ./model --dialog
+  ```
+
+  The build command generates one Orchestrator snapshot file for each .lu file found in input folder hierarchy.  When *dialog* flag is specified,  it generates multi language or cross train Orchestrator recognizers .
+
+### 4. Evaluate language model
 
 Create a label .lu file with test data set of utterances. Run the following command to generate report for your language model
 
@@ -70,7 +80,7 @@ See also [Report Interpretation][6] for how to use the report to fine tune your 
 
 ### 4. Use Orchestrator language model
 
-Once satisfied with your language model performance, it is time to integrate the model in your botby specifying Orchestrator as the recognizer. Depending on the flavor of solution there are several methods to hook up Orchestrator. 
+Once satisfied with your language model performance, it is time to integrate the model in your bot by specifying Orchestrator as the recognizer. Depending on the flavor of solution there are several methods to hook up Orchestrator. 
 
 See the specific variations for your solution below.
 
@@ -130,7 +140,7 @@ See [Report Interpretation][6] for more.
 [1]:https://aka.ms/bforchestratorcli	"BF Orchestrator CLI"
 [2]:https://docs.microsoft.com/en-us/azure/bot-service/file-format/bot-builder-lu-file-format?view=azure-bot-service-4.0 "LU File Format"
 [3]:https://docs.microsoft.com/en-us/composer/concept-language-understanding "Language Understanding"
-[4]:https://aka.ms/NLRModels "NLR Models"
+[4]:https://aka.ms/nlrmodels "Orchestrator Base Models"
 [5]:https://docs.microsoft.com/en-us/composer/introduction "Composer"
 [6]:https://aka.ms/bforchestratorreport "Orchestrator Report"
 [7]:https://aka.ms/bforchestratorinteractive "Orchestrator Interactive Command"
