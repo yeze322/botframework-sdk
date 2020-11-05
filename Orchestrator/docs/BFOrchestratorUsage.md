@@ -67,12 +67,8 @@ There are two ways to create Orchestrator snapshot file(s), depending on the usa
 Create a label .lu file with test data set of utterances. Run the following command to generate report for your language model
 
 ```
-bf orchestrator:test --in <snapshot file> --out <report folder> --test <test data file>
+bf orchestrator:test --in <snapshot file> --model <base model file> --out <report folder> --test <test data file>
 ```
-
-A few parameters that could be effective in further tuning of language recognition are as follows: 
-
-**TBD**: which, how to use, how are those specified in Composer or adaptive dialogs?
 
 See also [bf orchestrator test](https://github.com/microsoft/botframework-cli/tree/beta/packages/orchestrator#bf-orchestratortest) for full command line options.
 

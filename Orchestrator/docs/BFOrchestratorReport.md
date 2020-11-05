@@ -127,7 +127,7 @@ more sophisticated metrics, including
 
 These three metrics do not use TN, but the simple accuracy metric need all 4 cells, including TN.
 
-For details of many confusion matrix metrics, please reference wikipedia.
+For details of many confusion matrix metrics, please reference [Wikipedia: Confusion matrix][2].
 
 ### Average confusion matrix metrics
 
@@ -136,12 +136,14 @@ metrics for detailed analysis. For reporting and KPI purpose, it would be great 
 these metrics for an overall metric and model performance.
 
 There are many nuanced ways to aggregate confusion matrix metrics. For comparing models, it's critical
-to compare based on a consistent formula. Please reference the BF Orchestrator CLI [1] readme page for details.
+to compare based on a consistent formula. Please reference the [BF Orchestrator CLI][1] readme page for details.
 
 ## References
 
+- [BF Orchestrator CLI](https://aka.ms/bforchestratorcli)
 - [Wikipedia: Confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix)
 
 ## Links
 
-- [1]:https://aka.ms/bforchestratorcli	"BF Orchestrator CLI"
+[1]:https://aka.ms/bforchestratorcli	"BF Orchestrator CLI"
+[2]:https://en.wikipedia.org/wiki/Confusion_matrix	"Wikipedia: Confusion matrix"

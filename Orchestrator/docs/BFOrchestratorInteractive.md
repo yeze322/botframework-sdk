@@ -1,8 +1,8 @@
 
 # Interactive
 
-Orchestrator CLI has an "interactive" command which enables a user
-dynamiclly interacts with an Orchestrator base lanaguage model and
+Orchestrator CLI has an "interactive" command which enables a user to
+dynamiclly interact with an Orchestrator base lanaguage model and
 refine a training utterance set through some CLI commandlets.
 
 During an interactive session, the command loads an Orchestrator base model
@@ -114,6 +114,10 @@ Below is the list of the commandlets that can be issued during a 'interactive' s
     n   - create a new snapshot of model examples and save it to
           "experiment_predicting_va\orchestrator_predicting_training_set.blu"
 
+## References
+
+- [BF Orchestrator CLI](https://aka.ms/bforchestratorcli)
+
 ## Links
 
-- [1]:https://aka.ms/bforchestratorcli	"BF Orchestrator CLI"
+[1]:https://aka.ms/bforchestratorcli	"BF Orchestrator CLI"
