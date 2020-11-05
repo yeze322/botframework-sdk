@@ -500,6 +500,22 @@ Please enter a commandlet, "h" for help > d
 Please enter a commandlet, "h" for help >
 ```
 
+After a user has reached a milestone, she/he can create a new snapshot (.BLU) file using the 'n' command.
+In the future, the user can run an interactive session preloaded with this new snapshot file and
+keep refining the intent and utterance examples.
+Below is what happened after the running the 'n' command and the location of the new snapshot file.
+
+```
+Please enter a commandlet, "h" for help > n
+> A new snapshot has been saved to 'experiment_evaluating_PrebuildDomain\orchestrator_predicting_snapshot_set.blu'
+> "Current" utterance:          "wake me up at 10AM"
+> "Current" intent label array: "alarm"
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help >
+```
+
+At the end, a user can enter the 'q' commandlet to exit the session.
+
 ## List of interactive commandlets
 
 Below is the list of the commandlets that can be issued during a 'interactive' session.
