@@ -21,7 +21,8 @@ ensuing commandlets for maintaining the base model's example set. These variable
 # Start an interactive session without a training set
 
 An Orchestrator user can launch the interactive command without a training set.
-During an session, the user can interactively add utterance example, revise them, or remove them.
+During an session, the user can interactively add utterance examples, revise them, remove them,
+validate and create an evaluation report, etc.
 Below is a command snippet for a user to start the interactive command with two arguments:
 
     - "--model"     -- folder pointing to an Orchestrator base model
@@ -32,7 +33,7 @@ Below is a command snippet for a user to start the interactive command with two 
 > bf orchestrator:interactive --out=%PREDICTING_SET_OUTPUT% --model=%ORCHESTRATOR_MODEL%
 ```
 
-After executing the command snippet, the command enter an interactive session shown below:
+After executing the command snippet, the command enters an interactive session shown below:
 ```
 > "Current" utterance:          ""
 > "Current" intent label array: ""
@@ -41,7 +42,7 @@ Please enter a commandlet, "h" for help >
 ```
 
 The user can then use the 'u' commandlet to enter an utterance and cache it into the "current" utterance
-variable. Below is what happened after a user enter "hi" as a new uttetance using the 'u' commandlet.
+variable. Below is what happened after a user enters "hi" as a new uttetance using the 'u' commandlet.
 ```
 Please enter a commandlet, "h" for help > u
 Please enter an utterance > hi
@@ -51,7 +52,7 @@ Please enter an utterance > hi
 Please enter a commandlet, "h" for help >
 ```
 
-Then user can also issue the 'i' commandlet to enter a new intent label and cache it into the "current"
+Then the user can issue the 'i' commandlet to enter a new intent label and cache it into the "current"
 intent label variable. Notice that Orchestrator spopports an utterance with multiple labels, so the 
 intent variable cache is actually an array for holding multiple intent labels associated with
 the "current" utterance. 
@@ -122,7 +123,7 @@ Please enter a commandlet, "h" for help >
 
 After a user enter "hi" and "greeting" during the interactive session, she/he can add this example to
 the Orchestrator core. It will become part of the example set Orchestrator core uses for
-predicting the intent of new queries. In a sense, this new example was added to a "training" set
+predicting the intent for new queries. In a sense, this new example was added to a "training" set
 for a supervised machine learning model.
 The commandlet for adding a new example is 'a'.
 ```
@@ -182,12 +183,12 @@ Please enter a commandlet, "h" for help >
 ```
 
 A user can also enter some utterances with diffent intents.
-Below is what happened if a user tries to enter a new utterance "good bye" with 
-a new intent "fareware." However the user forgot to clear the current intent labels, so
-the "good bye" intent is actually associated with two intents ("greeting,fareware").
+Below is what happened if a user enters a new utterance "good bye" with 
+a new intent "farewell." However the user forgot to clear the current intent labels, so
+the "good bye" intent is actually associated with two intents ("greeting,farewell").
 Even though this is not completely wrong semantically, but a user can always
-limit and revise the intent variable cache. Remeber that the utterance and intents have
-not been added to Orchestrator core.
+clear the intent variable cache (with the 'ci' commandlet). Remeber that the utterance and intents have
+not been added to Orchestrator core yet.
 
 ```
 Please enter a commandlet, "h" for help > u
@@ -196,9 +197,9 @@ Please enter an utterance > good bye
 > "Current" intent label array: "greeting"
 > "New"     intent label array: ""
 Please enter a commandlet, "h" for help > i
-Please enter a "current" intent label > fareware
+Please enter a "current" intent label > farewell
 > "Current" utterance:          "good bye"
-> "Current" intent label array: "greeting,fareware"
+> "Current" intent label array: "greeting,farewell"
 > "New"     intent label array: ""
 Please enter a commandlet, "h" for help >
 ```
@@ -215,35 +216,35 @@ Please enter a commandlet, "h" for help > ci
 Please enter a commandlet, "h" for help >
 ```
 
-The user can then reenter the "fareware" intent into the cache and add it to Orchestrator core:
+The user can then reenter the "farewell" intent into the cache and add it to Orchestrator core:
 ```
 Please enter a commandlet, "h" for help > i
-Please enter a "current" intent label > fareware
+Please enter a "current" intent label > farewell
 > "Current" utterance:          "good bye"
-> "Current" intent label array: "fareware"
+> "Current" intent label array: "farewell"
 > "New"     intent label array: ""
 Please enter a commandlet, "h" for help > a
 > Utterance 'good bye' has been added to '[
-    "fareware"
+    "farewell"
 ]'
 > "Current" utterance:          "good bye"
-> "Current" intent label array: "fareware"
+> "Current" intent label array: "farewell"
 > "New"     intent label array: ""
 Please enter a commandlet, "h" for help >
 ```
 
 After a while, a user can re-issue the 's' commandlet and see the label utterance tabulation:
 From the session below, we can see that there are three utterances for the "greeting" intent,
-and one for the "fareware" intent.
+and one for the "farewell" intent.
 ```
 Please enter a commandlet, "h" for help > s
 > Per-label #examples: {
     "greeting": 3,
-    "fareware": 1
+    "farewell": 1
 }
 > Total #examples:4
 > "Current" utterance:          "good bye"
-> "Current" intent label array: "fareware"
+> "Current" intent label array: "farewell"
 > "New"     intent label array: ""
 Please enter a commandlet, "h" for help >
 ```
@@ -252,14 +253,14 @@ After there are some intent/utterance entered to Orchestrator core, the user can
 Orchestrator core to make some prediction.
 Below is what happened if "bye" is entered as the "Current" utterance and use the 'p'
 commandlet for an prediction. Orchestrator core responded with a prediction
-of the "fareware" intent, a high score of 0.977, and the closest example within the 
-"fareware" intent, "good bye".
+of the "farewell" intent, a high score of 0.977, and the closest example within the 
+"farewell" intent, "good bye".
 On the other hand, the "greeting" intent was predicted with a score of 0.691 and
 the closest example was "good morning."
 ```
 Please enter an utterance > bye
 > "Current" utterance:          "bye"
-> "Current" intent label array: "fareware"
+> "Current" intent label array: "farewell"
 > "New"     intent label array: ""
 Please enter a commandlet, "h" for help > p
 > Prediction:
@@ -268,7 +269,7 @@ Please enter a commandlet, "h" for help > p
         "closest_text": "good bye",
         "score": 0.977452505191936,
         "label": {
-            "name": "fareware",
+            "name": "farewell",
             "label_type": 1,
             "span": {
                 "length": 3,
@@ -290,7 +291,7 @@ Please enter a commandlet, "h" for help > p
     }
 ]
 > "Current" utterance:          "bye"
-> "Current" intent label array: "fareware"
+> "Current" intent label array: "farewell"
 > "New"     intent label array: ""
 Please enter a commandlet, "h" for help >
 ```
@@ -304,7 +305,7 @@ The low scores indicate that this new utterance may need a new intent label.
 ```
 Please enter an utterance > wake me up at 10AM
 > "Current" utterance:          "wake me up at 10AM"
-> "Current" intent label array: "fareware"
+> "Current" intent label array: "farewell"
 > "New"     intent label array: ""
 Please enter a commandlet, "h" for help > p
 > Prediction:
@@ -325,7 +326,7 @@ Please enter a commandlet, "h" for help > p
         "closest_text": "good bye",
         "score": 0.2750571664975262,
         "label": {
-            "name": "fareware",
+            "name": "farewell",
             "label_type": 1,
             "span": {
                 "length": 18,
@@ -335,7 +336,7 @@ Please enter a commandlet, "h" for help > p
     }
 ]
 > "Current" utterance:          "wake me up at 10AM"
-> "Current" intent label array: "fareware"
+> "Current" intent label array: "farewell"
 > "New"     intent label array: ""
 Please enter a commandlet, "h" for help >
 ```
@@ -369,7 +370,7 @@ As we can see from issuing the 's' commandlet, now we have one more intents.
 Please enter a commandlet, "h" for help > s
 > Per-label #examples: {
     "greeting": 3,
-    "fareware": 1,
+    "farewell": 1,
     "alarm": 1
 }
 > Total #examples:5
@@ -432,7 +433,7 @@ Please enter a commandlet, "h" for help > r
 Please enter a commandlet, "h" for help > s
 > Per-label #examples: {
     "greeting": 3,
-    "fareware": 1
+    "farewell": 1
 }
 > Total #examples:4
 > "Current" utterance:          "wake me up at 10AM"
@@ -491,7 +492,7 @@ Please enter a commandlet, "h" for help > d
     "use_unknown": true
 }
 > Current label-index map: {
-    "fareware": 0,
+    "farewell": 0,
     "greeting": 1
 }
 > "Current" utterance:          "wake me up at 10AM"
