@@ -18,7 +18,7 @@ ensuing commandlets for maintaining the base model's example set. These variable
 
 ## Scenarios
 
-# Start an interactive session without a training set
+### Start an interactive session without a training set
 
 An Orchestrator user can launch the interactive command without a training set.
 During an session, the user can interactively add utterance examples, revise them, remove them,
@@ -27,6 +27,7 @@ Below is a command snippet for a user to start the interactive command with two 
 
     - "--model"     -- folder pointing to an Orchestrator base model
     - "--out"       -- out folder for validation evaluation reports.
+
 ```
 > set ORCHESTRATOR_MODEL=<Orchestrator base model folder>
 > set EVALUATING_OUTPUT=experiment_evaluating_PrebuildDomain
@@ -464,6 +465,7 @@ An obfuscated report only show some metadata of the example set without any inte
 disclosed, so that the report might be shareable for benchmark and comparison purpose.
 The 'd' commandlet also list some internal information of the base model and settings used by 
 Orchestrator core. These information can be used for debugging purpose.
+These thresholds can be reset using the 'vat', 'vlt', 'vmt' and 'vut' commandlets.
 
 ```
 Please enter a commandlet, "h" for help > d
@@ -516,6 +518,226 @@ Please enter a commandlet, "h" for help >
 ```
 
 At the end, a user can enter the 'q' commandlet to exit the session.
+
+### Start an interactive session with a training set
+
+Since there is already a .blu snapshot file from the last session, a user can
+use the interactive command to continue refining the example set us the "--in" argument.
+
+```
+> set ORCHESTRATOR_MODEL=<Orchestrator base model folder>
+> set EVALUATING_OUTPUT=experiment_evaluating_PrebuildDomain
+> bf orchestrator:interactive --out=%PREDICTING_SET_OUTPUT% --model=%ORCHESTRATOR_MODEL% --in=%EVALUATING_OUTPUT%\orchestrator_predicting_snapshot_set.blu
+```
+
+After a new interactive session, the user can issue the 's' commandlet and take a look
+of the intent/utterance distribution.
+
+```
+> "Current" utterance:          ""
+> "Current" intent label array: ""
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help > s
+> Per-label #examples: {
+    "greeting": 3,
+    "farewell": 1
+}
+> Total #examples:4
+> "Current" utterance:          ""
+> "Current" intent label array: ""
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help >
+```
+
+The user can try out some more utterances.
+
+```
+Please enter a commandlet, "h" for help > u
+Please enter an utterance > bye bye
+> "Current" utterance:          "bye bye"
+> "Current" intent label array: ""
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help > p
+> Prediction:
+[
+    {
+        "closest_text": "good bye",
+        "score": 0.9852574345531401,
+        "label": {
+            "name": "farewell",
+            "label_type": 1,
+            "span": {
+                "length": 7,
+                "offset": 0
+            }
+        }
+    },
+    {
+        "closest_text": "good morning",
+        "score": 0.7110401992969432,
+        "label": {
+            "name": "greeting",
+            "label_type": 1,
+            "span": {
+                "length": 7,
+                "offset": 0
+            }
+        }
+    }
+]
+> "Current" utterance:          "bye bye"
+> "Current" intent label array: ""
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help >
+```
+
+The predicted intent label was "farewell" with a very high score of 0.985. However,
+suppose it's a low score, then the user can improve model
+by adding the utterance into the example set.
+Below is what happened after the "bye bye" utterance is added.
+```
+Please enter a commandlet, "h" for help > i
+Please enter a "current" intent label > farewell
+> "Current" utterance:          "bye bye"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help > a
+> Utterance 'bye bye' has been added to '[
+    "farewell"
+]'
+> "Current" utterance:          "bye bye"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help > s
+> Per-label #examples: {
+    "greeting": 3,
+    "farewell": 2
+}
+> Total #examples:5
+> "Current" utterance:          "bye bye"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help >
+```
+
+Below is what happened when a user enters a new utterance "good day" and
+makes a prediction of it.
+As we can see that the prediction scores for the "greeting" and "farewell" intents are both very high and close.
+The user then added the "good day" utterance to the "farewell" intent.
+
+```
+Please enter a commandlet, "h" for help > u
+Please enter an utterance > good day
+> "Current" utterance:          "good day"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help > p
+> Prediction:
+[
+    {
+        "closest_text": "good morning",
+        "score": 0.8536692972984349,
+        "label": {
+            "name": "greeting",
+            "label_type": 1,
+            "span": {
+                "length": 8,
+                "offset": 0
+            }
+        }
+    },
+    {
+        "closest_text": "good bye",
+        "score": 0.8114553301042285,
+        "label": {
+            "name": "farewell",
+            "label_type": 1,
+            "span": {
+                "length": 8,
+                "offset": 0
+            }
+        }
+    }
+]
+> "Current" utterance:          "good day"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help > a
+> Utterance 'good day' has been added to '[
+    "farewell"
+]'
+> "Current" utterance:          "good day"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help > s
+> Per-label #examples: {
+    "greeting": 3,
+    "farewell": 3
+}
+> Total #examples:6
+> "Current" utterance:          "good day"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help >
+```
+
+However, the user may later decide to change the intent for "good day" from "farewell" to "greeting".
+She/he can them use the 'ni' commandlet to enter "greeting" into the "New" intent label
+cache. After that, the user can issue the 'c' commandlet to change the intent label for "good day".
+As we can see below, the label/utterance distribution has changed afterward.
+Notice that the user can use the 'cni' commandlet to clear the "New" intent label cache.
+```
+Please enter a commandlet, "h" for help > s
+> Per-label #examples: {
+    "greeting": 3,
+    "farewell": 3
+}
+> Total #examples:6
+> "Current" utterance:          "good day"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: ""
+Please enter a commandlet, "h" for help > ni
+Please enter a "new" intent label > greeting
+> "Current" utterance:          "good day"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: "greeting"
+Please enter a commandlet, "h" for help > c
+> Utterance 'good day' has been moved from '[
+    "farewell"
+]' to '[
+    "greeting"
+]'
+> "Current" utterance:          "good day"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: "greeting"
+Please enter a commandlet, "h" for help > s
+> Per-label #examples: {
+    "greeting": 4,
+    "farewell": 2
+}
+> Total #examples:6
+> "Current" utterance:          "good day"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: "greeting"
+Please enter a commandlet, "h" for help >
+```
+
+Also, the user can enter an utterance and see if it's in the Orchestrator Core's example set or not
+using the 'f' commandlet.
+Below is what happened when a user tries to find out if "good evening" is in the example set of not.
+```
+Please enter a commandlet, "h" for help > u
+Please enter an utterance > good evening
+> "Current" utterance:          "good evening"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: "greeting"
+Please enter a commandlet, "h" for help > f
+> The "current" utterance 'good evening' is not in the model.
+> "Current" utterance:          "good evening"
+> "Current" intent label array: "farewell"
+> "New"     intent label array: "greeting"
+Please enter a commandlet, "h" for help >
+```
 
 ## List of interactive commandlets
 
