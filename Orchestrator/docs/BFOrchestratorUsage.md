@@ -9,7 +9,7 @@
 The mainstream bot language recognition development cycle with Orchestrator is generally as follows:
 
 1. Create Intent label / utterance examples file in [.lu format][2]  (will be referred to as the *label file*). 
-2. Download Natural Language Representation ([NLR][4]) base model (will be referred to as the *base model*).
+2. Download base model.
 3. Combine the label file .lu from (1) with the base model from (2) to create a .blu file (will be referred to as the *snapshot* file). 
 4. Test and refine quality of utterance to intent recognition.
 5. Integrate Orchestrator language recognizer in your bot.
@@ -26,7 +26,7 @@ In case of migration from legacy dispatch, you may need to retrieve your LUIS ap
 
 **TBD**: See sample (or example line) here...
 
-### 2. Download Natural Language Representation ([NLR][4]) base model
+### 2. Download base model
 
 Create a new folder, say *models*, and download the default base model using: 
 
