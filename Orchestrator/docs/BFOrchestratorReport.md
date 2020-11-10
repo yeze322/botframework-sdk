@@ -1,20 +1,19 @@
 # Report Interpretation
 
-Orchestrator CLI can evaluate the performance of a language understanding applicationa
-along with the back-end base language model it uses.
-After a user runs the bf-orchestrator-cli:test command, it creates report files in HTML format
-along with some auxiliary output files.
-This document describes what is in an evaluation report.
-For the "test" and "evaluation" model, an evaluation report contains the following sections/tabs.
+Orchestrator CLI can evaluate the performance of a language understanding application along with the back-end base language model it uses. After a user runs the bf orchestrator:test command, it creates report files in HTML format along with some auxiliary output files. This document describes what is in an evaluation report.
 
-- Intent/Utterancce Statistics  -- descriptive statistics of labels and utterances for an evaluation set
-- Utterance Duplicates          -- utterances with duplicate or multiple labels.
-- Ambiguous                     -- ambiguous predictions
-- Misclassified                 -- misclassified predictions
-- Low Confidence                -- low-confidence predictions
-- Metrics                       -- machine learning metrics of the evaluation
+For the "test" and "evaluation" model, an evaluation report contains the following sections:
 
-## Intent/Utterancce Statistics
+<img src="pictures\evaluation-sessions.PNG" alt="sections"  />
+
+- **Intent/Utterance Statistics**: descriptive statistics of labels and utterances for an evaluation set
+- **Utterance Duplicates**: utterances with duplicate or multiple labels.
+- **Ambiguous**: ambiguous predictions
+- **Misclassified**: misclassified predictions
+- **Low Confidence**: low-confidence predictions
+- **Metrics**: machine learning metrics of the evaluation
+
+## Intent/Utterance Statistics
 
 This section contains the descriptive statistics regarding to the evaluation set.
 It has two statistical sections, one for labels, the other utterances:
@@ -24,10 +23,8 @@ It has two statistical sections, one for labels, the other utterances:
 
 ### Label statistics
 
-Label statistics lists the number of utterances labeled to each label.
-Additional metrics include utterance prevalence (ratio) for every label.
-The distributions can give Orchestrator users an overall view of the labels and utterances,
-and whether the distributions are skewed and emphasize too much on some labels, but not others.
+Label statistics lists the number of utterances labeled to each label. Additional metrics include utterance prevalence (ratio) for every label.
+The distributions can give Orchestrator users an overall view of the labels and utterances, and whether the distributions are skewed and emphasize too much on some labels, but not others.
 
 ### Utterance statistics
 
@@ -55,7 +52,7 @@ label, then we call such a prediction "ambiguous."
 In this section, the report lists all the utterances with an ambiguous prediction in a table.
 The table has several columns:
 
-- Utterance         --
+- Utterance         -- the utterance
 - Labels            -- the true labels for the utterance
 - Predictions       -- the labels predicted by the Orchestrator model
 - Close Predictions -- some other labels predicted with a close high score to that of the predicted label. 
@@ -67,7 +64,7 @@ within the label's utterance set.
 
 For an evaluation utterance, if an Orchestrator model falsely predicts its intent label, then
 this prediction is a mis-classified case.
-Usually the label wiht the highest prediction score is chosen as the predicted label, but
+Usually the label with the highest prediction score is chosen as the predicted label, but
 it can be different from the ground-truth label for the utterance.
 
 Similar to the last section, the report also lists the prediction and ground-truth labels with
@@ -83,7 +80,7 @@ their prediction scores and closest examples.
 
 ## Metrics
 
-For machine-learning practictioners, they likely want to know the overall model performance
+For machine-learning practitioners, they likely want to know the overall model performance
 expressed in machine learning metrics. In this section, the report calculates
 some common metrics in two sections:
 
@@ -101,9 +98,9 @@ binary confusion matrices.
 
 For a binary confusion matrix, there are four cells:
     - #True Positives (TP)
-    - #False Positives (FP)
-    - #False Neagatives (FN)
-    - #True Negatives (TN)
+        - #False Positives (FP)
+        - #False Negatives (FN)
+        - #True Negatives (TN)
 
 For a label, if it exists in an utterance's ground-truth label set as well as in the predicted label set,
 then that utterance is a TP for the label.

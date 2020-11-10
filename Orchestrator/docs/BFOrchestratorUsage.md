@@ -18,7 +18,7 @@ The mainstream bot language recognition development cycle with Orchestrator is g
 
 We will use the primary workflow to illustrate how to use Orchestrator commands for full development cycle.
 
-### 1. Prepare label files
+### 1. Create Intent label / utterance examples file in [.lu format][2]
 
 If you are developing a new language model, simply refer to [Language understanding][8] documentation to author label files. Depending on how you plan to design your bot, you may use a single label file corresponding to a single snapshot file for the entire bot or multiple pairs, each for every adaptive dialog where you plan to use Orchestrator as a recognizer. 
 
@@ -26,7 +26,7 @@ In case of migration from legacy dispatch, you may need to retrieve your LUIS ap
 
 **TBD**: See sample (or example line) here...
 
-### 2. Download Orchestrator base model
+### 2. Download Natural Language Representation ([NLR][4]) base model
 
 Create a new folder, say *models*, and download the default base model using: 
 
@@ -38,7 +38,7 @@ out parameter is optional.  If not specified, base model files will be downloade
 
 See also the ```orchestrator:basemodel:list``` command if you wish to download and experiment with different base models.  (see descriptions [here][4] ).
 
-### 3. Create snapshot files
+### 3. Combine the label file .lu from (1) with the base model from (2) to create a .blu file
 
 There are two ways to create Orchestrator snapshot file(s), depending on the usage scenarios:
 
@@ -62,7 +62,7 @@ There are two ways to create Orchestrator snapshot file(s), depending on the usa
 
   The build command generates one Orchestrator snapshot file for each .lu file found in input folder hierarchy.  When *dialog* flag is specified,  it generates multi language or cross train Orchestrator recognizers .
 
-### 4. Evaluate language model
+### 4. Test and refine quality of utterance to intent recognition
 
 Create a label .lu file with test data set of utterances. Run the following command to generate report for your language model
 
@@ -74,7 +74,9 @@ See also [bf orchestrator test](https://github.com/microsoft/botframework-cli/tr
 
 See also [Report Interpretation][6] for how to use the report to fine tune your language model. 
 
-### 4. Use Orchestrator language model
+You can improve your language model by adding or revising examples directly from [.lu][2] files, or interactively by using bf orchestrator:interactive command (see also [Interactive Command][7]).
+
+### 5. Integrate Orchestrator language recognizer in your bot
 
 Once satisfied with your language model performance, it is time to integrate the model in your bot by specifying Orchestrator as the recognizer. Depending on the flavor of solution there are several methods to hook up Orchestrator. 
 
