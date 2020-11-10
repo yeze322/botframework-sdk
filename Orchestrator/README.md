@@ -164,8 +164,8 @@ Once the feature flag is enabled in Composer, it is possible to specify Orchestr
 [9]:https://github.com/microsoft/botframework-cli/tree/master/packages/luis#bf-luisconvert
 [10]:https://github.com/microsoft/botframework-cli/tree/master/packages/qnamaker#bf-qnamakerkbexport
 [11]:https://github.com/microsoft/botframework-cli/tree/beta/packages/orchestrator
-[12]:./csharp_dotnetcore
-[13]:./javascript_nodejs
+[12]:https://github.com/microsoft/BotBuilder-Samples/tree/main/experimental/orchestrator/csharp_dotnetcore
+[13]:https://github.com/microsoft/BotBuilder-Samples/tree/main/experimental/orchestrator/javascript_nodejs
 [14]:./docs/API_reference.md
 [15]: TBD/AvailableIndex
 [16]:https://github.com/microsoft/botframework-cli/tree/beta/packages/orchestrator#bf-orchestratorcreate
