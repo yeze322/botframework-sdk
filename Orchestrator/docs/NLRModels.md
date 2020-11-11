@@ -24,7 +24,6 @@ This is a high quality base model but it is larger and slower than some other op
 * [KNN (K nearest neighbors algorithm)][3]
 * [Model Evalutions][4]
 
-
 [1]: https://arxiv.org/abs/2002.12804 "UniLMv2: Pseudo-Masked Language Models for Unified Language Model Pre-Training"
 [2]: https://aka.ms/nlrversions
 [3]: https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
