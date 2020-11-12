@@ -1,64 +1,56 @@
 # Report Interpretation
 
-Use the BF CLI Orchestrator command to evaluate the performance of an Orchestrator snapshot file (with .blu extension).  A snapshot is composed of natural language representation base model (see [models][3]) along with a set of examples as provided in a label file (typically a [.lu file][4]). The snapshot file is used in Bot Framework to detect intents from user utterances. 
+The [BF Orchestrator CLI][1] has a "test" command for evaluating the performance of an Orchestrator snapshot file (with .blu extension).  A snapshot is composed of natural language representation base model (see [models][3]) along with a set of examples as provided in a label file (typically a [.lu file][4]). The snapshot file is used in Bot Framework to detect intents from user utterances. 
 
 In order to achieve high quality natural language processing (e.g. intent detection), it is necessary to assess & refine the quality of the model. Although this is much simplified in Orchestrator thanks to its use of pre-trained models, this optimization cycle is still required in order to account for human language variations. 
 
-BF CLI contains several commands that can produce a report, most notably bf [orchestrator:test][5] command.  See more on Machine Learning evaluation methodology in the [References](# references) section below.
+[BF Orchestrator CLI][1] contains several commands that can produce a report, most notably 'bf [orchestrator:test][5]' command.  See more on Machine Learning evaluation methodology in the [References](# references) section below.
 
 Use the following guidance to interpret the report.
-
-
 
 # Report Organization
 
 The test command thus produces a folder with HTML report and a few supporting artifacts as follows:
 
-- orchestrator_testing_set_ground_truth_instances.json: **TBD**
-- orchestrator_testing_set_labels.txt: **TBD**
-- orchestrator_testing_set_prediction_instances.json: **TBD**
-- orchestrator_testing_set_scores.txt: **TBD**
-- orchestrator_testing_set_summary.html: Report summary in HTML format
+- orchestrator_testing_set_ground_truth_instances.json: test instance ground-truth file in JSON format.
+- orchestrator_testing_set_labels.txt: intent labels in a plain TSV file.
+- orchestrator_testing_set_prediction_instances.json: test instance prediction file in JSON format.
+- orchestrator_testing_set_scores.txt: test instance prediction file in a plain TSV format.
+- orchestrator_testing_set_summary.html: report summary in HTML format
 
 The report summary contains several sections as follows:
 
-## Intent / Utterance Statistics  
+## Intent / Utterance Statistics
 
-This section contains descriptive statistics **TBD: Bot audience is not familiar with term descriptive statistics. Use simpler language** of labels and utterances.
+This section contains label and utterance distributions.
 
-It has two statistical sections, one for labels, the other utterances:
+It has two statistical sections, one for labels, the other utterances. Attached is an example rendition of the section.
 
 - Label statistics
 - Utterance statistics
 
+![Evaluation Report Intent/Utterance Statistics](media/EvaluationReportTabVaIntentUtteranceStatistics.png)
+
 ### Label statistics
 
-Label statistics lists the number of utterances labeled to each label. Additional metrics include utterance prevalence (ratio) for every label. The distributions can give Orchestrator users an overall view of the labels and utterances, and whether the distributions are skewed and emphasize too much on some labels, but not others.
+Label statistics lists the number of utterances labeled to each label. Additional metrics include utterance prevalence (ratio) for every label. The distributions can give Orchestrator users an overall view of the labels and utterances, and whether the distributions are skewed and emphasize too much on some labels, but not others. A machine learn model usually favors an intent with more utterances labeled to it. Thus, a developer can check this table and see if some intent needs more utterances in the snapshot file.
 
 ### Utterance statistics
 
-On the other hand, utterance statistics focus on the #label distribution by the utterances. Some utterances are labeled with more than one intents, which might not be desirable. This table reflects the distribution of multi-label utterances.
-
-### How to use this section
-
-**TBD**
-
-
+On the other hand, utterance statistics focus on the #label distribution by the utterances. Some utterances are labeled with more than one intents, which might not be desirable or a bug. This table reflects the distribution of multi-label utterances.
+From the above screen snapshot, we can see that there are two utterances labeled with twice with distinct labels. Those multi-label utterances will be listed in the next section and the owner can decide removing them from the snapshot file.
 
 ## Utterance Duplicates
 
 This section reports on utterances with duplicate or multiple labels. A duplicate utterance is detected when it is present more than once. Thus, the report lists the utterances tagged with more than one labels. Sometimes some dataset might contain utterances tagged with the same labels multiple times.
 
-The report also lists the redundancy.
+The report also lists the redundancy of label/utterance pairs. Orchestrator will deduplicate such redundancy, still it's recommended removing them.
+Please see the attached screen snapshot as an example.
 
 - Multi-label utterances and their labels
 - Duplicate utterance and label pairs
 
-### How to use this section
-
-**TBD**
-
-
+![Evaluation Report Utterance Duplicates](media/EvaluationReportTabVaUtteranceDuplicates.png)
 
 ## Ambiguous
 
@@ -74,6 +66,8 @@ The table has several columns:
 
 Besides the prediction score, the report also shows the closest example to the utterance
 within the label's utterance set.
+
+![Evaluation Report Ambiguous](media/EvaluationReportTabVaAmbiguous.png)
 
 ### How to use this section
 
@@ -101,6 +95,7 @@ it can be different from the ground-truth label for the utterance.
 Similar to the last section, the report also lists the prediction and ground-truth labels with
 their prediction scores and closest examples.
 
+![Evaluation Report Misclassified](media/EvaluationReportTabVaMisclassified.png)
 
 
 ### How to use this section
@@ -117,6 +112,8 @@ Sometimes a prediction may be predicted correctly with the highest scores among 
 
 Just like the last sections, the report lists the prediction and ground-truth labels with their prediction scores and closest examples.
 
+![Evaluation Report Low Confidence](media/EvaluationReportTabVaLowConfidence.png)
+
 ### How to use this section
 
 **TBD**
@@ -131,6 +128,8 @@ Advanced machine-learning practitioners may analyze the overall model performanc
 
 - Confusion matrix metrics
 - Average confusion matrix metrics
+
+![Evaluation Report Metrics](media/EvaluationReportTabVaMetrics.png)
 
 ### Confusion matrix metrics
 
@@ -181,8 +180,6 @@ to compare based on a consistent formula. Please reference the [BF Orchestrator 
 - [Wikipedia: Confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix)
 - [Wikipedia: Training, validation, and test sets](https://en.wikipedia.org/wiki/Training,_validation,_and_test_sets)
 - [Machine Learning Mastery](https://machinelearningmastery.com/difference-test-validation-datasets/).
-
-## Links
 
 [1]:https://aka.ms/bforchestratorcli	"BF Orchestrator CLI"
 [2]:https://en.wikipedia.org/wiki/Confusion_matrix	"Wikipedia: Confusion matrix"

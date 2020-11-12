@@ -1,7 +1,7 @@
 
 # Interactive
 
-Orchestrator CLI has an "interactive" command which enables a user to
+[BF Orchestrator CLI][1] has an "interactive" command which enables a user to
 dynamically interact with an Orchestrator base language model (see examples in [Start an interactive session without a training set](#start-an-interactive-session-without-a-training-set)) and
 improve the accuracy of an existing language model (see examples in [Start an interactive session with a training set](#start-an-interactive-session-with-a-training-set)) through some CLI commandlets.
 
