@@ -126,12 +126,12 @@ See [Report Interpretation][6] for more.
 
 ## References
 
-- [Orchestrator](https://aka.ms/bf-orchestrator)
-- [Language Understanding](https://docs.microsoft.com/en-us/composer/concept-language-understanding)
-- [Composer](https://docs.microsoft.com/en-us/composer/introduction)
-- [Natural Language Representation Models](https://github.com/microsoft/botframework-cli/blob/main/specs/nlrmodels.md)
-- [Wikipedia: Training, validation, and test sets](https://en.wikipedia.org/wiki/Training,_validation,_and_test_sets)
-- [Machine Learning Mastery](https://machinelearningmastery.com/difference-test-validation-datasets/).
+- [Orchestrator][1]
+- [Language Understanding][3]
+- [Composer][5]
+- [Natural Language Representation Models][4]
+- [Wikipedia: Training, validation, and test sets][9]
+- [Machine Learning Mastery][10]
 
 
 
@@ -143,8 +143,8 @@ See [Report Interpretation][6] for more.
 [6]:https://aka.ms/bforchestratorreport "Orchestrator Report"
 [7]:https://aka.ms/bforchestratorinteractive "Orchestrator Interactive Command"
 [8]:https://docs.microsoft.com/en-us/composer/concept-language-understanding "Language understanding"
-
 [9]:https://en.wikipedia.org/wiki/Training,_validation,_and_test_sets "ML testing"
+[10]:https://machinelearningmastery.com/difference-test-validation-datasets/ "Machine Learning Mastery"
 
 
 

@@ -1,7 +1,7 @@
 
 # Interactive
 
-Orchestrator CLI has an "interactive" command which enables a user to
+[BF Orchestrator CLI][1] has an "interactive" command which enables a user to
 dynamically interact with an Orchestrator base language model (see examples in [Start an interactive session without a training set](#start-an-interactive-session-without-a-training-set)) and
 improve the accuracy of an existing language model (see examples in [Start an interactive session with a training set](#start-an-interactive-session-with-a-training-set)) through some CLI commandlets.
 
@@ -15,8 +15,6 @@ ensuing commandlets for maintaining the base model's example set. These variable
                               commandlet for interacting with an Orchestrator model.
 - **"new" intent labels**       -- Another cache for storing an array of intent labels, which were mainly
                               used for changing an utterance's intent labels within an Orchestrator model.
-
-
 
 ## Scenarios
 
@@ -845,7 +843,5 @@ Below is the list of the commandlets that can be issued during a 'interactive' s
 ## References
 
 - [BF Orchestrator CLI](https://aka.ms/bforchestratorcli)
-
-## Links
 
 [1]:https://aka.ms/bforchestratorcli	"BF Orchestrator CLI"

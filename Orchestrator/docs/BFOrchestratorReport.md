@@ -1,68 +1,71 @@
 # Report Interpretation
 
-Use the BF CLI Orchestrator command to evaluate the performance of an Orchestrator snapshot file (with .blu extension).  A snapshot is composed of natural language representation base model (see [models][3]) along with a set of examples as provided in a label file (typically a [.lu file][4]). The snapshot file is used in Bot Framework to detect intents from user utterances. 
+The [BF Orchestrator CLI][1] has a "test" command for evaluating the performance of an Orchestrator snapshot file (with .blu extension). A snapshot is composed of natural language representation base model (see [models][3]) along with a set of examples as provided in a label file (typically a [.lu file][4]). The snapshot file is used in Bot Framework to detect intents from user utterances. 
 
 In order to achieve high quality natural language processing (e.g. intent detection), it is necessary to assess & refine the quality of the model. Although this is much simplified in Orchestrator thanks to its use of pre-trained models, this optimization cycle is still required in order to account for human language variations. 
 
-BF CLI contains several commands that can produce a report, most notably bf [orchestrator:test][5] command.  See more on Machine Learning evaluation methodology in the [References](# references) section below.
+See more on Machine Learning evaluation methodology in the [References](# references) section below.
 
-Use the following guidance to interpret the report.
+Use the following guidance to interpret the report and take some actions (such as the ones below) to improve the snapshot file:
 
-
+- Merge two intent labels into one as the utterances in either are semantically similar.
+- Split an intent's utterance pool and create a new intent label as the utterances may not be semanically similar.
+- Change an utterance's intent label as the utterance may be semantically closer to a different intent label.
+- Rephrase an utterance and make it semantically closer to other utterances labled with the same intent.
+- Add more utterances to an intent label as the intent's utterance pool could be too scarce.
+- Remove some utterances from an intent label if there were too many utterances label to it.
 
 # Report Organization
 
 The test command thus produces a folder with HTML report and a few supporting artifacts as follows:
 
-- orchestrator_testing_set_ground_truth_instances.json: **TBD**
-- orchestrator_testing_set_labels.txt: **TBD**
-- orchestrator_testing_set_prediction_instances.json: **TBD**
-- orchestrator_testing_set_scores.txt: **TBD**
-- orchestrator_testing_set_summary.html: Report summary in HTML format
+- orchestrator_testing_set_ground_truth_instances.json: test instance ground-truth file in JSON format.
+- orchestrator_testing_set_labels.txt: intent labels in a plain text file.
+- orchestrator_testing_set_prediction_instances.json: test instance prediction file in JSON format.
+- orchestrator_testing_set_scores.txt: test instance prediction file in a plain TSV format.
+- orchestrator_testing_set_summary.html: report summary in HTML format
 
 The report summary contains several sections as follows:
 
-## Intent / Utterance Statistics  
+## Intent / Utterance Statistics
 
-This section contains descriptive statistics **TBD: Bot audience is not familiar with term descriptive statistics. Use simpler language** of labels and utterances.
+This section contains label and utterance distributions.
 
-It has two statistical sections, one for labels, the other utterances:
+It has two statistical sections, one for labels, the other utterances. Attached is an example rendition of the section.
 
 - Label statistics
 - Utterance statistics
 
+![Evaluation Report Intent/Utterance Statistics](media/EvaluationReportTabVaIntentUtteranceStatistics.png)
+
 ### Label statistics
 
-Label statistics lists the number of utterances labeled to each label. Additional metrics include utterance prevalence (ratio) for every label. The distributions can give Orchestrator users an overall view of the labels and utterances, and whether the distributions are skewed and emphasize too much on some labels, but not others.
+Label statistics lists the number of utterances labeled to each label. Additional metrics include utterance prevalence (ratio) for every label. The distributions can give Orchestrator users an overall view of the labels and utterances, and whether the distributions are skewed and emphasize too much on some labels, but not others. A machine learn model may learn more from a label (intent) with more instances (utterances) labeled to it. Thus, a developer can check this table and see if some intent needs more utterances in the snapshot file.
 
 ### Utterance statistics
 
-On the other hand, utterance statistics focus on the #label distribution by the utterances. Some utterances are labeled with more than one intents, which might not be desirable. This table reflects the distribution of multi-label utterances.
-
-### How to use this section
-
-**TBD**
-
-
+On the other hand, utterance statistics focus on the #label distribution by the utterances. Some utterances are labeled with more than one intents, which might not be desirable and could be a bug. This table reflects the distribution of multi-label utterances.
+From the above screen snapshot, we can see that there are two utterances labeled twice with distinct labels. Those multi-label utterances will be listed in the next section and the owner can decide to remove the duplicates from the snapshot file.
 
 ## Utterance Duplicates
 
-This section reports on utterances with duplicate or multiple labels. A duplicate utterance is detected when it is present more than once. Thus, the report lists the utterances tagged with more than one labels. Sometimes some dataset might contain utterances tagged with the same labels multiple times.
-
-The report also lists the redundancy.
+Sometimes some dataset might contain utterances tagged with the same labels multiple times.
+The report also lists this redundancy.
+This section has two sub-sections:
 
 - Multi-label utterances and their labels
 - Duplicate utterance and label pairs
 
-### How to use this section
+They report on utterances with duplicate or multiple labels. A duplicate utterance is detected when it is present more than once in a snapshot file. Sometimes some dataset might even contain utterances tagged with the same labels multiple times.
 
-**TBD**
+The report also lists the redundancy of label/utterance pairs. Orchestrator will deduplicate such redundancy.
+Please see the attached screen snapshot as an example.
 
-
+![Evaluation Report Utterance Duplicates](media/EvaluationReportTabVaUtteranceDuplicates.png)
 
 ## Ambiguous
 
-This section reports on utterances ambiguous predictions. For an evaluation utterance, if an Orchestrator model correctly predicts its intent label, then it's a true positive prediction. However every prediction comes with a score, which is essentially the probability and confidence for the prediction. If the Orchestrator model also makes a high-score prediction close to that of the correctly predicted label, then we call such a prediction "ambiguous."
+This section reports on utterances with ambiguous predictions. For an evaluation utterance, if an Orchestrator model correctly predicts its intent label, then it's a true positive instance. Every intent label will be predicted with a score, which is essentially the probability or confidence for that label prediction. The predicted intent usually is the one with the highest score. If the Orchestrator model also makes some other high-score prediction close to that of the correctly predicted label, then we call such a prediction "ambiguous."
 
 In this section, the report lists all the utterances with an ambiguous prediction in a table.
 The table has several columns:
@@ -70,58 +73,36 @@ The table has several columns:
 - Utterance         -- the utterance
 - Labels            -- the true labels for the utterance
 - Predictions       -- the labels predicted by the Orchestrator model
-- Close Predictions -- some other labels predicted with a close high score to that of the predicted label. 
+- Close Predictions -- some other labels predicted with a close, high score to that of the predicted label. 
 
 Besides the prediction score, the report also shows the closest example to the utterance
 within the label's utterance set.
+Below is a screen snapshot of an ambiguous report:
 
-### How to use this section
+![Evaluation Report Ambiguous](media/EvaluationReportTabVaAmbiguous.png)
 
-**TBD**
-
-
-
-Sometimes some dataset might contain utterances tagged with the same labels multiple times.
-The report also lists this redundancy.
-
-- Multi-label utterances and their labels
-- Duplicate utterance and label pairs
-
-### How to use this section
-
-**TBD**
-
-### 
+Ambiguous utterances can be a sign of overlapping intent labels. In another word, two intent labels may have their utterance pools semantically close to each other. In the example report about, the utterance "what my events today" was correctly predicted with the Calendar intent label and the closest example is
+"What is on my calendar today". However the FAQ3 intent was also predicted with a high school and the closest example from that intent is "What's going on today." From these two closest example, one can remove the latter from the FAQ3 intent as it is now more specific to the Calendar intent, then just a FAQ example.
 
 ## Misclassified
 
-This section reports on utterances with incorrect predictions. An a misclassified predication is one in which an Orchestrator model falsely predicts its intent label. Usually the label with the highest prediction score is chosen as the predicted label, but
-it can be different from the ground-truth label for the utterance.
+This section reports on utterances with incorrect predictions. A misclassified predication is one where an Orchestrator model falsely predicts its intent label. Usually the label with the highest prediction score is chosen as the predicted label, but it can be different from the ground-truth label for the utterance.
 
 Similar to the last section, the report also lists the prediction and ground-truth labels with
-their prediction scores and closest examples.
+their prediction scores and closest examples. Below is a screen snapshot of the misclassified report. A user can also follow the utterances list and decide to update their intent labels and or rephrase the utterances themselves.
 
-
-
-### How to use this section
-
-**TBD**
-
-
+![Evaluation Report Misclassified](media/EvaluationReportTabVaMisclassified.png)
 
 ## Low Confidence
 
-This section reports on predictions that scored too low to be considered "confident" intent detection.  
+This section reports on predictions that scored too low to be considered "confident" intent detection.
 
-Sometimes a prediction may be predicted correctly with the highest scores among all labels, but the score is very low, lower than the provided threshold (see more on thresholds here **TBD**). We call such predictions low confidence.
+Sometimes a prediction may be predicted correctly with the highest scores among all labels, but the score is very low, lower than a threshold. We call such predictions low confidence.
+Notice that there are several default thresholds used to guide producing the report sections thus far. Usually an Orchestrator user can just predict a label with the highest score, but he/she can also utilize some thresholds for a fine-tuned prediction in a chat bot's dialog logic.
 
-Just like the last sections, the report lists the prediction and ground-truth labels with their prediction scores and closest examples.
+Just like the last sections, the report lists the prediction and ground-truth labels with their prediction scores and closest examples. Also like the previous sections, the utterances listed in this section can guide a user how to improve the snapshot file.
 
-### How to use this section
-
-**TBD**
-
-
+![Evaluation Report Low Confidence](media/EvaluationReportTabVaLowConfidence.png)
 
 ## Metrics
 
@@ -131,6 +112,8 @@ Advanced machine-learning practitioners may analyze the overall model performanc
 
 - Confusion matrix metrics
 - Average confusion matrix metrics
+
+![Evaluation Report Metrics](media/EvaluationReportTabVaMetrics.png)
 
 ### Confusion matrix metrics
 
@@ -175,14 +158,21 @@ these metrics for an overall metric and model performance.
 There are many nuanced ways to aggregate confusion matrix metrics. For comparing models, it's critical
 to compare based on a consistent formula. Please reference the [BF Orchestrator CLI][1] readme page for advanced CLI usage details.
 
+## Thresholds
+
+This evaluation report is created using several thresholds that they can also be useful in building chat bot logic. These thresholds can be reset through environment variables listed below:
+
+- ambiguousClosenessThreshold: default to 0.2, which means that if there are labels predicted to have a score close to within 20% of the top and corrected predicted label, then this utterance is ambiguously predicted.
+- lowConfidenceScoreThreshold: default to 0.5, which means that if the top predicted score is lower than 0.5, then the prediction is considered low confidence.
+- multiLabelPredictionThreshold: default to 1, which means that the report will predict only one label. However, if the threshold is lower than 1, then every label with a predicted score higher than that will be predicted. This threshold is usually used for multi-label, multi-intent scenarios.
+- unknownLabelPredictionThreshold:default to 0.3, which means that the evaluation process will consider a prediction UNKNOWN if the score is lower than that threshold.
+
 ## References
 
 - [BF Orchestrator CLI](https://aka.ms/bforchestratorcli)
 - [Wikipedia: Confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix)
 - [Wikipedia: Training, validation, and test sets](https://en.wikipedia.org/wiki/Training,_validation,_and_test_sets)
 - [Machine Learning Mastery](https://machinelearningmastery.com/difference-test-validation-datasets/).
-
-## Links
 
 [1]:https://aka.ms/bforchestratorcli	"BF Orchestrator CLI"
 [2]:https://en.wikipedia.org/wiki/Confusion_matrix	"Wikipedia: Confusion matrix"
