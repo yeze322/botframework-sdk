@@ -16,8 +16,6 @@ ensuing commandlets for maintaining the base model's example set. These variable
 - **"new" intent labels**       -- Another cache for storing an array of intent labels, which were mainly
                               used for changing an utterance's intent labels within an Orchestrator model.
 
-
-
 ## Scenarios
 
 ### Start an interactive session without a training set
@@ -845,7 +843,5 @@ Below is the list of the commandlets that can be issued during a 'interactive' s
 ## References
 
 - [BF Orchestrator CLI](https://aka.ms/bforchestratorcli)
-
-## Links
 
 [1]:https://aka.ms/bforchestratorcli	"BF Orchestrator CLI"
