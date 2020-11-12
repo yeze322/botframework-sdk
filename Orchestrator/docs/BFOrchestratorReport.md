@@ -158,6 +158,15 @@ these metrics for an overall metric and model performance.
 There are many nuanced ways to aggregate confusion matrix metrics. For comparing models, it's critical
 to compare based on a consistent formula. Please reference the [BF Orchestrator CLI][1] readme page for advanced CLI usage details.
 
+## Thresholds
+
+This evaluation report is created using several thresholds that they can also be useful in building chat bot logic. These thresholds can be reset through environment variables listed below:
+
+- ambiguousClosenessThreshold: default to 0.2, which means that if there are labels predicted to have a score close to within 20% of the top and corrected predicted label, then this utterance is ambiguously predicted.
+- lowConfidenceScoreThreshold: default to 0.5, which means that if the top predicted score is lower than 0.5, then the prediction is considered low confidence.
+- multiLabelPredictionThreshold: default to 1, which means that the report will predict only one label. However, if the threshold is lower than 1, then every label with a predicted score higher than that will be predicted. This threshold is usually used for multi-label, multi-intent scenarios.
+- unknownLabelPredictionThreshold:default to 0.3, which means that the evaluation process will consider a prediction UNKNOWN if the score is lower than that threshold.
+
 ## References
 
 - [BF Orchestrator CLI](https://aka.ms/bforchestratorcli)
