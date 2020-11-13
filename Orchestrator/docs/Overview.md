@@ -124,6 +124,6 @@ As we collect more feedback from the community during the preview there may be a
 [17]:https://en.wikipedia.org/wiki/TensorFlow
 [18]:https://en.wikipedia.org/wiki/Reinforcement_learning
 [19]:https://en.wikipedia.org/wiki/Precision_and_recall
-[20]:./API_reference.md
+[20]:https://docs.microsoft.com/en-us/dotnet/api/microsoft.bot.builder.ai.orchestrator?view=botbuilder-dotnet-stable
 
 
