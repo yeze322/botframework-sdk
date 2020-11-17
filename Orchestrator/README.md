@@ -138,9 +138,20 @@ const myDialog = new AdaptiveDialog('myDialog').configure({
 
 ## Composer Integration
 
-\<TBD: This section is FYI in preparation for upcoming Composer functionality. It will be updated once ready.>
+Orchestrator can be used as recognizer in [Bot Framework Composer][19]. To specify Orchestrator as a dialog recognizer:
 
-Once the feature flag is enabled in Composer, it is possible to specify Orchestrator as a recognizer. For the most basic intent recognition cases, simply specify Orchestrator as the recognizer, and fill in the language data as you would for LUIS. For more advanced scenarios, such as dispatch orchestration, follow the steps above to import and tune up routing quality. 
+1. Enable Orchestrator feature in Composer's Application Settings.
+2. Select Orchestrator in the recognizer dropdown menu.
+3. Review, evaluate and adjust examples in language data as you would normally for LUIS to ensure recognition quality.
+
+This enables basic  intent recognition. For more advanced scenarios follow the steps above to import and tune up routing quality. See more about Composer Recognizers [here](https://docs.microsoft.com/en-us/composer/concept-dialog#recognizer).
+
+###### Limitations
+
+* **Important**: Orchestrator is limited to intents only. Entity definitions in LU will be ignored and no extraction will be performed during recognition. 
+* Only the *default* base model is available to Orchestrator solutions.
+
+See the [School skill navigator](https://github.com/microsoft/BotBuilder-Samples/tree/main/experimental/orchestrator/Composer/01.school-skill-navigator#school-skill-navigator-bot) bot sample for more. 
 
 
 
@@ -152,6 +163,7 @@ Once the feature flag is enabled in Composer, it is possible to specify Orchestr
 - [BF CLI Orchestrator plugin][11]
 - [C# samples][12]
 - [NodeJS samples][13]
+- [BF Orchestrator Command Usage][23]
 
 [1]:https://luis.ai
 [2]:https://qnamaker.ai
@@ -175,3 +187,5 @@ Once the feature flag is enabled in Composer, it is possible to specify Orchestr
 [20]: https://aka.ms/NLRModels "Natural Language Representation Models"
 [21]:https://docs.microsoft.com/en-us/azure/bot-service/file-format/bot-builder-lu-file-format?view=azure-bot-service-4.0	"LU file format"
 [22]:./docs/BFOrchestratorReport.md "report interpretation"
+[23]: ./docs/BFOrchestratorUsage.md "BF Orchestrator usage"
+
