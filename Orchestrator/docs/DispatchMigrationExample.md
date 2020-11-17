@@ -34,6 +34,16 @@ Start with fully working  [NLP With Dispatch][2] C# Sample including all languag
 
 
 ## Prepare
+* Export your LUIS application language model(s) and/or QnA Maker knowledge bases(s) 
+
+```
+> md CognitiveModels
+> bf luis:version:list --appId <luis-app-id> --endpoint <luis-endpoint> --subscriptionKey <luis-subscription-key> --out <ver.json>
+@rem select (manually) from version list in ver.json
+> bf luis:version:export --appId <luis-app-id> --endpoint <luis-endpoint> --subscriptionKey <luis-subscription-key> --versionId <version-id> --out <CognitiveModels\luis.json>
+
+> bf qnamaker:kb:export --kbId <kb-id> --subscriptionKey <qna-subscription-key> --qnaFormat > <CognitiveModels\kb.qna>
+```
 
 * Add the ```Microsoft.Bot.Builder.AI.Orchestrator``` assembly and dependencies to your project from nuget package manager.
 
@@ -42,15 +52,19 @@ Start with fully working  [NLP With Dispatch][2] C# Sample including all languag
 ## Create Orchestrator Language model
 
 * Get Orchestrator base model
-* Create a snapshot with dispatcher samples
+
+* Create Orchestrator snapshot with your previously exported LUIS application language model(s) and/or QnA Maker knowledgebase(s).
+
+  Example:
 
 ```
 > md model
 > md generated
 > bf orchestrator:basemodel:get --out model
-> bf orchestrator:create --in CognitiveModels\NLPDispatchSample14.json --model model --out generated
-"Processing c:\\...\\CognitiveModels\\NLPDispatchSample14.json...\n"
-"Snapshot written to c:\\...\\generated\\NLPDispatchSample14.blu"
+> bf orchestrator:create --in CognitiveModels\ --model model --out generated
+"Processing c:\\...\\CognitiveModels\\luis.json...\n"
+"Processing c:\\...\\CognitiveModels\\kb.qna...\n"
+"Snapshot written to c:\\...\\generated\\Orchestrator.blu"
 ```
 
 
