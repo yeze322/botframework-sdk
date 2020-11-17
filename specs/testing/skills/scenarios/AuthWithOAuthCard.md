@@ -22,6 +22,7 @@
 
 - Auth context: Public Cloud, Gov Cloud, Sandboxed
 - Delivery mode: Normal, ExpectReplies
+- Domains: Vanilla, Webchat, Teams 
 
 ## Total test cases
 
