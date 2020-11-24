@@ -46,6 +46,10 @@ The following table shows how accurate is each model relative to provided traini
 
 
 
+## License
+
+The models are released under the following [License Terms][6].
+
 
 
 ## References
@@ -67,4 +71,7 @@ The following table shows how accurate is each model relative to provided traini
 [3]: https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
 [4]: https://github.com/snipsco/snips-nlu "Snips NLU"
 [5]: https://github.com/snipsco/snips-nlu-metrics "Snips NLU Metrics"
+[6]: ./LICENSE.md "License agreement"
+
+
 
