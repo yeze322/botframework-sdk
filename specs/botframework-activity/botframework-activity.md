@@ -538,7 +538,7 @@ The `text` field contains optional text content to be communicated to a user. Th
 
 Event activities communicate programmatic information from a client or channel to a bot. The meaning of an event activity is defined by the `name` field, which is meaningful within the scope of a channel. Event activities are designed to carry both interactive information (such as button clicks) and non-interactive information (such as a notification of a client automatically updating an embedded speech model).
 
-Event activities are the asynchronous counterpart to [invoke activities](#invoke-activity). Unlike invoke, event is designed to be extended by client application extensions.
+Event activities are like [invoke activities](#invoke-activity). Unlike invoke, event is designed to be extended by client application extensions.
 
 Event activities are identified by a `type` value of `event` and specific values of the `name` field.
 
@@ -568,15 +568,16 @@ The `relatesTo` field references another conversation, and optionally a specific
 
 ## Invoke activity
 
-Invoke activities communicate programmatic information from a client or channel to a bot, and have a corresponding return payload for use within the channel. The meaning of an invoke activity is defined by the `name` field, which is meaningful within the scope of a channel.
+Invoke Activities communicate programmatic information between a sender and receiver and have a corresponding return payload. The meaning of an Invoke Activity is defined by the `name` field which also defines the schema of the value field and response payload. 
 
-Invoke activities are the synchronous counterpart to [event activities](#event-activity). Event activities are designed to be extensible. Invoke activities differ only in their ability to return response payloads back to the channel; because the channel must decide where and how to process these response payloads, Invoke is useful only in cases where explicit support for each invoke name has been added to the channel. Thus, Invoke is not designed to be a generic application extensibility mechanism.
+Invoke Activities are like [event activities](#event-activity). Important distinctions are that (1) Invokes return a response payloads back to the invoker and (2) Event Activities not known by a receiver are forwarded, but Invoke Activities are not. Thus, Invoke Activities are not designed to be a generic application extensibility mechanism.
 
-Invoke activities are identified by a `type` value of `invoke` and specific values of the `name` field.
+Invoke activities are identified by a `type` value of `invoke` and the value of the `name` field.
 
 The list of defined Invoke activities is included in [Appendix III](#appendix-iii---protocols-using-the-invoke-activity).
 
-`A5301`: Channels SHOULD NOT allow application-defined invoke messages between clients and bots.
+`A5301`: Receivers SHOULD NOT forward unknown invoke messages.
+`A5302`: Receivers MAY forward known invoke messages.
 
 ### Name
 
