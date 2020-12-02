@@ -1,6 +1,6 @@
 # Orchestrator (PREVIEW)
 
-Conversational AI applications today are built using disparate technologies to fulfill language understanding (LU) needs, such as [LUIS][1] and [QnA Maker][2]. Often, conversational AI applications are also built by accessing various skill bots, such as [Virtual Assistant skills][3], each of which handle a specific conversation topic and can be built using different LU technologies. Hence, conversational AI applications typically require LU to route an incoming user request to an appropriate skill or to dispatch to a specific sub-component.
+Conversational AI applications today are built using disparate technologies to fulfill language understanding (LU) needs, such as [LUIS][1] and [QnA Maker][2]. Often, conversational AI applications are also built by accessing subsequent [skills][3], each of which handle a specific conversation topic and can be built using different LU technologies. Hence, conversational AI applications typically require LU to route an incoming user request to an appropriate skill or to dispatch to a specific sub-component.
 
 Orchestrator is an LU solution optimized for conversational AI applications. It is built ground-up to run locally with your bot. See the [technical overview][18] for additional details.
 
@@ -110,7 +110,7 @@ See the [School skill navigator](https://github.com/microsoft/BotBuilder-Samples
 
 [1]:https://luis.ai
 [2]:https://qnamaker.ai
-[3]:https://microsoft.github.io/botframework-solutions/index
+[3]:https://docs.microsoft.com/en-us/azure/bot-service/skills-conceptual
 [4]:https://en.wikipedia.org/wiki/Transformer_(machine_learning_model)
 [5]:https://docs.microsoft.com/azure/bot-service/bot-builder-tutorial-dispatch?tabs=cs
 [6]:https://aka.ms/adaptive-dialogs
