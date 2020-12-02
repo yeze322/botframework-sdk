@@ -92,9 +92,9 @@ This enables basic intent recognition. For more advanced scenarios follow the st
 
 ## Limitations
 
-**Important**:
-Orchestrator is limited to intents only. Entity definitions are ignored and no entity extraction is performed during recognition.
-Only the *default* base model is available to Orchestrator solutions.
+* Orchestrator is limited to intents only. Entity definitions are ignored and no entity extraction is performed during recognition.
+* Only English language recognition is available in this preview release.
+* Only the *default* base model is available to Orchestrator solutions.
 
 ## Additional Reading
 
