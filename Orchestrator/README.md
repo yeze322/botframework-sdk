@@ -122,9 +122,7 @@ See the [School skill navigator](https://github.com/microsoft/BotBuilder-Samples
 [12]:https://github.com/microsoft/BotBuilder-Samples/tree/main/experimental/orchestrator/csharp_dotnetcore
 [13]:https://github.com/microsoft/BotBuilder-Samples/tree/main/experimental/orchestrator/javascript_nodejs
 [14]:https://aka.ms/bforchestratorapi
-
 [16]:https://github.com/microsoft/botframework-cli/tree/beta/packages/orchestrator#bf-orchestratorcreate
-
 [18]:./docs/Overview.md
 [19]: https://docs.microsoft.com/composer/introduction
 [20]: https://aka.ms/NLRModels "Natural Language Representation Models"
