@@ -1,16 +1,14 @@
 # Report Interpretation
 
-The [BF Orchestrator CLI][1] has a "test" command for evaluating the performance of an Orchestrator snapshot file (with .blu extension). A snapshot is composed of natural language representation base model (see [models][3]) along with a set of examples as provided in a label file (typically a [.lu file][4]). The snapshot file is used in Bot Framework to detect intents from user utterances. 
+The [BF Orchestrator CLI][1] has a "test" command for evaluating the performance of an Orchestrator snapshot file (with .blu extension). A snapshot is composed of natural language representation base model (see [models][3]) along with a set of examples provided in a label file (typically a [.lu file][4]). The snapshot file is used in Bot Framework to detect intents from user utterances. 
 
-In order to achieve high quality natural language processing (e.g. intent detection), it is necessary to assess & refine the quality of the model. Although this is much simplified in Orchestrator thanks to its use of pre-trained models, this optimization cycle is still required in order to account for human language variations. 
+In order to achieve high quality natural language processing (e.g. intent detection), it is necessary to assess and refine the quality of the model. This is much simplified in Orchestrator because of its use of pre-trained models. The optimization cycle is required in order to account for human language variations. 
+Learn more about Machine Learning evaluation methodology in the [References](# references) section below.
 
-See more on Machine Learning evaluation methodology in the [References](# references) section below.
-
-Use the following guidance to interpret the report and take some actions (such as the ones below) to improve the snapshot file:
-
-- Merge two intent labels into one as the utterances in either are semantically similar.
-- Split an intent's utterance pool and create a new intent label as the utterances may not be semanically similar.
-- Change an utterance's intent label as the utterance may be semantically closer to a different intent label.
+To interpret the report, use the following guidance to actions to improve the snapshot file:
+- Incase utterances are the same or semantically similar, mrerge the two intent labels.
+- If the utterances are not semantically similar, split an intent's utterance pool and create a new intent label.
+- It the utterance are semantically close to a different intent label, change the intent label.
 - Rephrase an utterance and make it semantically closer to other utterances labled with the same intent.
 - Add more utterances to an intent label as the intent's utterance pool could be too scarce.
 - Remove some utterances from an intent label if there were too many utterances label to it.
@@ -40,7 +38,7 @@ It has two statistical sections, one for labels, the other utterances. Attached 
 
 ### Label statistics
 
-Label statistics lists the number of utterances labeled to each label. Additional metrics include utterance prevalence (ratio) for every label. The distributions can give Orchestrator users an overall view of the labels and utterances, and whether the distributions are skewed and emphasize too much on some labels, but not others. A machine learn model may learn more from a label (intent) with more instances (utterances) labeled to it. Thus, a developer can check this table and see if some intent needs more utterances in the snapshot file.
+Label statistics lists the number of utterances labeled to each label. Additional metrics include utterance prevalence (ratio) for every label. The distributions can give Orchestrator users an overall view of the labels and utterances, and whether the distributions are skewed and emphasize too much on some labels, but not others. A machine learn model may learn more from a label (intent) with more instances (utterances) labeled to it. Thus, a developer can check this table and see if some intents needs more utterances in the snapshot file.
 
 ### Utterance statistics
 
