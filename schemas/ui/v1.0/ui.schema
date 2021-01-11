@@ -17,6 +17,11 @@
                     "title": "Menu Options",
                     "description": "Configure how this component appears in the menu. Can be a menu option object or an array of menu option objects.",
                     "$ref": "#/definitions/MenuOptions"
+                },
+                "flow": {
+                    "title": "Flow UI Options",
+                    "description": "UI Options object describing flow UI customizations for this $kind.",
+                    "$ref": "#/definitions/FlowUIOptions"
                 }
             },
             "additionalProperties": {
@@ -181,6 +186,24 @@
                 }
             },
             "additionalProperties": false
+        },
+        "FlowUIOptions": {
+            "type": "object",
+            "properties": {
+                "widget": {
+                    "title": "Flow Widget Name",
+                    "description": "Flow widget name of current $kind.",
+                    "type": "string",
+                    "enum": [
+                        "ActionHeader",
+                        "ActionCard",
+                        "IfConditionWidget",
+                        "SwitchConditionWidget",
+                        "ForeachWidget"
+                    ]
+                }
+            },
+            "additionalProperties": true
         },
         "MenuOptions": {
             "oneOf": [
