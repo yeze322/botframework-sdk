@@ -194,7 +194,7 @@
                     "title": "Flow Widget Name",
                     "description": "Flow widget name of current $kind.",
                     "type": "string",
-                    "enum": [
+                    "examples": [
                         "ActionHeader",
                         "ActionCard",
                         "IfConditionWidget",
