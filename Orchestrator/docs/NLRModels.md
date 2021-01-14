@@ -12,11 +12,7 @@ This is a fast and small base model with sufficient accuracy but if the accuracy
 This is a high quality base model that strikes the balance between size, speed and accuracy. It is a 6-layer pretrained BERT model optimized for conversation for example-based use ([KNN][3]). This is the default model used if none explicitly specified.
 
 ### pretrained.20200924.microsoft.dte.00.12.en.onnx
-This is a highest quality base model but is larger and slower than other options. It is a 12-layer pretrained BERT model optimized for conversation for example-based use (KNN).
-
-### pretrained.20200924.microsoft.dte.00.12.roberta.en.onnx
-This is a high quality base model but it is larger and slower than some other options. It is a 12-layer pretrained RoBERTa model optimized for conversation for example-based use ([KNN][3]).
-
+This is a highest quality base model but is larger and slower than other options. It is a 12-layer pretrained BERT model optimized for conversation for example-based use ([KNN][3]).
 
 
 ## Models Evaluation
@@ -31,7 +27,6 @@ The following table shows the size & speed performance attributes.
 |pretrained.20200924.microsoft.dte.00.03.en.onnx |   BERT | 3  |  ~ 7 ms |  164M |
 |pretrained.20200924.microsoft.dte.00.06.en.onnx | BERT | 6  |  ~ 16 ms | 261M  |
 |pretrained.20200924.microsoft.dte.00.12.en.onnx | BERT    | 12  | ~ 26 ms  | 427M  |
-|pretrained.20200924.microsoft.dte.00.12.roberta.en.onnx |  RoBERTa  | 12  | ~ 26 ms  | 486M  |
 
 ### Model performance, evaluated by micro-average-accuracy
 
@@ -42,8 +37,6 @@ The following table shows how accurate is each model relative to provided traini
 |pretrained.20200924.microsoft.dte.00.03.en.onnx |  0.756  | 0.839  | 0.904  | 0.929  | 0.943  | 0.951  |
 |pretrained.20200924.microsoft.dte.00.06.en.onnx |   0.924 | 0.940  | 0.957  |  0.960 |  0.966 | 0.969  |
 |pretrained.20200924.microsoft.dte.00.12.en.onnx |  0.902  |  0.931 |  0.951 | 0.960  |  0.964 |  0.969 |
-|pretrained.20200924.microsoft.dte.00.12.roberta.en.onnx |   0.946 | 0.956  | 0.966  | 0.971  | 0.973  | 0.977  |
-
 
 
 ## License
