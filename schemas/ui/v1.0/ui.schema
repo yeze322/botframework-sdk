@@ -22,6 +22,11 @@
                     "title": "Flow UI Options",
                     "description": "UI Options object describing flow UI customizations for this $kind.",
                     "$ref": "#/definitions/FlowUIOptions"
+                },
+                "trigger": {
+                    "title": "Trigger UI Options",
+                    "description": "UI Options object describing how this component appreas in the Trigger dropdown.",
+                    "$ref": "#/definitions/TriggerUIOptions"
                 }
             },
             "additionalProperties": {
@@ -205,6 +210,49 @@
             },
             "additionalProperties": true
         },
+        "TriggerUIOptions": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "title": "Displayed trigger name"，
+                    "description": "Displayed trigger name in trigger creation flow."，,
+                    "type": "string",
+                    "examples": ["Intent recognized"]
+                },
+                "order": {
+                    "title": "Trigger order (Optional)",
+                    "description": "A float number as the indexing order of a Trigger, be used to sort the Trigger menu.",
+                    "type": "number"
+                },
+                "submenu": {
+                    "oneOf": [
+                        "string",
+                        {
+                            "type": "object",
+                            "properties": {
+                                "label": {
+                                    "title": "Submenu name",
+                                    "type": "string",
+                                    "examples": ["Dialog events"]
+                                },
+                                "prompt": {
+                                    "title": "Submenu prompt",
+                                    "description": "Prompt of next level Trigger menu.",
+                                    "type": "string",
+                                    "examples": ["Which event?"]
+                                },
+                                "placeholder": {
+                                    "title": "Submenu placeholder",
+                                    "description": "Placeholder text to show when no trigger selected.",
+                                    "type": "string",
+                                    "examples": ["Select an event type"]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
         "MenuOptions": {
             "oneOf": [
                 {
@@ -252,7 +300,7 @@
                 },
                 "order": {
                     "title": "Action menu order (Optional)",
-                    "description": "A float number as the indexing order of an Action, used to sort the Action menu.",
+                    "description": "A float number as the indexing order of an Action, be used to sort the Action menu.",
                     "type": "number"
                 }
             },
