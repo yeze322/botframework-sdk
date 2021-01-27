@@ -27,6 +27,10 @@
                     "title": "Trigger UI Options",
                     "description": "UI Options object describing how this component appreas in the Trigger dropdown.",
                     "$ref": "#/definitions/TriggerUIOptions"
+                },
+                "recognizer": {
+                    "title": "Recognizer UI Options",
+                    "$ref": "#/definitions/RecognizerUIOptions"
                 }
             },
             "additionalProperties": {
@@ -250,6 +254,28 @@
                             }
                         }
                     ]
+                }
+            }
+        },
+        "RecognizerUIOptions": {
+            "type": "object",
+            "properties": {
+                "displayName": {
+                    "type": "string"
+                },
+                "intentEditor": {
+                    "type": "string",
+                    "examples": ["LuIntentEditor", "RegexIntentEditor"]
+                },
+                "default": {
+                    "type": "boolean"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "fields": {
+                    "type": "object",
+                    "additionalProperties": true
                 }
             }
         },
