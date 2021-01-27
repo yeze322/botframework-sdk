@@ -249,6 +249,11 @@
                             "description": "Do not put menu item in a submenu."
                         }
                     ]
+                },
+                "order": {
+                    "title": "Action menu order (Optional)",
+                    "description": "A float number as the indexing order of an Action, used to sort the Action menu.",
+                    "type": "number"
                 }
             },
             "additionalProperties": false
