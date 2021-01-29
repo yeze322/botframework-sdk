@@ -30,6 +30,7 @@
                 },
                 "recognizer": {
                     "title": "Recognizer UI Options",
+                    "description": "UI Options object describing how this component appreas in the Recognizer dropdown.",
                     "$ref": "#/definitions/RecognizerUIOptions"
                 }
             },
