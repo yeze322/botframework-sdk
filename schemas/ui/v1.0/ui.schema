@@ -261,21 +261,36 @@
             "type": "object",
             "properties": {
                 "displayName": {
-                    "type": "string"
+                    "title": "Recognizer name",
+                    "description": "Recognizer name displayed in the dropdown option."
+                    "type": "string",
+                    "examples": ["Regular expression recognizer"]
                 },
                 "intentEditor": {
+                    "title": "Trigger phrases editor name",
+                    "description": "Hook a trigger phrases editor to all child triggers.",
                     "type": "string",
                     "examples": ["LuIntentEditor", "RegexIntentEditor"]
                 },
                 "default": {
-                    "type": "boolean"
+                    "title": "Default recognizer",
+                    "type": "When set to true, new dialogs will use this recognizer by default."
                 },
                 "disabled": {
+                    "title": "Recognizer disabled",,
+                    "description": "When set to true, the recognizer will be hidden from the dropdown.",
                     "type": "boolean"
                 },
                 "fields": {
+                    "title": "Fields initializer object",
+                    "description": "A template of the recognizer to define a custom initializer. LG, Expression is supported.",
                     "type": "object",
-                    "additionalProperties": true
+                    "additionalProperties": true,
+                    "examples": [
+                        {
+                            "luFileId": "${dialogId}.lu"
+                        }
+                    ]
                 }
             }
         },
