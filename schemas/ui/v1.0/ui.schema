@@ -343,6 +343,11 @@
                     "title": "Action menu order (Optional)",
                     "description": "A float number as the indexing order of an Action, be used to sort the Action menu.",
                     "type": "number"
+                },
+                "disabled": {
+                    "title": "Menu disabled",
+                    "description": "When set to true, current $kind will be hidden from the Action flyout menu.",
+                    "type": "boolean"
                 }
             },
             "additionalProperties": false
