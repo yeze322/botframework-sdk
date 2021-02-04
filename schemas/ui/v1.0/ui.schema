@@ -224,11 +224,6 @@
                     "type": "string",
                     "examples": ["Intent recognized"]
                 },
-                "order": {
-                    "title": "Trigger order (Optional)",
-                    "description": "A float number as the indexing order of a Trigger, be used to sort the Trigger menu.",
-                    "type": "number"
-                },
                 "submenu": {
                     "oneOf": [
                         {
@@ -263,6 +258,11 @@
                     "title": "Trigger disabled",
                     "description": "When set to true, the trigger will be hidden from the creation flow.",
                     "type": "boolean"
+                },
+                "order": {
+                    "title": "Trigger order (Optional)",
+                    "description": "Indexing order of a Trigger, be used to sort the Trigger menu.",
+                    "type": "number"
                 }
             }
         },
@@ -281,16 +281,6 @@
                     "type": "string",
                     "examples": ["LuIntentEditor", "RegexIntentEditor"]
                 },
-                "default": {
-                    "title": "Default recognizer",
-                    "description": "When set to true, new dialogs will use this recognizer by default.",
-                    "type": "boolean"
-                },
-                "disabled": {
-                    "title": "Recognizer disabled",
-                    "description": "When set to true, the recognizer will be hidden from the dropdown.",
-                    "type": "boolean"
-                },
                 "fields": {
                     "title": "Fields initializer object",
                     "description": "A template of the recognizer to define a custom initializer. LG, Expression is supported.",
@@ -301,6 +291,21 @@
                             "luFileId": "${dialogId}.lu"
                         }
                     ]
+                },
+                "default": {
+                    "title": "Default recognizer",
+                    "description": "When set to true, new dialogs will use this recognizer by default.",
+                    "type": "boolean"
+                },
+                "disabled": {
+                    "title": "Recognizer disabled",
+                    "description": "When set to true, the recognizer will be hidden from the dropdown.",
+                    "type": "boolean"
+                },
+                "order": {
+                    "title": "Recognizer order (Optional)",
+                    "description": "Indexing order of a Recognizer, be used to sort the Recognizer dropdown.",
+                    "type": "number"
                 }
             }
         },
@@ -349,15 +354,15 @@
                         }
                     ]
                 },
-                "order": {
-                    "title": "Action menu order (Optional)",
-                    "description": "A float number as the indexing order of an Action, be used to sort the Action menu.",
-                    "type": "number"
-                },
                 "disabled": {
                     "title": "Menu disabled",
                     "description": "When set to true, current $kind will be hidden from the Action flyout menu.",
                     "type": "boolean"
+                },
+                "order": {
+                    "title": "Action menu order (Optional)",
+                    "description": "A float number as the indexing order of an Action, be used to sort the Action menu.",
+                    "type": "number"
                 }
             },
             "additionalProperties": false
