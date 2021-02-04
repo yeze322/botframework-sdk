@@ -255,6 +255,11 @@
                             }
                         }
                     ]
+                },
+                "disabled": {
+                    "title": "Trigger disabled",
+                    "description": "When set to true, the trigger will be hidden from the creation flow.",
+                    "type": "boolean"
                 }
             }
         },
@@ -278,7 +283,7 @@
                     "type": "When set to true, new dialogs will use this recognizer by default."
                 },
                 "disabled": {
-                    "title": "Recognizer disabled",,
+                    "title": "Recognizer disabled",
                     "description": "When set to true, the recognizer will be hidden from the dropdown.",
                     "type": "boolean"
                 },
